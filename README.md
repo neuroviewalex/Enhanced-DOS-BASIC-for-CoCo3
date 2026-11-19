@@ -18,7 +18,19 @@ SHA-256: `8bbda19306f26a92b4c3ac18a7aa50fba3ddc35d13224e166635b55c238e381d`
 
 Only `CD.BAS` was modified within this Boot image; all other 48 disk files were verified unchanged against the authoritative user-supplied Boot source. The user explicitly promoted this candidate to baseline.
 
-## EDB v15 Tools — confirmed baseline (2026-11-19)
+## EDB v15 Tools — current confirmed baseline (2026-11-19)
+
+The current `EDB_v15_512k_tools.dsk` image was explicitly promoted by the user after the COMPARE message correction.
+
+SHA-256: `e82134ba762443ad747fa95c67f3e597f63689b1a6c6bd4cde74f112281a412e`
+
+### Change since the preceding Tools baseline
+
+- **COMPARE.BAS, lines 370 and 380:** Corrected `IS NEWER.` to `IS LARGER.` when comparing file sizes. File size does not establish modification time. The actual size calculation, byte-for-byte comparison, and all other logic remain unchanged.
+
+Only `COMPARE.BAS` was changed relative to the preceding Tools baseline. The previously confirmed DISKCOPY FULL, bare DISKCOPY, and FIND fixes are retained. The Boot image and all other 36 Tools files remain unchanged.
+
+## EDB v15 Tools — prior confirmed baseline (2026-11-19; superseded)
 
 The `EDB_v15_512k_tools.dsk` image is the user-confirmed v15 Tools baseline.
 
@@ -32,4 +44,4 @@ SHA-256: `e919ab51c9716997ea74aaecc54eca79210e0e8701b4a95b7abc3ab54854e142`
 
 Only `DISKCOPY.BAS` and `FIND.BAS` were modified within this Tools image. The user reported that the fixes work in testing and explicitly promoted the image to baseline.
 
-**Extracted-source note:** The `extracted/` directory still reflects the original disk extraction and has not been regenerated. Its copies of `CD.BAS`, `DISKCOPY.BAS`, and `FIND.BAS` are older snapshots; the two DSK images above are the authoritative current payloads.
+**Extracted-source note:** The `extracted/` directory still reflects the original disk extraction and has not been regenerated. Its copies of `CD.BAS`, `DISKCOPY.BAS`, `FIND.BAS`, and `COMPARE.BAS` are older snapshots; the two DSK images above are the authoritative current payloads.
