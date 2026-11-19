@@ -20,6 +20,18 @@ Only `CD.BAS` was modified within this Boot image; all other 48 disk files were 
 
 ## EDB v15 Tools — current confirmed baseline (2026-11-19)
 
+The current `EDB_v15_512k_tools.dsk` image was explicitly promoted by the user after the INSTALL empty-configuration fix.
+
+SHA-256: `d431635e259dd4a85ba3dabe9322d9bb907eee3f4688339e4175cf125bcbe488`
+
+### Change since the preceding Tools baseline
+
+- **INSTALL.BAS, line 155:** Added `IF L$="" THEN 180` after reading `flip.inf:3`. Empty configuration lines now use the existing invalid-configuration fallback instead of reaching `ASC("")` in the character-scanning loop.
+
+Only `INSTALL.BAS` was modified relative to the preceding Tools baseline. All other 36 Tools files—including the confirmed DISKCOPY, FIND, and COMPARE fixes—remain unchanged. The Boot baseline is untouched.
+
+## EDB v15 Tools — prior confirmed baseline (2026-11-19; superseded)
+
 The current `EDB_v15_512k_tools.dsk` image was explicitly promoted by the user after the COMPARE message correction.
 
 SHA-256: `e82134ba762443ad747fa95c67f3e597f63689b1a6c6bd4cde74f112281a412e`
@@ -44,4 +56,4 @@ SHA-256: `e919ab51c9716997ea74aaecc54eca79210e0e8701b4a95b7abc3ab54854e142`
 
 Only `DISKCOPY.BAS` and `FIND.BAS` were modified within this Tools image. The user reported that the fixes work in testing and explicitly promoted the image to baseline.
 
-**Extracted-source note:** The `extracted/` directory still reflects the original disk extraction and has not been regenerated. Its copies of `CD.BAS`, `DISKCOPY.BAS`, `FIND.BAS`, and `COMPARE.BAS` are older snapshots; the two DSK images above are the authoritative current payloads.
+**Extracted-source note:** The `extracted/` directory still reflects the original disk extraction and has not been regenerated. Its copies of `CD.BAS`, `DISKCOPY.BAS`, `FIND.BAS`, `COMPARE.BAS`, and `INSTALL.BAS` are older snapshots; the two DSK images above are the authoritative current payloads.
