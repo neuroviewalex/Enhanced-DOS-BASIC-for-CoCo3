@@ -20,7 +20,28 @@ Only `CD.BAS` was modified within this Boot image; all other 48 disk files were 
 
 ## EDB v15 Tools — current confirmed baseline (2026-11-19)
 
-The current `EDB_v15_512k_tools.dsk` image was explicitly promoted by the user after the INSTALL empty-configuration fix.
+The `EDB_v15_512k_tools.dsk` image is the protected-copy Tools baseline, explicitly promoted after the user reported that the test candidate works.
+
+SHA-256: `5e06c643982dfd53be169a77ae160136f17dc5a5b650da77ef5f41e5bdfd863e`
+
+### Changes since the preceding Tools baseline
+
+- **DISKCOPY.BAS, file-by-file mode:** Replaced destination KILL-before-COPY with a staged copy to `EDBTEMP.TMP`, exact-length and content verification, native same-drive RENAME promotion, and preservation of the existing destination under `EDBOLD.BAK` until the replacement is checked.
+- **INSTALL.BAS, install/backup and overwrite paths:** Applied the same staged, verified copy/replacement process, retaining the existing overwrite confirmation and separate copied/overwritten/skipped counts.
+- **Recovery and capacity guards in both programs:** Check destination FAT free granules and directory slots before copying; refuse staging-name collisions; write `EDBSWAP.JRN` before replacement; support interrupted-copy rollback/recovery. A journal consumes one additional granule during a transaction.
+- **INSTALL.BAS BASIC string space:** Increased the reservation from 1,024 to 2,048 bytes for the verification buffers.
+
+Only `DISKCOPY.BAS` and `INSTALL.BAS` changed from the previous Tools baseline. The previously approved `DISKCOPY FULL` 35/40-track logic, bare DISKCOPY, FIND, COMPARE, and INSTALL empty-flip guard remain intact. The authoritative Boot disk is unchanged.
+
+### Verification and limitations
+
+- All 37 Tools files verified present; FAT chains and directory entries validated; all other 35 payloads unchanged.
+- The user reported the candidate works and explicitly requested promotion.
+- 16 interruption-state scenarios, four failure classes, and 35/40-track space arithmetic were checked in a model. Power-failure recovery and native RENAME operation under every hardware configuration have **not** been separately verified by physical interruption testing. Use disposable media for those tests.
+
+## EDB v15 Tools — prior confirmed baseline (2026-11-19; superseded)
+
+The previous `EDB_v15_512k_tools.dsk` image was explicitly promoted by the user after the INSTALL empty-configuration fix.
 
 SHA-256: `d431635e259dd4a85ba3dabe9322d9bb907eee3f4688339e4175cf125bcbe488`
 
