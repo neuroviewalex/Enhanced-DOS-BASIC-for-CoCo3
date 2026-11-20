@@ -1,5 +1,39 @@
 # EDB v15 baseline history
 
+## 2026-11-20 — CD initialization split and XMM cleanup, promoted
+
+**New authoritative disk images (user-uploaded, byte-for-byte verified)**
+
+- `EDB_v15_512k_boot.dsk` — SHA-256 `f9f9ec7d947c1c4810180c91a2bc3e523b823c88be8508b06c0f47fd5287bbcb`; 51 files, 2 free granules in the 35-track range.
+- `EDB_v15_512k_tools.dsk` — SHA-256 `b4437121c16847e8a42ca474b1463aa92fd3b83ba27aa5ccfbb3d9a8d1ebc272`; 36 files, 6 free granules in the 35-track range.
+
+These images supersede the Boot playlist-CD R3 and Tools playlist-HELP R2 baselines documented below. The user supplied both exact candidate images and authorized their promotion.
+
+### Boot changes relative to the previous promoted image
+
+- `CD.BAS`: moved initialization logic into a dedicated helper, reducing the command's BASIC program memory footprint.
+- `CDINIT.DRV`: added the extracted CD initialization routine.
+- `RAMBOOT.DRV`: updated to cache/load `CDINIT.DRV` alongside `CDSEQ.DRV`.
+- The other 48 existing Boot files are byte-identical to the previous Boot baseline.
+
+### Tools changes relative to the previous promoted image
+
+- Removed obsolete `XK27.DRV`; active keyboard behavior remains in `XKEY.DRV`.
+- Removed `XSTAT.DRV` after the cross-disk dependency audit found no documented caller.
+- Kept `XMEMTST.BAS` as a non-destructive informational compatibility command pointing to `XMM ALL` and `XMM BENCH`.
+- Updated `SYSMAP.BAS` to distinguish the historical 128K layout from 512K physical banks and current XMM services, with mixed-case lines no wider than 31 columns.
+- The other 34 retained Tools files are byte-identical to the previous Tools baseline; two granules were reclaimed.
+
+### Preservation and scope
+
+- The two uploaded `.dsk` files were verified byte-for-byte against the inspected candidates before promotion.
+- This GitHub promotion changes only the two root-level disk images and this history file.
+- `README.md`, `extracted/`, and `extracted/MANIFEST.json` are intentionally unchanged. The extracted tree remains an older historical snapshot, not a mirror of the promoted disk images.
+- No other disks from the 14-disk suite are promoted by this commit.
+- Disk structure and preservation were checked statically; no new emulator/hardware-runtime test is asserted by this promotion.
+
+---
+
 ## 2026-11-20 — Playlist-aware CD, promoted
 
 **Authoritative disk images**
