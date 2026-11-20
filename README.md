@@ -104,6 +104,12 @@ EDB also has **separate companion disks** for additional creative and productivi
 
 EDB v15 is built around the **CoCo 3 with 512K RAM** and an EDB-compatible disk environment. Some conveniences—especially searching and switching through a drive-3 disk-image playlist—need the matching **VCC-EDB** emulator enhancements.
 
+YOU MUST DOWNLOAD THE LATEST VERSION OF VCC-EDB to properly use Enhanced DOS BASIC v15!
+
+https://github.com/neuroviewalex/VCC-EDB
+
+You can run EDB v15 on real CoCo3 hardware but it will be as slow as 40 years ago. ;) I strongly suggest using VCC-EDB at 125.28Mhz (default install)
+
 The two official disk images and their promotion history are maintained together in this repository. See [`BASELINE_HISTORY.md`](BASELINE_HISTORY.md) for the currently promoted versions and the changes behind them.
 
 ---
