@@ -2,7 +2,7 @@
   "format": "EDB extraction manifest v1",
   "source_repository": "neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3",
   "source_branch": "main",
-  "source_commit": "88ea3a1d6c5556a76846c37988ab18f85d21d418",
+  "source_commit": "d6c0c77002dba2fea4fbe1481466afdcc84fb199",
   "extraction": {
     "disk_geometry": "40 tracks x 18 sectors x 256 bytes",
     "reserved_track": 17,
@@ -15,11 +15,13 @@
   "disks": [
     {
       "filename": "EDB_v15_512k_boot.dsk",
-      "git_blob_sha": "ded5768035a1ffeb392aeefa370470beb81745f1",
+      "git_blob_sha": "c27a9b1c59849c71098bbe5f81fd4652a8522555",
       "size_bytes": 184320,
-      "active_files": 49,
-      "allocated_granules": 71,
+      "active_files": 51,
+      "allocated_granules": 69,
       "free_granules": [
+        58,
+        65,
         71,
         72,
         73,
@@ -31,29 +33,16 @@
     },
     {
       "filename": "EDB_v15_512k_tools.dsk",
-      "git_blob_sha": "1964aea6b6b0173b6fdf7c7673ae509be5bc8d8b",
+      "git_blob_sha": "b6fd5b8bf76bcbe2b224fe7e8a6090005a665bb7",
       "size_bytes": 184320,
-      "active_files": 37,
-      "allocated_granules": 49,
+      "active_files": 36,
+      "allocated_granules": 62,
       "free_granules": [
-        0,
-        8,
-        12,
-        13,
-        15,
-        48,
-        50,
-        52,
-        53,
-        54,
-        55,
-        56,
-        57,
-        58,
-        59,
+        40,
         60,
         61,
         62,
+        64,
         67,
         68,
         69,
@@ -68,12 +57,13 @@
       ]
     }
   ],
-  "extracted_files": 86,
+  "extracted_files": 87,
   "verification": [
     "Every active directory entry was extracted.",
     "Every file chain terminated with a valid C1-C9 marker.",
-    "No invalid granules, loops, or cross-linked granules were found.",
+    "No invalid granules, loops, cross-links, or orphaned allocations were found.",
     "File lengths were reconstructed from the FAT chain and directory last-sector byte count.",
-    "Both original DSK images were preserved unchanged."
+    "Every extracted byte stream matched the independent disk-file reader.",
+    "Both authoritative DSK images were preserved unchanged."
   ]
 }
