@@ -1,5 +1,36 @@
 # EDB v15 baseline history
 
+## 2026-11-21 — User-uploaded BOOT / TOOLS / BENCH baselines — promoted
+
+**All three official 40-track disk images are copied byte-for-byte from the user's explicitly promoted uploads.** No disk images, file placement, programs, driver binaries, scores, settings, or menu behavior were rebuilt or modified during this repository promotion.
+
+- `EDB_v15_512k_boot.dsk`: SHA-256 `f02a6972865a7f75d734a03e35571951d2a174b5940e334b489b5b7871eb8fc8`, 54 files, 6 free granules; source `EDB_v15_512k_BOOT(5).dsk`.
+- `EDB_v15_512k_tools.dsk`: SHA-256 `4a2889cfc395f1536e78352041144a0a6463183fa71054985f3a1665f9c7a09b`, 16 files, 47 free granules; source `EDB_v15_512k_TOOLS(7).dsk`.
+- `EDB_v15_512k_bench.dsk`: SHA-256 `4cb0b734ca599caeba1d73586f2ec67fa9c1a4ef0f2eb897053948dfc85e19b2`, 23 files, 33 free granules; source `EDB_v15_512k_bench(3).dsk`.
+
+### User-defined disk organization preserved
+
+The user moved XMM diagnostics, benchmark applications, score files, and their dependencies into a distinct BENCH disk. The reduced TOOLS disk retains its user-selected 16 files. BOOT also now contains `KEYREP.BAS`, `SEQ.BIN` and `VCC.BAS`. This promotion deliberately mirrors those locations, rather than restoring any previous arrangement.
+
+### Fresh extracted files
+
+- `extracted/boot/`: 54 entries from the newly uploaded BOOT disk.
+- `extracted/tools/`: 16 entries from the newly uploaded TOOLS disk, deleting 24 obsolete paths that are no longer present on that disk.
+- `extracted/bench/`: 23 entries from the new BENCH disk.
+- `extracted/MANIFEST.json`: regenerated for all 93 active disk files and all three authoritative disk-image checksums.
+
+Every extracted file has the exact bytes of its corresponding disk directory entry. All FAT chains, file lengths, ownership and orphan-allocation checks passed on each disk image.
+
+### Preservation and validation
+
+- The current user-uploaded `XMSCORE.DAT`, `XBSCORE.DAT` and `XBREF.DAT` on BENCH are retained exactly.
+- Verified BOOT XKEY/keyboard infrastructure and the user-tested BENCH keyboard queue cleanup are not changed by this commit.
+- Previous history is preserved below. `README.md` and all unrelated repository paths remain unchanged.
+- Static disk and byte integrity verification passed. No new emulator run is claimed for this upload operation.
+- Official status is based on the user's explicit three-disk baseline promotion, not an automatic designation.
+
+---
+
 ## 2026-11-21 — XMM CPU benchmark FIX7, XMSHOW R1, fresh extraction — promoted
 
 **Official TOOLS disk baseline (user-approved after VCC verification)**
