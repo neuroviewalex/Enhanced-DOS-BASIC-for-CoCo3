@@ -1,5 +1,36 @@
 # EDB v15 baseline history
 
+## 2026-11-21 — XMM CPU benchmark FIX7, XMSHOW R1, fresh extraction — promoted
+
+**Official TOOLS disk baseline (user-approved after VCC verification)**
+
+- `EDB_v15_512k_tools.dsk` — SHA-256 `be960c1b25720e54ebf4da4b63dd6464a30c1dfc0f7bfd78fcfadd2d3d4804b3`; Git blob `4d17d47135fd30284401da89fb075af23dd8afef`; 40 active files.
+- `EDB_v15_512k_boot.dsk` — **unchanged**; SHA-256 `f9f9ec7d947c1c4810180c91a2bc3e523b823c88be8508b06c0f47fd5287bbcb`; 51 active files.
+- The new TOOLS image supersedes the 2026-11-20 TOOLS image only. The BOOT baseline is unaffected.
+
+### XMM CPU comparison
+
+- `XMBCPU.BAS` performs four timed native memory tests on Motorola 6809 and Hitachi 6309, verifies memory transfers and allocation integrity, stores separate scores in `XMSCORE.DAT`, and compares both CPU results when available.
+- `XMM6309.BIN` provides the separate Hitachi native path; the prior `XMM6809.BIN` is preserved.
+- Clock measurement uses the existing EDB `CPU.DRV` boot method, not a new benchmark-only calibration.
+- `XMSHOW.BAS` displays both saved CPUs' scores and measured MHz side by side; the XMM menu includes **C** (CPU benchmark) and **V** (saved viewer).
+- The user tested the benchmarking, CPU-specific score retention, clock readout, and viewer in VCC-EDB, then explicitly approved this disk as the official TOOLS baseline.
+- Packaged `XMSCORE.DAT` contains initialized **zero scores**; measurements saved in the user's local VCC image were not copied into the published disk.
+
+### Fresh extraction (same approved update)
+
+- `extracted/boot/`: 51 files checked against the unchanged official BOOT disk; all 51 already matched, so no BOOT extracts needed modification.
+- `extracted/tools/`: all 40 files extracted and checked against the new official TOOLS image. The five changed/new Git entries are `XMBCPU.BAS`, `XMM.BAS`, `XMM6309.BIN`, `XMSCORE.DAT`, and `XMSHOW.BAS`. The other 35 existing extracts were byte-identical.
+- `extracted/MANIFEST.json`: regenerated source blob references, active-file counts, allocated and free granules, and verification metadata for both current disk images.
+- 91 extracted files total; directory chains, granule ownership, file lengths, and orphan checks pass on both 40-track disk images.
+- `README.md` and every other unrelated repository file are preserved without modification.
+
+### Preservation
+
+This commit was constructed against the existing `main` tree. The repository's existing BOOT disk and all unrelated files remain unchanged. Future EDB changes require a new audit, an explicit change list, authorization, and independent verification.
+
+---
+
 ## 2026-11-20 — CD initialization split and XMM cleanup, promoted
 
 **New authoritative disk images (user-uploaded, byte-for-byte verified)**
