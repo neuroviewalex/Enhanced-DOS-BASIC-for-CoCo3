@@ -2,6 +2,9 @@
 
 ### Your CoCo 3. Your BASIC. A whole lot more possibilities.
 
+YOU WILL NEED THIS VERSION OF VCC TO USE ALL FEATURES OF THIS OS:
+https://github.com/neuroviewalex/VCC-EDB/releases/tag/v2.1.9.34
+
 **Enhanced DOS BASIC (EDB) v15** brings a friendlier, more capable command environment to the Tandy Color Computer 3. It keeps the familiar BASIC experience at the heart of the machine while making everyday jobs—finding files, moving between disks, making backups, configuring your workspace, and checking your system—far easier.
 
 EDB is for people who love the CoCo 3 and want to *use it*: write programs, explore disks, organize projects, experiment with 512K memory, and get things done without constantly juggling little utility programs.
