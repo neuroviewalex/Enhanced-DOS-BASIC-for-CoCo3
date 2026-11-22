@@ -1,5 +1,19 @@
 # EDB v15 baseline history
 
+## 2026-11-22 — FIX6 RAM cache SEQ.BIN + OM repair — user-tested and promoted
+
+**Official BOOT baseline:** `EDB_v15_512k_boot.dsk`, promoted following the user's successful VCC-EDB test and explicit confirmation (“Works baseline”).
+
+- Promoted the **byte-identical FIX6 disk candidate** `candidates/EDB_v15_512k_BOOT_CACHE_OM_FIX6.dsk` from `candidate/ramboot-cache-om-fix6-20261122`.
+- SHA-256: `9e654e43fa0b4d7470239af7f6fe52b8a4b29a13d9b0236eeae990f81911e33e`; Git blob: `0cbdddaa4ad66a6a647fd20033c1e33cfdef9da0`.
+- FIX5 added `SEQ.BIN` to the RAMBOOT cache manifest at BASIC line 670; existing `CDSEQ.DRV`, `CDINIT.DRV`, `CD.BAS`, and `DOSBOOT.DRV` entries were retained.
+- FIX6 adds `CLEAR 200,&H585F` before the `RAMBOOT.DRV` refresh path's original line 4700 instructions, restoring the normal startup memory configuration. The user confirmed it resolves the post-refresh `OM BUG!`.
+- Retains FIX4 cache-manifest repair and FIX3 per-file progress trace. No other BASIC statement bodies changed during FIX5/FIX6.
+- Verified: BOOT keeps 54 active files and its original FAT allocation; differences are confined to `RAMBOOT.DRV` and its directory length metadata. Extracted `RAMBOOT.DRV` is byte-identical to the promoted disk.
+- TOOLS, BENCH, their extracted files, and unrelated repository files are preserved. Previous baseline records follow below.
+
+---
+
 ## 2026-11-22 — FIX4 cache-refresh repair — user-tested and promoted
 
 **Official BOOT baseline:** `EDB_v15_512k_boot.dsk`, promoted after the user's successful VCC-EDB `UPGRADE CACHE` runtime test and explicit baseline confirmation.
