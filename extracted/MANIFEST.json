@@ -15,8 +15,8 @@
   "disks": [
     {
       "filename": "EDB_v15_512k_boot.dsk",
-      "sha256": "f02a6972865a7f75d734a03e35571951d2a174b5940e334b489b5b7871eb8fc8",
-      "git_blob_sha": "7f7785c0ad37627634107a56bb44742d1faa4245",
+      "sha256": "0aef9afc0461ee8097cb420d43b230766acdf8d4169350f6a420040284dd5120",
+      "git_blob_sha": "80a3fb86fb934cd0d1b42e8fc309488010c91250",
       "size_bytes": 184320,
       "active_files": 54,
       "allocated_granules": 72,

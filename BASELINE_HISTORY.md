@@ -1,5 +1,21 @@
 # EDB v15 baseline history
 
+## 2026-11-22 — FIX4 cache-refresh repair — user-tested and promoted
+
+**Official BOOT baseline:** `EDB_v15_512k_boot.dsk`, promoted after the user's successful VCC-EDB `UPGRADE CACHE` runtime test and explicit baseline confirmation.
+
+- Source candidate: `candidates/EDB_v15_512k_BOOT_CACHE_TRACE_FIX4.dsk` on `candidate/ramboot-cache-manifest-fix4-20261122`.
+- New BOOT disk SHA-256: `0aef9afc0461ee8097cb420d43b230766acdf8d4169350f6a420040284dd5120`; Git blob: `80a3fb86fb934cd0d1b42e8fc309488010c91250`.
+- Only `RAMBOOT.DRV` was edited within the BOOT disk (54 active files; existing allocation retained).
+- Cache manifest no longer refers to `FLIP.BAS` and `JUMP.BAS` on BOOT; they remain on TOOLS.
+- `RAMBOOT.DRV` line 610 no longer has trailing `REM REMOVED!` after `DATA "",""`, which previously produced an invalid cache filename.
+- FIX3 cache progress tracing remains included: prints each filename before refreshing and announces completion of the copy loop.
+- Verified against the previous BOOT image: no changes outside the existing `RAMBOOT.DRV` allocation and its directory size field; FAT and other BOOT files unchanged.
+- `TOOLS`, `BENCH`, and their extracted files are unchanged. Existing prior baseline history is preserved below.
+- VCC runtime verification was supplied by the user (`UPGRADE CACHE` now works); the repository check verifies the promoted image matches FIX4 exactly.
+
+---
+
 ## 2026-11-21 — User-uploaded BOOT / TOOLS / BENCH baselines — promoted
 
 **All three official 40-track disk images are copied byte-for-byte from the user's explicitly promoted uploads.** No disk images, file placement, programs, driver binaries, scores, settings, or menu behavior were rebuilt or modified during this repository promotion.
