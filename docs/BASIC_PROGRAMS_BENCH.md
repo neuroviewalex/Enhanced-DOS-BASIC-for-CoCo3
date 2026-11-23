@@ -12,7 +12,7 @@ The BENCH disk contains the current XMM diagnostic and benchmark environment. So
 | Program | Role | Main internal routines |
 | --- | --- | --- |
 | [HELP.BAS](#helpbas---integrated-help-copy) | Full HELP reference copied from TOOLS | Dynamic topic lookup and 10000-series help topics |
-| [XBENCH.BAS](#xbenchbas---legacy-xmem-xmath-service-benchmark) | Benchmark legacy XMEM/XMATH services | 9000, 9100, 9200, 9300, 57000-62400, 63000 |
+| [XBENCH.BAS](#xbenchbas---legacy-xmemxmath-service-benchmark) | Benchmark legacy XMEM/XMATH services | 9000, 9100, 9200, 9300, 57000-62400, 63000 |
 | [XMBCPU.BAS](#xmbcpubas---6809-and-6309-native-memory-comparison) | Benchmark and compare native CPU-specific memory manager paths | 7000-7350, 8500, 8800, 9000 |
 | [XMM.BAS](#xmmbas---xmm-diagnostics-controller) | XMM menu and native test dispatcher | 7000, 61000, 61600, 62000 |
 | [XMSHOW.BAS](#xmshowbas---saved-results-viewer) | Compare stored CPU and service results | 500, 600, 1500, 1600, 1700, 1710, 2000-2640 |
