@@ -6,7 +6,7 @@
 
 This is the official, version-controlled EDB v15 user manual. It lives alongside the EDB source extracts and disk images so additions and corrections can be reviewed in GitHub history. This initial edition concentrates on loading, finding, editing, and saving BASIC programs. Other commands will be documented in subsequent editions; the absence of a command here does not mean EDB lacks it.
 
-For the current software images, see the [repository README](../README.md) and [baseline history](../BASELINE_HISTORY.md). The v15 BOOT release attachment may be older than the current repository BOOT disk; consult the README for its current download status.
+For the current software images, see the [repository README](../README.md) and [baseline history](../BASELINE_HISTORY.md). 
 
 ## Contents
 
