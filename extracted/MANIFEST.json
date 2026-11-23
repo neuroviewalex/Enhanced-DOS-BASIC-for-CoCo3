@@ -15,8 +15,8 @@
   "disks": [
     {
       "filename": "EDB_v15_512k_boot.dsk",
-      "sha256": "9e654e43fa0b4d7470239af7f6fe52b8a4b29a13d9b0236eeae990f81911e33e",
-      "git_blob_sha": "0cbdddaa4ad66a6a647fd20033c1e33cfdef9da0",
+      "sha256": "974d15a700765469fdc4e8672b0f0d0ea5c5a5d0b2f038823c72c399d80d50f7",
+      "git_blob_sha": "4598c5b418ee60109b9f92373137f9718b1ddefd",
       "size_bytes": 184320,
       "active_files": 54,
       "allocated_granules": 72,
@@ -132,15 +132,12 @@
   ],
   "extracted_files": 93,
   "verification": [
-    "All three user-uploaded 40-track disk images were preserved byte-for-byte.",
-    "The three source disk Git blob SHA-1 values and SHA-256 checksums match the promoted uploads.",
-    "Every active directory entry was extracted exactly (BOOT 54, TOOLS 16, BENCH 23).",
-    "Every FAT chain terminates with a valid C1-C9 marker; all directory file lengths were verified.",
-    "No cross-linked, looped, invalid, or orphaned granule allocations were detected.",
-    "Every extracted file's Git blob SHA-1 matches its payload from its source disk.",
-    "Moved files are represented only on disks containing them in the user's latest layout.",
-    "BENCH B/C score and reference records were retained byte-for-byte; no scores were initialized or reset.",
-    "Unchanged extracted entries, README.md, and unrelated repository files are preserved."
+    "The BOOT disk is byte-identical to the user-promoted EDIT FIX5 disk; the TOOLS and BENCH disks remain byte-identical to their existing baselines.",
+    "Every active file is mirrored in extracted/ at the exact byte level: BOOT 54, TOOLS 16, BENCH 23 (93 total).",
+    "Only BOOT EDIT.DRV and DOSCORE.DRV differ in file contents from the prior official baseline; EDIT's original granule remains allocated with updated last-sector length and C9 FAT terminal marker.",
+    "All 78-granule FATs and directory chains were checked; BOOT retains 72 allocated and 6 free granules, without looped, invalid or cross-linked chains.",
+    "All unrelated extracted files, TOOLS and BENCH disk images, and BENCH scores and references remain unchanged.",
+    "User explicitly promoted FIX5 to baseline; no new VCC-EDB runtime test is claimed."
   ],
-  "source_commit_note": "Null avoids circular reference; this manifest is committed atomically with all three authoritative DSK images and all 93 extracted files."
+  "source_commit_note": "The manifest and the two changed BOOT extracts are committed atomically with the promoted BOOT disk. Null avoids a circular Git commit reference."
 }

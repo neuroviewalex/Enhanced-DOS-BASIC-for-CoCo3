@@ -1,5 +1,20 @@
 # EDB v15 baseline history
 
+## 2026-11-22 - EDIT SHIFT navigation, SAVE type reset, end-of-program FIX5 - user-promoted baseline
+
+**Official BOOT baseline:** `EDB_v15_512k_boot.dsk` - promoted after the user's explicit “baseline” confirmation of FIX5. No new VCC-EDB runtime verification is claimed in this repository update.
+
+- Exact promoted FIX5 disk: `EDB_v15_512k_BOOT_EDIT_SHIFT_NAV_EOF_FIX5_CANDIDATE.dsk`, SHA-256 `974d15a700765469fdc4e8672b0f0d0ea5c5a5d0b2f038823c72c399d80d50f7`, Git blob `4598c5b418ee60109b9f92373137f9718b1ddefd`.
+- `EDIT.DRV` is updated from 1,174 to 2,072 bytes, adding memory-safe workspace handling, `EDIT` without a line number, SHIFT + Up/Down navigation through existing lines, and a guard against treating BASIC's end-of-program sentinel as a line. Its Git blob SHA is `37f1607318d837f6847ed325a0681d9ce7a36c36`.
+- `DOSCORE.DRV` restores `STX $0957` (`BF 09 57`) at `$C9EA` in place of `NOP NOP NOP`, resetting type and ASCII flags before a tokenized BASIC `SAVE`. Its Git blob SHA is `304f185b064c28eb57366a4a9c586a716b7e6752`.
+- All 54 BOOT files retained. Only `EDIT.DRV` and `DOSCORE.DRV` differ in content from the previous official disk. EDIT's existing granule 25 now has a `C9` terminal marker and a 24-byte last sector; no directory entries were added or removed, and 6 granules remain free.
+- `extracted/boot/EDIT.DRV` and `extracted/boot/DOSCORE.DRV` were refreshed byte-for-byte from FIX5; all other extracted files and both other disks remain unchanged.
+- `extracted/MANIFEST.json` and README were updated for the newly promoted BOOT disk and its download link. The v15 release attachment must be replaced separately, since this commit does not update GitHub Release binary assets.
+- Static disk integrity and FIX5's prior simulated 6809 navigation tests are recorded; no hardware or VCC-EDB runtime success is claimed for this promotion.
+- The pre-existing `SAVE` overwrite algorithm remains non-transactional; this baseline does not modify it.
+
+---
+
 ## 2026-11-22 — FIX6 RAM cache SEQ.BIN + OM repair — user-tested and promoted
 
 **Official BOOT baseline:** `EDB_v15_512k_boot.dsk`, promoted following the user's successful VCC-EDB test and explicit confirmation (“Works baseline”).

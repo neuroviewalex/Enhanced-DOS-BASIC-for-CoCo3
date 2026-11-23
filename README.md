@@ -22,6 +22,7 @@ EDB is for people who love the CoCo 3 and want to *use it*: write programs, expl
 ### Take better care of your files
 
 - **Find what you're looking for.** `FIND` searches text in your current BASIC program or in a file on disk.
+- **Edit a loaded BASIC program.** Enter `EDIT` to browse existing lines with SHIFT + Up/Down, or use `EDIT 100` to edit a specific line. Navigation now respects the end-of-program marker.
 - **Read files comfortably.** `TYPE` displays text or BASIC files a page at a time.
 - **Rename and remove files.** `REN` and `DEL` give common file-management jobs simple commands.
 - **Check whether two files really match.** `COMPARE` compares file sizes and contents.
@@ -94,12 +95,17 @@ Or start with a task:
 
 ## The disks in this repository
 
+**Current v15 BOOT baseline (user-promoted FIX5, November 22, 2026):** [Download the BOOT disk directly from the repository](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_boot.dsk). SHA-256: `974d15a700765469fdc4e8672b0f0d0ea5c5a5d0b2f038823c72c399d80d50f7`.
+
+**Release-asset status:** The BOOT attachment on the [v15 GitHub release page](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) predates FIX5. Until that attachment is replaced, use the current repository BOOT download linked above. The TOOLS and BENCH disks are unchanged.
+
 | Disk image | What's on it |
 | --- | --- |
 | [`EDB_v15_512k_boot.dsk`](EDB_v15_512k_boot.dsk) | The EDB startup environment, everyday disk commands, display and startup preferences, and the Boot help fallback. |
 | [`EDB_v15_512k_tools.dsk`](EDB_v15_512k_tools.dsk) | Integrated HELP, disk maintenance and backup tools, file utilities, system information, and XMM diagnostics. |
+| [`EDB_v15_512k_bench.dsk`](EDB_v15_512k_bench.dsk) | XMM diagnostics, benchmarking, and saved score files. |
 
-The [`extracted/`](extracted/) directory contains the original files from both official disk images for browsing and development. Some BASIC files are stored in their original tokenized CoCo format.
+The [`extracted/`](extracted/) directory contains the original files from all three official disk images for browsing and development. Some BASIC files are stored in their original tokenized CoCo format.
 
 EDB also has **separate companion disks** for additional creative and productivity tools, including editing, graphics, sound, and the ASK environment. Those companion disks are not included in the two downloads above.
 
@@ -113,7 +119,7 @@ https://github.com/neuroviewalex/VCC-EDB
 
 You can run EDB v15 on real CoCo3 hardware but it will be as slow as 40 years ago. ;) I strongly suggest using VCC-EDB at 125.28Mhz (default install)
 
-The two official disk images and their promotion history are maintained together in this repository. See [`BASELINE_HISTORY.md`](BASELINE_HISTORY.md) for the currently promoted versions and the changes behind them.
+The three official disk images and their promotion history are maintained together in this repository. See [`BASELINE_HISTORY.md`](BASELINE_HISTORY.md) for the currently promoted versions and the changes behind them.
 
 ---
 
