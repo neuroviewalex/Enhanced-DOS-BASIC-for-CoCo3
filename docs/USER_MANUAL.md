@@ -26,6 +26,7 @@ The authoritative text is versioned in GitHub alongside the unchanged source ext
 12. [All 46 BASIC program entries](#12-all-46-candidate-basic-program-entries)
 13. [Technical notes and function reference](#13-technical-notes-and-function-reference)
 14. [Maintaining this manual](#14-maintaining-this-manual)
+15. [AI-assisted application development](#15-ai-assisted-application-development)
 
 
 ## 1. Getting started
@@ -1151,6 +1152,50 @@ The authoritative manual is this file: [`docs/USER_MANUAL.md`](USER_MANUAL.md), 
 - Record documentation changes through Git commits. Changes to the official EDB software baseline continue to require the user's explicit authorization.
 
 **Source references:** All 46 official BASIC entries, with their dependencies documented in the linked technical chapters.
+
+
+## 15. AI-assisted application development
+
+EDB users can use an AI assistant such as ChatGPT to create BASIC applications **for Enhanced DOS BASIC v15**, while following the system's own programming conventions rather than relying on generic CoCo BASIC examples.
+
+The companion file [`EDB_AI_PROGRAMMING_PROMPT.md`](../EDB_AI_PROGRAMMING_PROMPT.md) is a ready-to-paste instruction set for ChatGPT. It is a **development aid**, not a new EDB command or a guarantee of executable code.
+
+### What you need
+
+- A working installation of **VCC-EDB** and its matching ROMs, or supported real CoCo 3 hardware.
+- The **EDB v15** disk images that match your installed system, especially BOOT and TOOLS; BENCH is useful for relevant diagnostics.
+- Access to the [official EDB repository](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3), particularly `docs/`, `extracted/`, and `BASELINE_HISTORY.md`, or local copies of the corresponding reference materials.
+- A ChatGPT conversation capable of reading the documentation, relevant source files, or uploaded disk images. Access varies by configuration; share files directly when needed.
+
+### Get started
+
+1. Open `EDB_AI_PROGRAMMING_PROMPT.md` and paste the **MASTER PROMPT** section into a new ChatGPT conversation.
+2. Supply the official EDB source repository link and state which EDB/VCC-EDB/ROM versions you actually installed. Attach relevant source or disk files if the AI cannot access the repository or decode tokenized BASIC.
+3. Describe your application and the target screen or hardware mode. For example: “Create a mouse-controlled BASIC application for EDB in WIDTH 80, using working EDB examples, and save it on a separate application disk.”
+4. Review the AI's source references and proposed file changes. Approve modifications to existing files **before** they are made.
+5. Run the program in VCC-EDB. If an error occurs, provide the exact `?SN BUG!`, `?DS BUG!`, `?OM BUG!`, or other message, the line number when shown, and the action that produced it.
+
+### EDB-specific rules for AI-generated programs
+
+- Use **the installed EDB baseline and its real examples as the authority**. Read the [BASIC program reference](BASIC_PROGRAM_REFERENCE.md) and the [BOOT](BASIC_PROGRAMS_BOOT.md), [TOOLS](BASIC_PROGRAMS_TOOLS.md), and [BENCH](BASIC_PROGRAMS_BENCH.md) guides before reimplementing existing functionality.
+- Distinguish **native BASIC statements**, **native extensions**, and **BASIC command utilities**. A utility such as FIND or TYPE can replace the BASIC program currently in memory; it is not necessarily safe to invoke as a subroutine from an application.
+- Reuse verified display, keyboard, mouse, file, disk, and native-driver patterns. Do not invent undocumented commands, memory addresses, or calling conventions.
+- Save ordinary EDB `.BAS` programs in **tokenized BASIC format** unless an ASCII export is deliberately requested. Use `SAVE "NAME.BAS",A` only when an ASCII-format file is intended.
+- Prefer **separate application disks**. Preserve the original BOOT, TOOLS, BENCH, ROM, emulator, and other official files.
+- Never treat static code review as proof of execution. Actual VCC-EDB or hardware testing is required before claiming the program works.
+
+### Preservation and verification
+
+The AI should first inspect originals, list its proposed changes, obtain explicit approval, modify only approved material, and verify against the original files. It must not declare a new software baseline without the owner's explicit confirmation.
+
+Generated code can still have errors. Keep working backup disk images; provide reproducible test results; identify whether behavior was **documented**, **source-checked**, or **runtime-tested**. Remember that EDB's ordinary SAVE overwrite is not transactional.
+
+### Related references
+
+- [AI development master prompt](../EDB_AI_PROGRAMMING_PROMPT.md)
+- [Complete BASIC program and function reference](BASIC_PROGRAM_REFERENCE.md)
+- [EDB source repository](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3)
+- [VCC-EDB emulator](https://github.com/neuroviewalex/VCC-EDB)
 
 ---
 
