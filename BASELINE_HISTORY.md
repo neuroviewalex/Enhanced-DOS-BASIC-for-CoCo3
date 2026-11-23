@@ -1,5 +1,10 @@
 # EDB v15 baseline history
 
+**Current verified release status (November 22, 2026):** The official [v15 Release assets](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) for BOOT, TOOLS and BENCH match the repository baselines exactly. All three are 184,320 bytes. Their respective SHA-256 digests are `974d15a700765469fdc4e8672b0f0d0ea5c5a5d0b2f038823c72c399d80d50f7`, `4a2889cfc395f1536e78352041144a0a6463183fa71054985f3a1665f9c7a09b`, and `9ea442c53e9d73e0cc30f457818f28f937939e3d77021bce22df95744611e67a`.
+
+The entries below remain technical snapshots from earlier baselines. Any previous notes about pending Release uploads have been superseded by the verification above.
+
+
 ## 2026-11-22 - Sockmaster Classic BASIC FIX2 - user-promoted BENCH baseline
 
 **Official BENCH disk:** `EDB_v15_512k_bench.dsk`. The user explicitly approved promotion of FIX2 after the correction of `SN BUG at 20`. Previously promoted BOOT FIX5 and TOOLS baselines remain unchanged.
@@ -12,7 +17,7 @@
 - Promoted BENCH retains all 23 previous files: 21 unchanged and two updated, plus one newly added file. **24 files, 47 allocated granules, 31 free**. All unrelated BENCH files and scores remain byte-identical.
 - Refreshed the exact tokenized `extracted/bench/XMM.BAS`, `XMSHOW.BAS` and `SMBENCH.BAS`, plus `extracted/MANIFEST.json` (94 extracted files, 46 BASIC entries). Updated main user manual, BENCH and master references, Sockmaster notes, README and this history.
 - **Static verification only:** tokenized BASIC structure, disk allocation and extracted-file byte comparison verified. The user promoted FIX2; the assistant did not independently run another VCC-EDB execution test during this promotion. `SMBSCORE.DAT` is created only by an actual benchmark run, not prepopulated with 13,544.
-- Direct repository BENCH download now points to the promoted disk. The GitHub v15 Release page binary attachments must be replaced separately if still older; the repository update does not upload release assets.
+- The repository BENCH image was promoted first. Its matching v15 Release asset has since been published and checksum-verified.
 
 ---
 
@@ -26,7 +31,7 @@
 - `DOSCORE.DRV` restores `STX $0957` (`BF 09 57`) at `$C9EA` in place of `NOP NOP NOP`, resetting type and ASCII flags before a tokenized BASIC `SAVE`. Its Git blob SHA is `304f185b064c28eb57366a4a9c586a716b7e6752`.
 - All 54 BOOT files retained. Only `EDIT.DRV` and `DOSCORE.DRV` differ in content from the previous official disk. EDIT's existing granule 25 now has a `C9` terminal marker and a 24-byte last sector; no directory entries were added or removed, and 6 granules remain free.
 - `extracted/boot/EDIT.DRV` and `extracted/boot/DOSCORE.DRV` were refreshed byte-for-byte from FIX5; all other extracted files and both other disks remain unchanged.
-- `extracted/MANIFEST.json` and README were updated for the newly promoted BOOT disk and its download link. The v15 release attachment must be replaced separately, since this commit does not update GitHub Release binary assets.
+- `extracted/MANIFEST.json` and README were updated for the promoted BOOT disk and its download link. The corresponding v15 Release asset has since been published and checksum-verified.
 - Static disk integrity and FIX5's prior simulated 6809 navigation tests are recorded; no hardware or VCC-EDB runtime success is claimed for this promotion.
 - The pre-existing `SAVE` overwrite algorithm remains non-transactional; this baseline does not modify it.
 

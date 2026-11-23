@@ -2,11 +2,11 @@
 
 **Platform:** Tandy Color Computer 3 with 512K RAM  
 **Edition:** Complete BASIC-program user handbook - 2026-11-22  
-**Baseline:** Official v15 BOOT with SHIFT-arrow EDIT FIX5 and SAVE type initialization. **Official BENCH baseline:** Sockmaster Classic BASIC FIX2, explicitly promoted by the user. The GitHub v15 release attachments may predate the repository images.
+**Baseline:** Official v15 BOOT with SHIFT-arrow EDIT FIX5, SAVE type initialization, and Sockmaster Classic BASIC FIX2 on BENCH. All three [published v15 Release images](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) match the official repository SHA-256 checksums.
 
 This is the **main, living EDB v15 handbook**. It explains the entire current BASIC utility environment - startup, volumes, program editing, files, backups, colour, keyboard, memory management, diagnostics and benchmarks - rather than only the original five-command programming workflow.
 
-The authoritative text is versioned in GitHub alongside the unchanged source extractions. For the current software images, see the [repository README](../README.md) and [baseline history](../BASELINE_HISTORY.md).
+The authoritative text is versioned in GitHub alongside the verified source extractions. For installation and current downloads, see the [repository README](../README.md).
 
 
 
@@ -794,7 +794,7 @@ It reads `XMSCORE.DAT`, `XBSCORE.DAT`, and reference `XBREF.DAT`; absent scores 
 
 ### Sockmaster Classic BASIC - benchmark and comparison
 
-**Attribution:** Sockmaster. **Availability:** official BENCH image on GitHub `main`. The GitHub v15 release-page binary attachment may be older than this repository baseline.
+**Attribution:** Sockmaster. **Availability:** The official BENCH image is available on GitHub `main` and as the verified [v15 Release BENCH download](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_bench.dsk).
 
 Open `XMM` and press **L**, or run `XMM CLASSIC`. `SMBENCH.BAS` performs one timed BASIC loop, saves the score in `SMBSCORE.DAT` on the current writable drive, verifies the record, and automatically opens XMSHOW **page 5/5**. No printing or disk access occurs during the timed loop.
 
@@ -821,7 +821,7 @@ EDB keeps the timing workload from lines 10 and 20 but captures the score once, 
 
 XMSHOW page 5 displays all six historical bases, the latest saved score, ratios to each base, and the ratio to the 13,544 EDB reference. It uses `SMBSCORE1` as the file format identifier. An absent or invalid file results in `CURRENT SCORE --`.
 
-**FIX2:** The first candidate had `SN BUG at 20` because its generated BASIC stored ASCII `GOTO20` instead of the tokenized BASIC operation. FIX2 corrects that and other ASCII `GOTO`, `GOSUB` and `THEN` errors, restores the S key input, fixes page wraparound and updates page titles to 1/5 through 5/5. These changes have been verified against extracted tokenized files and the promoted disk. The user explicitly promoted FIX2, but the assistant did not perform a separate VCC-EDB test during this promotion.
+**Implementation:** The official BENCH image uses correctly tokenized BASIC statements and supports five-page XMSHOW navigation, including the S shortcut and wraparound. The saved score is kept separate from the historical comparison values.
 
 See the [benchmark notes](SOCKMASTER_BENCH.md) and the [SMBENCH technical entry](BASIC_PROGRAMS_BENCH.md#smbenchbas---sockmaster-classic-basic-benchmark).
 

@@ -8,7 +8,7 @@ The project has roots dating to **1989**, with continued development in **2026**
 
 EDB is not simply a launcher or a handful of demonstration programs. Its **BOOT**, **TOOLS** and **BENCH** disks work together through tokenized BASIC programs, native `.DRV` and `.BIN` modules, system state, and persistent configuration files.
 
-[**Official v15 User Manual**](docs/USER_MANUAL.md) | [**All 46 BASIC programs and functions**](docs/BASIC_PROGRAM_REFERENCE.md) | [**Baseline history**](BASELINE_HISTORY.md)
+[**Official v15 User Manual**](docs/USER_MANUAL.md) | [**All 46 BASIC programs and functions**](docs/BASIC_PROGRAM_REFERENCE.md) | [**Download v15**](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15)
 
 ## Project overview
 
@@ -21,7 +21,7 @@ EDB is not simply a launcher or a handful of demonstration programs. Its **BOOT*
 | **Personal configuration** | USER, ADMIN and STARTUP profiles, automatic launches, 32/40/80 columns, 64 named colours, key repeat |
 | **Memory and diagnostics** | 512K XMM memory tools, memory maps, native test modules, CPU-specific 6809/6309 engines |
 | **Benchmarks** | Memory-service tests, CPU-native measurements and Sockmaster Classic BASIC comparison page |
-| **Documentation** | On-screen HELP, complete user handbook, per-program technical references, verified extracted source and history |
+| **Documentation** | On-screen HELP, complete user handbook, per-program technical references and verified extracted source |
 
 **Current promoted v15 core:** 54 files on BOOT, 16 on TOOLS, and 24 on BENCH - **94 files**, including **46 tokenized BASIC program entries** (26 BOOT, 14 TOOLS, 6 BENCH).
 
@@ -162,7 +162,7 @@ UPGRADE filename.ext:3
 
 EDB's `UPGRADE.BAS` utility installs files from configured source drives, supports targeted file upgrades, and refreshes the cached drive through the native `RAMBOOT.DRV` path. The RAM cache depends on a consistent set of native and BASIC components; the v15 BOOT baseline includes cache-manifest fixes and the dependencies used for sequence / disk playlist operations.
 
-**UPGRADE is a system-maintenance command.** A cache refresh can alter RAM-disk state, and a targeted/full upgrade can overwrite installed files. Do not mix random driver revisions or upgrade from an unverified disk. The project's baseline history documents previous cache and refresh repairs.
+**UPGRADE is a system-maintenance command.** A cache refresh can alter RAM-disk state, and a targeted/full upgrade can overwrite installed files. Do not mix random driver revisions or upgrade from an unverified disk.
 
 ### 512K memory management, CPU identity and native diagnostics
 
@@ -221,17 +221,17 @@ The integrated version runs the timed portion **once** without repeated printing
 
 The fifth page shows the current measured score, comparisons to all six historical references, and the comparison against the separate EDB reference. A missing saved score displays `--`. It measures **interpreted BASIC loop throughput**, not pure machine-code CPU speed.
 
-[**Sockmaster benchmark documentation and FIX2 notes**](docs/SOCKMASTER_BENCH.md)
+[**Sockmaster benchmark documentation**](docs/SOCKMASTER_BENCH.md)
 
 ## Official v15 downloads
 
-**For the latest user-promoted v15 images, download directly from this repository's `main` branch.** The three official disk images each contain 184,320 bytes (40 tracks x 18 sectors x 256 bytes).
+**The [official v15 Release](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) and the repository's `main` branch now provide matching, verified copies of all three images.** Each disk contains 184,320 bytes (40 tracks x 18 sectors x 256 bytes).
 
 | Disk | Files | Contents | Download |
 | --- | ---: | --- | --- |
-| **BOOT** | 54 | Core command environment, native editor, profiles, history and disk/cache drivers | [BOOT image](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_boot.dsk) |
-| **TOOLS** | 16 | HELP, FIND/TYPE, disk checks, copy/install and file utilities | [TOOLS image](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_tools.dsk) |
-| **BENCH** | 24 | XMM diagnostics, native benchmarks, XMSHOW page 5 and Sockmaster FIX2 | [BENCH image](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_bench.dsk) |
+| **BOOT** | 54 | Core command environment, native editor, profiles, history and disk/cache drivers | [BOOT image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BOOT.dsk) |
+| **TOOLS** | 16 | HELP, FIND/TYPE, disk checks, copy/install and file utilities | [TOOLS image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_tools.dsk) |
+| **BENCH** | 24 | XMM diagnostics, native benchmarks, XMSHOW page 5 and Sockmaster FIX2 | [BENCH image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_bench.dsk) |
 
 **SHA-256 checksums:**
 
@@ -246,7 +246,7 @@ EDB_v15_512k_bench.dsk
 9ea442c53e9d73e0cc30f457818f28f937939e3d77021bce22df95744611e67a
 ```
 
-**GitHub Release attachments:** The existing BOOT and BENCH binary attachments on the [v15 Release page](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) may predate the promoted images above. Publishing to `main` does not automatically replace Release assets. **Use the direct links and hashes above** until those release attachments are updated. The TOOLS baseline is unchanged.
+**Release verification:** All three published [v15 disk images](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) match the SHA-256 checksums above and the official repository copies. BOOT, TOOLS, and the Sockmaster FIX2 BENCH image are synchronized. Future software changes will still require independent Release asset publication.
 
 The matching [`extracted/`](extracted/) tree includes all 94 files from the three current official disks. In particular, `extracted/bench/XMM.BAS`, `XMSHOW.BAS`, and the new `SMBENCH.BAS` correspond to the promoted BENCH image byte-for-byte.
 
@@ -255,7 +255,7 @@ The matching [`extracted/`](extracted/) tree includes all 94 files from the thre
 **Recommended for all features:** the [VCC-EDB emulator](https://github.com/neuroviewalex/VCC-EDB). The project previously identified [VCC-EDB v2.1.9.34](https://github.com/neuroviewalex/VCC-EDB/releases/tag/v2.1.9.34) as a compatible build; check its current documentation and releases for updates.
 
 1. Configure a compatible VCC-EDB installation with 512K RAM and the EDB-compatible ROM/driver environment.
-2. Download the official BOOT, TOOLS and BENCH disk images using the repository links above.
+2. Download the verified official BOOT, TOOLS and BENCH disk images from the v15 Release links above.
 3. Boot from BOOT. Mount TOOLS when using the full HELP and file utilities, and BENCH for XMM diagnostics/benchmark comparisons.
 4. At EDB's prompt, explore:
 
@@ -292,9 +292,9 @@ docs/
   BASIC_PROGRAMS_BOOT.md    BOOT program functions and dependencies
   BASIC_PROGRAMS_TOOLS.md   TOOLS functions and maintenance utilities
   BASIC_PROGRAMS_BENCH.md   XMM, measurements, Sockmaster and viewer
-  SOCKMASTER_BENCH.md       Classic loop, historical references, FIX2 history
+  SOCKMASTER_BENCH.md       Classic loop, reference scores and comparison viewer
 
-BASELINE_HISTORY.md         User-confirmed promoted baselines and checksums
+BASELINE_HISTORY.md         Official baseline checksums and technical records
 README.md                   This project introduction and current downloads
 ```
 
@@ -309,8 +309,8 @@ The source inventory and technical documents identify internal GOSUB routines, f
 - [BOOT program reference](docs/BASIC_PROGRAMS_BOOT.md) - startup, drive/volume commands, editing, configuration, upgrade and cache functions.
 - [TOOLS program reference](docs/BASIC_PROGRAMS_TOOLS.md) - HELP, FIND/TYPE, DISKCOPY, CHKDSK, INSTALL, MEM and related commands.
 - [BENCH program reference](docs/BASIC_PROGRAMS_BENCH.md) - XMM, 6809/6309 native benchmarks, Sockmaster and comparison page details.
-- [Sockmaster Classic BASIC](docs/SOCKMASTER_BENCH.md) - historic baseline comparison, EDB reference score, data file format and FIX2 history.
-- [Baseline history](BASELINE_HISTORY.md) - exact promoted releases, source changes, verification and checksum records.
+- [Sockmaster Classic BASIC](docs/SOCKMASTER_BENCH.md) - reference scores, EDB comparison, measured score format and viewer usage.
+- [Official baseline record](BASELINE_HISTORY.md) - version checksums and technical preservation records.
 - [Extraction manifest](extracted/MANIFEST.json) - image sizes, granule allocation and exact-extraction verification.
 
 The repository contains the **core BOOT / TOOLS / BENCH suite**. EDB also has separate related companion disks/projects for specialized editors, graphics, sound and development work; this three-disk core is not a catalog of every companion project.

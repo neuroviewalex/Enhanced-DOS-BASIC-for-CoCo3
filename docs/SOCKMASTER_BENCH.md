@@ -1,15 +1,17 @@
 # EDB v15 - Sockmaster Classic BASIC Benchmark
 
-**Status:** **User-promoted official BENCH baseline, FIX2**, November 22, 2026. FIX2 addresses the earlier `SN BUG at 20`. No new independent VCC-EDB test was performed during this promotion.  
+**Status:** Official EDB v15 BENCH baseline, Sockmaster Classic BASIC FIX2. Release image and repository disk SHA-256 checksums match.  
 **Attribution:** Classic three-line BASIC loop credited to **Sockmaster**.  
-**Scope:** Official BENCH disk, extracted source files, manual, manifest and history. BOOT and TOOLS are unchanged.
+**Scope:** BENCH disk, extracted source, score format, and XMSHOW comparison page. BOOT and TOOLS are unchanged.
 
 ## Official BENCH download
 
-[Download official BENCH DSK](../EDB_v15_512k_bench.dsk)
+[Download verified v15 BENCH disk](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_bench.dsk) | [Repository disk image](../EDB_v15_512k_bench.dsk)
 
 SHA-256: `9ea442c53e9d73e0cc30f457818f28f937939e3d77021bce22df95744611e67a`  
-Git blob SHA: `788456b9474ad23c23d829aa78a41bf88c276a0a`  
+Git blob SHA: `788456b9474ad23c23d829aa78a41bf88c276a0a`
+
+The published BENCH Release asset matches this repository image, including the fifth XMSHOW comparison page.  
 Image size: 184,320 bytes; 24 files; 31 free granules.
 
 ## How to use
@@ -64,24 +66,16 @@ A fresh runtime measurement is saved as **`SMBSCORE.DAT`**, a new file with form
 If writing/verification fails, SMBENCH displays the result and an error instead of claiming to have saved it. The viewer shows "CURRENT SCORE --" when there is no valid record.
 
 
-## FIX2 - SN BUG at line 20 and comparison navigation
+## Implementation and compatibility
 
-The first candidate produced `SN BUG at 20` when entering the L benchmark. An audit of tokenized `SMBENCH.BAS` found ASCII `GOTO20` where native CoCo BASIC requires the `GO TO` token bytes. Additional invalid ASCII control-flow words occurred later in the benchmark and in newly generated XMSHOW lines.
+The benchmark retains Sockmaster's original 60-tick interpreted BASIC loop. Its result is captured once, stored in a versioned score file when the active drive is writable, verified by readback, and displayed on XMSHOW page **5/5**.
 
-The approved FIX2 changes are restricted to:
+The native CoCo BASIC statements are correctly tokenized. XMSHOW supports **N/P** page navigation, **S** for the Sockmaster page, **Q** to return to XMM, and correct wraparound across all five pages.
 
-- `SMBENCH.BAS`: correct the `GOTO` on line 20 and line 40, and the `THEN` on line 70.
-- `XMSHOW.BAS`: correct 15 `GOTO`/`GOSUB`/`THEN` occurrences across 14 changed lines.
-- `XMSHOW.BAS` line 710: retain `INKEY$` rather than immediately clearing `K$`, enabling the S shortcut.
-- `XMSHOW.BAS` line 781: wrap backward from the first page to **page 5**.
-- `XMSHOW.BAS` pages 1-4: update their headings to **1/5**, **2/5**, **3/5** and **4/5**, consistently with Sockmaster **5/5**.
-
-The original Sockmaster timing loop and initial XMM.BAS integration are unchanged by FIX2. The disk retains 24 files, 31 free granules and identical contents for every other pre-existing file. It passes a tokenized BASIC linkage check, a file-by-file disk extraction comparison and an allowed-region disk-diff check.
-
-**Verification:** The user explicitly promoted FIX2 after static source and disk checks. The assistant did not independently run VCC-EDB during promotion.
+This release is the user-promoted FIX2 BENCH baseline. The source and disk-image structure have been verified; independent emulator/hardware runtime testing is a separate validation activity.
 
 ## Preservation and verification
 
 The promoted BENCH disk retains all 23 files from the previous official baseline and adds one. Only the contents of `XMM.BAS` and `XMSHOW.BAS` changed; all 21 other original files are byte-for-byte identical. All FAT and directory changes were confined to those two files and the new program; no unrelated data sectors were changed. BOOT and TOOLS remain unchanged; BENCH on GitHub `main` is now the user-promoted FIX2 image.
 
-**Runtime note:** The checks here are static tokenized BASIC, filesystem, and extraction checks. User baseline approval has been given.
+**Verification:** The official BENCH disk and all its extracted files have passed static integrity checks. Its published Release asset also matches the official disk checksum.

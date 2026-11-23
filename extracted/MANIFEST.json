@@ -137,7 +137,7 @@
     "The six historical Sockmaster score baselines (100, 114, 200, 228, 268, 275) and 13544 previously observed EDB score are separately labeled references; SMBSCORE.DAT is created only after an actual run.",
     "All BOOT and TOOLS images and their extracted original files remain byte-identical to previously promoted baselines.",
     "Promotion is authorized by the user's explicit baseline confirmation; no new independent VCC-EDB test was conducted by the assistant during promotion.",
-    "GitHub v15 release BOOT/BENCH binary attachments may predate main; a repository commit does not automatically replace GitHub release assets."
+    "Official GitHub v15 Release BOOT, TOOLS and BENCH assets have been verified against the repository SHA-256 disk checksums; all three match exactly at 184320 bytes. Release asset verification does not imply fresh emulator execution tests."
   ],
   "source_commit_note": "Official disk images and exact extracted files are promoted atomically with this manifest; null source_commit avoids a Git commit-reference cycle."
 }

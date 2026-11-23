@@ -123,7 +123,7 @@ Timing uses an adaptive number of repetitions aimed at roughly 30 timer ticks. I
 
 **Separate EDB measurement:** **13,544**, recorded by the author using a Hitachi 6309 native at 125.28 MHz on EDB v15 in VCC-EDB with custom ROMs. The program only displays this number as a fixed comparison reference; it does **not** seed `SMBSCORE.DAT` with that value.
 
-**FIX2 repair:** The first candidate encoded ASCII `GOTO20` in its tokenized BASIC, causing `SN BUG at 20`. FIX2 corrects the control-flow token bytes for SMBENCH lines 20, 40 and 70; it also repairs 15 ASCII keyword occurrences in 14 changed XMSHOW lines. FIX2 preserves the existing XMM.BAS bytes.
+**Encoding and compatibility:** `SMBENCH.BAS` and `XMSHOW.BAS` use correctly tokenized BASIC control-flow statements. The official viewer supports a fifth comparison page, direct S-key navigation, and five-page wraparound; the existing XMM diagnostics remain preserved.
 
 **Dependencies and safety:** `XMM.BAS` to launch, `XMSHOW.BAS` to report, and a writable score-file destination. Running `SMBENCH.BAS` may overwrite an earlier `SMBSCORE.DAT`; back up scores you want to retain. It has been validated through static token/disk checks only; VCC-EDB runtime testing is required before baseline promotion.
 

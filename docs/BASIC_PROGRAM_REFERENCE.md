@@ -3,7 +3,7 @@
 **Official v15 inventory: BOOT, TOOLS and the user-promoted Sockmaster FIX2 BENCH disk**  
 **Source baseline:** `EDB_v15_512k_boot.dsk` SHA-256 `974d15a700765469fdc4e8672b0f0d0ea5c5a5d0b2f038823c72c399d80d50f7`, plus the official TOOLS and Sockmaster FIX2 BENCH disks.  
 **Documentation coverage:** **46 of 46** current official BASIC entries (including `SMBENCH.BAS`), including the literal `*.BAS` file and all three HELP.BAS variants/copies.  
-**Validation:** Static inspection of tokenized CoCo BASIC files from `extracted/` on GitHub. Sockmaster FIX2 was explicitly promoted by the user; the assistant did not perform a new VCC-EDB test during promotion. GitHub release attachments may be older.
+**Validation:** Source-level inspection of tokenized CoCo BASIC files from `extracted/`. The current [v15 Release disks](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) have been verified against the repository image SHA-256 checksums. Source auditing does not replace independent emulator or hardware execution tests.
 
 ## Start here
 
@@ -132,4 +132,4 @@ For each authorized future change to an EDB `.BAS` file:
 4. Commit documentation changes with a clear explanation and verify the Git diff.
 5. Never silently modify EDB binaries or declare a new software baseline as part of a manual-only edit.
 
-The authoritative reference lives on GitHub alongside [`USER_MANUAL.md`](USER_MANUAL.md). Sockmaster Classic FIX2 has been explicitly promoted as the official BENCH baseline. GitHub release attachments may predate the current repository disks.
+The authoritative reference lives alongside [`USER_MANUAL.md`](USER_MANUAL.md). All three official [v15 Release images](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15), including Sockmaster Classic FIX2 on BENCH, match their repository disk copies.
