@@ -1158,13 +1158,13 @@ The authoritative manual is this file: [`docs/USER_MANUAL.md`](USER_MANUAL.md), 
 
 EDB users can use an AI assistant such as ChatGPT to create BASIC applications **for Enhanced DOS BASIC v15**, while following the system's own programming conventions rather than relying on generic CoCo BASIC examples.
 
-The companion file [`EDB_AI_PROGRAMMING_PROMPT.md`](../EDB_AI_PROGRAMMING_PROMPT.md) is a ready-to-paste instruction set for ChatGPT. It is a **development aid**, not a new EDB command or a guarantee of executable code.
+The companion file [`EDB_AI_PROGRAMMING_PROMPT.md`](EDB_AI_PROGRAMMING_PROMPT.md) is a ready-to-paste instruction set for ChatGPT. It is a **development aid**, not a new EDB command or a guarantee of executable code.
 
 ### What you need
 
 - A working installation of **VCC-EDB** and its matching ROMs, or supported real CoCo 3 hardware.
 - The **EDB v15** disk images that match your installed system, especially BOOT and TOOLS; BENCH is useful for relevant diagnostics.
-- Access to the [official EDB repository](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3), particularly `docs/`, `extracted/`, and `BASELINE_HISTORY.md`, or local copies of the corresponding reference materials.
+- Access to the [official EDB repository](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3), particularly `docs/` and `extracted/`, or local copies of the corresponding reference materials.
 - A ChatGPT conversation capable of reading the documentation, relevant source files, or uploaded disk images. Access varies by configuration; share files directly when needed.
 
 ### Get started
@@ -1192,7 +1192,7 @@ Generated code can still have errors. Keep working backup disk images; provide r
 
 ### Related references
 
-- [AI development master prompt](../EDB_AI_PROGRAMMING_PROMPT.md)
+- [AI development master prompt](EDB_AI_PROGRAMMING_PROMPT.md)
 - [Complete BASIC program and function reference](BASIC_PROGRAM_REFERENCE.md)
 - [EDB source repository](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3)
 - [VCC-EDB emulator](https://github.com/neuroviewalex/VCC-EDB)
