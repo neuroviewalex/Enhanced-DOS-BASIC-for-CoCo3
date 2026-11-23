@@ -31,11 +31,11 @@
     },
     {
       "filename": "EDB_v15_512k_tools.dsk",
-      "sha256": "4a2889cfc395f1536e78352041144a0a6463183fa71054985f3a1665f9c7a09b",
-      "git_blob_sha": "7d3538851a960fea7aabaeaeba01d236f878e85b",
+      "sha256": "3a2d4f990cbb2727e651cc85865feb782c7a36171d22a6eb5f12a77a3e7fa794",
+      "git_blob_sha": "bba3f0e68202873a8678e43011edb660a0e1aab8",
       "size_bytes": 184320,
-      "active_files": 16,
-      "allocated_granules": 31,
+      "active_files": 17,
+      "allocated_granules": 33,
       "free_granules": [
         7,
         11,
@@ -49,9 +49,7 @@
         27,
         28,
         29,
-        30,
         31,
-        33,
         36,
         37,
         38,
@@ -128,16 +126,15 @@
       ]
     }
   ],
-  "extracted_files": 94,
+  "extracted_files": 95,
   "verification": [
-    "Official v15 BENCH Sockmaster Classic FIX2 baseline promoted after explicit user confirmation on 2026-11-22; BOOT FIX5 and TOOLS baselines are unchanged.",
-    "All 24 BENCH files verified byte-for-byte against extracted/bench; XMM.BAS and XMSHOW.BAS changed, SMBENCH.BAS was added, and 21 other original BENCH files are identical.",
-    "The promoted BENCH DSK is 184320 bytes; 24 entries, 47 allocated and 31 free granules. FAT/directory chains checked for invalid links, loops and crosslinks.",
-    "FIX2 fixes invalid ASCII GOTO/THEN in SMBENCH and GOTO/GOSUB/THEN in XMSHOW, repairs input handling/page wraparound and labels pages 1/5 to 5/5.",
-    "The six historical Sockmaster score baselines (100, 114, 200, 228, 268, 275) and 13544 previously observed EDB score are separately labeled references; SMBSCORE.DAT is created only after an actual run.",
-    "All BOOT and TOOLS images and their extracted original files remain byte-identical to previously promoted baselines.",
-    "Promotion is authorized by the user's explicit baseline confirmation; no new independent VCC-EDB test was conducted by the assistant during promotion.",
-    "Official GitHub v15 Release BOOT, TOOLS and BENCH assets have been verified against the repository SHA-256 disk checksums; all three match exactly at 184320 bytes. Release asset verification does not imply fresh emulator execution tests."
+    "The three GitHub v15 Release DSK attachments are authoritative. Each corresponding repository disk image was compared against its official Release SHA-256.",
+    "BOOT, TOOLS and BENCH repository images match the currently published official Release disk checksums.",
+    "TOOLS SHA-256 3a2d4f990cbb2727e651cc85865feb782c7a36171d22a6eb5f12a77a3e7fa794; image 184320 bytes; 17 active directory files, 33 used granules, 45 free granules.",
+    "All 17 TOOLS files extracted without FAT loop, out-of-range link, or granule crosslink errors. Their extracted Git blobs are byte-identical to the corresponding disk directory files.",
+    "KEYPEEK.BAS is the new tokenized BASIC utility in TOOLS: 3049 bytes; Git blob f01db44c01f2b73095b69f020e49bc4741975a79. The other 16 TOOLS extracted files are byte-identical to the previous repository copies.",
+    "BOOT remains SHA-256 974d15a700765469fdc4e8672b0f0d0ea5c5a5d0b2f038823c72c399d80d50f7; BENCH remains SHA-256 9ea442c53e9d73e0cc30f457818f28f937939e3d77021bce22df95744611e67a.",
+    "The synchronization was verified by image SHA-256, Git blob SHA, directory/FAT integrity, and exact extracted-file comparisons. No emulator or physical CoCo runtime execution is claimed."
   ],
-  "source_commit_note": "Official disk images and exact extracted files are promoted atomically with this manifest; null source_commit avoids a Git commit-reference cycle."
+  "source_commit_note": "The official Release DSK attachments are authoritative; repository disk images and extracted files synchronize to them. Null source_commit prevents a circular reference."
 }
