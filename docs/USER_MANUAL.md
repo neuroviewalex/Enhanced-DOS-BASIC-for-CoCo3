@@ -1,7 +1,7 @@
 # Enhanced DOS BASIC (EDB) v15 - Official User Manual
 
 **Platform:** Tandy Color Computer 3, 512K RAM  
-**Manual status:** Living manual - first published edition, 2026-11-22  
+**Manual status:** Living manual - comprehensive BASIC program reference added, 2026-11-22  
 **Software baseline covered:** EDB v15 BOOT, user-promoted EDIT SHIFT navigation / SAVE correction / end-of-program FIX5.
 
 This is the official, version-controlled EDB v15 user manual. It lives alongside the EDB source extracts and disk images so additions and corrections can be reviewed in GitHub history. This initial edition concentrates on loading, finding, editing, and saving BASIC programs. Other commands will be documented in subsequent editions; the absence of a command here does not mean EDB lacks it.
@@ -22,6 +22,7 @@ For the current software images, see the [repository README](../README.md) and [
 10. [Troubleshooting and data protection](#10-troubleshooting-and-data-protection)
 11. [Related EDB commands](#11-related-edb-commands)
 12. [Maintaining this manual](#12-maintaining-this-manual)
+13. [Complete BASIC program and function reference](#13-complete-basic-program-and-function-reference)
 
 ## 1. Getting started
 
@@ -435,6 +436,20 @@ The authoritative manual is this file: [`docs/USER_MANUAL.md`](USER_MANUAL.md), 
 - Record documentation changes through Git commits. Changes to the official EDB software baseline continue to require the user's explicit authorization.
 
 **Source references for this edition:** `extracted/boot/LAST.BAS`, `EDIT.BAS`, `EDIT.DRV`, `DOSCORE.DRV`, `extracted/tools/FIND.BAS`, `TYPE.BAS`, `HELP.BAS`, and `BASELINE_HISTORY.md`.
+
+
+## 13. Complete BASIC program and function reference
+
+The current promoted v15 BOOT, TOOLS and BENCH disks include **45 `.BAS` directory entries** (26 BOOT, 14 TOOLS, 5 BENCH). Every entry has an individual source-audited reference section, including its role, command usage where applicable, important internal GOSUB routines, dependencies, side effects and cautions.
+
+- **[Complete 45-program alphabetical/disk index](BASIC_PROGRAM_REFERENCE.md)** - every .BAS file, linked to its description and original extracted source.
+- **[BOOT BASIC programs](BASIC_PROGRAMS_BOOT.md)** - startups, profiles, CD/autorun, editing, disk commands, upgrades and display routines.
+- **[TOOLS BASIC programs](BASIC_PROGRAMS_TOOLS.md)** - HELP, FIND/TYPE, CHKDSK engines, guarded file copies, INSTALL and memory status.
+- **[BENCH BASIC programs](BASIC_PROGRAMS_BENCH.md)** - XMM, native 6809/6309 benchmark controller, service benchmark and saved-results viewer.
+
+The directory entry `*.BAS` is a literal BOOT file, not a wildcard. The three HELP.BAS entries are each accounted for (with the TOOLS and BENCH copies identical). Native .DRV and .BIN dependencies are identified but not individually disassembled in this BASIC-specific reference.
+
+For new command features or software changes, the relevant program page and this manual should be updated together - with separate approval for any EDB code or disk-image changes.
 
 ---
 

@@ -11,6 +11,8 @@ EDB is for people who love the CoCo 3 and want to *use it*: write programs, expl
 
 **Official User Manual:** [Read the EDB v15 User Manual](docs/USER_MANUAL.md) - the living, version-controlled reference for commands, examples, and development workflows.
 
+**Complete BASIC Program Reference:** [Browse every .BAS file and its functions](docs/BASIC_PROGRAM_REFERENCE.md) - 45 BOOT, TOOLS and BENCH program entries, internal routines, dependencies and cautions.
+
 ## What can you do with EDB?
 
 ### Find your way around your disks
