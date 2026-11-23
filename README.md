@@ -294,7 +294,6 @@ docs/
   BASIC_PROGRAMS_BENCH.md   XMM, measurements, Sockmaster and viewer
   SOCKMASTER_BENCH.md       Classic loop, reference scores and comparison viewer
 
-BASELINE_HISTORY.md         Official baseline checksums and technical records
 README.md                   This project introduction and current downloads
 ```
 
@@ -310,7 +309,6 @@ The source inventory and technical documents identify internal GOSUB routines, f
 - [TOOLS program reference](docs/BASIC_PROGRAMS_TOOLS.md) - HELP, FIND/TYPE, DISKCOPY, CHKDSK, INSTALL, MEM and related commands.
 - [BENCH program reference](docs/BASIC_PROGRAMS_BENCH.md) - XMM, 6809/6309 native benchmarks, Sockmaster and comparison page details.
 - [Sockmaster Classic BASIC](docs/SOCKMASTER_BENCH.md) - reference scores, EDB comparison, measured score format and viewer usage.
-- [Official baseline record](BASELINE_HISTORY.md) - version checksums and technical preservation records.
 - [Extraction manifest](extracted/MANIFEST.json) - image sizes, granule allocation and exact-extraction verification.
 
 The repository contains the **core BOOT / TOOLS / BENCH suite**. EDB also has separate related companion disks/projects for specialized editors, graphics, sound and development work; this three-disk core is not a catalog of every companion project.
