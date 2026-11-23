@@ -1,6 +1,6 @@
 # EDB v15 BASIC Program Reference - BENCH Disk
 
-**Coverage:** All **6 official BENCH `.BAS` entries**, including the user-promoted Sockmaster Classic BASIC FIX2 program.  
+**Coverage:** All **6 official BENCH `.BAS` entries**, including the approved Sockmaster Classic BASIC 15-second-average program.  
 **Method:** Reviewed the tokenized BASIC source and the native files it calls.  
 **Status:** Source-level reference; no new CPU benchmark or emulator run was performed in producing this documentation.  
 **Links:** [Complete program index](BASIC_PROGRAM_REFERENCE.md) | [User manual](USER_MANUAL.md) | [BOOT](BASIC_PROGRAMS_BOOT.md) | [TOOLS](BASIC_PROGRAMS_TOOLS.md).
@@ -14,7 +14,7 @@ The BENCH disk contains the current XMM diagnostic and benchmark environment. So
 | [HELP.BAS](#helpbas---integrated-help-copy) | Full HELP reference copied from TOOLS | Dynamic topic lookup and 10000-series help topics |
 | [XBENCH.BAS](#xbenchbas---legacy-xmemxmath-service-benchmark) | Benchmark legacy XMEM/XMATH services | 9000, 9100, 9200, 9300, 57000-62400, 63000 |
 | [XMBCPU.BAS](#xmbcpubas---6809-and-6309-native-memory-comparison) | Benchmark and compare native CPU-specific memory manager paths | 7000-7350, 8500, 8800, 9000 |
-| [SMBENCH.BAS](#smbenchbas---sockmaster-classic-basic-benchmark) | Classic interpreted BASIC loop, one-run score and verification | 10, 20, 30, 40-90, 900 |
+| [SMBENCH.BAS](#smbenchbas---sockmaster-classic-basic-benchmark) | 15 one-second interpreted BASIC samples and rounded mean; score verification | 8, 10, 20, 25, 30, 40-90, 900 |
 | [XMM.BAS](#xmmbas---xmm-diagnostics-controller) | XMM menu and native test dispatcher | 7000, 61000, 61600, 62000 |
 | [XMSHOW.BAS](#xmshowbas---saved-results-viewer) | Compare stored CPU and service results | 500, 600, 1500, 1600, 1700, 1710, 2000-2640 |
 
@@ -104,17 +104,19 @@ Timing uses an adaptive number of repetitions aimed at roughly 30 timer ticks. I
 
 ## SMBENCH.BAS - Sockmaster Classic BASIC benchmark
 
-**Status:** Official BENCH program, user-promoted Sockmaster FIX2. **Credit:** Sockmaster for the original classic three-line loop.
+**Status:** Owner-approved EDB v15 BENCH repository baseline, with 15 one-second samples and a rounded per-second mean. **Credit:** Sockmaster for the original classic three-line loop.
 
-**Launch:** Open `XMM` and press **L**, or enter `XMM CLASSIC` (aliases `XMM SOCK` / `XMM SOCKMASTER`). The timer loop runs once, saves `SMBSCORE.DAT` on the current writable drive, verifies the saved result, then launches `XMSHOW.BAS` in page-5 mode. It does not perform I/O inside the timing loop.
+**Launch:** Open `XMM` and press **L**, or enter `XMM CLASSIC` (aliases `XMM SOCK` / `XMM SOCKMASTER`). The unchanged 60-tick loop runs 15 times, then the rounded one-second-equivalent average is saved to `SMBSCORE.DAT` using format `SMBSCORE15`, verified and displayed in `XMSHOW.BAS` page 5. It does not perform I/O inside the timing loop.
 
 | BASIC lines | Function |
 | --- | --- |
-| 1-5 | Show benchmark name and instructions. |
-| 10 | Initialize A and reset TIMER. |
+| 1-5 | Show benchmark name and 15-sample instructions. |
+| 8 | Initialize sum S and start a FOR loop over 15 samples. |
+| 10 | Initialize each sample's A and reset TIMER. |
 | 20 | Repeat Sockmaster's original `IF TIMER<60 THEN A=A+1:GOTO20` loop. |
-| 30 | Capture and print the resulting loop count once. |
-| 40-50 | Install an I/O error handler and write a versioned `SMBSCORE.DAT` record. |
+| 25 | Add the completed one-second count to S and advance the sample counter. |
+| 30 | Compute `SC=INT(S/15+.5)` and print the rounded one-second mean. |
+| 40-50 | Install an I/O error handler and write the `SMBSCORE15` versioned record. |
 | 60-70 | Reopen the score record and check its identifier and numeric value. |
 | 80-90 | Set a page-5 navigation marker and chain to XMSHOW. |
 | 900 | Report failure to save/verify without claiming the score was persisted. |
@@ -125,7 +127,7 @@ Timing uses an adaptive number of repetitions aimed at roughly 30 timer ticks. I
 
 **Encoding and compatibility:** `SMBENCH.BAS` and `XMSHOW.BAS` use correctly tokenized BASIC control-flow statements. The official viewer supports a fifth comparison page, direct S-key navigation, and five-page wraparound; the existing XMM diagnostics remain preserved.
 
-**Dependencies and safety:** `XMM.BAS` to launch, `XMSHOW.BAS` to report, and a writable score-file destination. Running `SMBENCH.BAS` may overwrite an earlier `SMBSCORE.DAT`; back up scores you want to retain. It has been validated through static token/disk checks only; VCC-EDB runtime testing is required before baseline promotion.
+**Dependencies and safety:** `XMM.BAS` launches the program and `XMSHOW.BAS` displays it. A writable destination is required to persist `SMBSCORE.DAT`. Running the new benchmark may overwrite earlier scores. Existing `SMBSCORE1` files are intentionally not treated as 15-second averages. Static tokenized-BASIC and disk-integrity checks are complete. The owner has explicitly confirmed baseline promotion; an independent emulator execution test by the assistant is not claimed.
 
 See the [user manual](USER_MANUAL.md#sockmaster-classic-basic---benchmark-and-comparison) and [benchmark notes](SOCKMASTER_BENCH.md).
 

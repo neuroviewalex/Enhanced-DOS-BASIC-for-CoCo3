@@ -1,32 +1,35 @@
-# EDB v15 - Sockmaster Classic BASIC Benchmark
+# EDB v15 — Sockmaster Classic BASIC benchmark
 
-**Status:** Official EDB v15 BENCH baseline, Sockmaster Classic BASIC FIX2. Release image and repository disk SHA-256 checksums match.  
-**Attribution:** Classic three-line BASIC loop credited to **Sockmaster**.  
-**Scope:** BENCH disk, extracted source, score format, and XMSHOW comparison page. BOOT and TOOLS are unchanged.
+**Status:** Owner-approved **15-second-average** BENCH baseline in the repository. The GitHub v15 Release BENCH attachment still contains the previous version until the owner updates it manually.
 
-## Official BENCH download
+**Attribution:** Original three-line BASIC loop credited to Sockmaster.
 
-[Download verified v15 BENCH disk](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_bench.dsk) | [Repository disk image](../EDB_v15_512k_bench.dsk)
+## Disk image and verification
 
-SHA-256: `9ea442c53e9d73e0cc30f457818f28f937939e3d77021bce22df95744611e67a`  
-Git blob SHA: `788456b9474ad23c23d829aa78a41bf88c276a0a`
+[Download the current BENCH disk from `main`](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_bench.dsk)
 
-The published BENCH Release asset matches this repository image, including the fifth XMSHOW comparison page.  
-Image size: 184,320 bytes; 24 files; 31 free granules.
+| Property | Value |
+| --- | --- |
+| Image size | 184,320 bytes |
+| SHA-256 | `005453f873ef2deec20eecbc62601f336d858be27414f3866c9735ba2d633549` |
+| Git blob SHA | `24fc14b502a2d8a649dbb3b8954d25bf13483191` |
+| Contents | 24 files; 47 allocated and 31 free granules |
+| Updated programs | `SMBENCH.BAS` and `XMSHOW.BAS` |
+| Unchanged | Remaining 22 BENCH files and all BOOT/TOOLS disk images |
 
-## How to use
+The disk was verified against the prior official BENCH image. All file contents outside the two updated BASIC programs are byte-identical; the existing FAT and directory allocation are preserved. The original tokenized BASIC and new linked-line structure were validated.
 
-With the official BENCH disk available to EDB:
+**Release publication:** The [v15 Release page](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) still contains the prior BENCH attachment with SHA-256 `9ea442c53e9d73e0cc30f457818f28f937939e3d77021bce22df95744611e67a`. Updating `main` does not replace Release attachments automatically.
 
-1. Enter `XMM` to open the existing diagnostics menu.
-2. Press **L - Classic** to run the one-second Sockmaster benchmark.
-3. The timed loop runs once and writes a new `SMBSCORE.DAT` file on the **current default drive**, if writable.
-4. The program reopens the saved score to verify it, then opens **XMSHOW page 5/5** automatically.
-5. From XMSHOW, use **N** for next, **P** for previous, **S** for the Sockmaster comparison page, and **Q** for the XMM menu. FIX2 retains key input for the S shortcut and wraps backward from page 1 to page 5.
+## Using the benchmark
 
-The command `XMM CLASSIC` (also `XMM SOCK` or `XMM SOCKMASTER`) can launch the test without using the interactive menu. **XMM's existing internal S diagnostic shortcut remains unchanged.**
+Run `XMM` and choose **L — Classic**, or launch through `XMM CLASSIC`, `XMM SOCK` or `XMM SOCKMASTER`.
 
-### Original algorithm
+The program takes **15 consecutive one-second (60-TIMER-tick) measurements**. Each measurement runs the original Sockmaster loop without printing or disk access. The 15 loop counts are accumulated and the score is calculated as `SC=INT(S/15+.5)` — the rounded **mean number of BASIC loop iterations per second**, not the 15-second total.
+
+The test runs for approximately 15 seconds plus small setup overhead. Higher scores indicate more interpreted BASIC loop throughput; this is not a native machine-code CPU benchmark.
+
+### Original Sockmaster loop
 
 ```basic
 10 A=0:TIMER=0
@@ -34,48 +37,31 @@ The command `XMM CLASSIC` (also `XMM SOCK` or `XMM SOCKMASTER`) can launch the t
 30 PRINT A:RUN
 ```
 
-The program retains lines **10** and **20** as the timed workload. After line 20 reaches 60 ticks, it captures `A`, rather than executing the original `PRINT A:RUN` endless output/restart loop. All file operations, reporting, and page display happen **outside** the timing window.
+EDB preserves the timed workload from lines 10 and 20, but performs 15 trials and collects one final average instead of continually restarting.
 
-**Metric:** One-second interpreted BASIC loop count. Higher is better. It depends on CPU, interpreter/ROM, clock and emulation. It is not a pure machine-code CPU measurement.
+## Saved result and comparison viewer
 
-## Historical comparison table
+After measurement, `SMBENCH.BAS` writes `SMBSCORE.DAT` to the writable current drive and verifies the saved data by reopening it. The file records the identifier `SMBSCORE15` followed by the measured numeric average. Older `SMBSCORE1` files are **not** displayed as 15-second averages.
 
-| Configuration | Sockmaster historical score |
+When saving succeeds, the program opens **XMSHOW page 5/5** automatically. The viewer labels the result `15S AVG SCORE`; absent or invalid score data displays `15S AVG SCORE --`. Use **N** for next page, **P** for previous, **S** to jump to Sockmaster page 5 and **Q** to return to XMM. The preexisting XMM S diagnostic is unaffected.
+
+If saving or verification fails, the measured score is still displayed with a warning rather than falsely reported as persisted.
+
+## Comparison references
+
+| Sockmaster historical configuration | Score |
 | --- | ---: |
-| Motorola 6809 - 1 MHz | 100 |
-| Hitachi 6309 native - 1 MHz | 114 |
-| Motorola 6809 - 2 MHz | 200 |
-| Hitachi 6309 native - 2 MHz | 228 |
-| Motorola 6809 - doubled-clock accelerator | 268 |
-| Hitachi 6309 native - doubled-clock accelerator | 275 |
+| Motorola 6809 at 1 MHz | 100 |
+| Hitachi 6309 native at 1 MHz | 114 |
+| Motorola 6809 at 2 MHz | 200 |
+| Hitachi 6309 native at 2 MHz | 228 |
+| Motorola 6809 with doubled-clock accelerator | 268 |
+| Hitachi 6309 native with doubled-clock accelerator | 275 |
 
-**Separate EDB reference:** 13,544 - Hitachi 6309 native mode, 125.28 MHz, EDB v15 on VCC-EDB with custom ROMs; supplied by the project author. This is a recorded observation, not a computed Sockmaster baseline.
+**Separate EDB reference:** 13,544 — the project author's previously recorded EDB v15 result with a 6309 native CPU at 125.28 MHz in VCC-EDB. The viewer preserves this comparison separately from Sockmaster's historical references.
 
-The new viewer **page 5/5** displays all six historical scores, the measured score (or `--` if not yet run), its ratio to each baseline, and the 13,544 EDB reference plus its current-score ratio. The on-screen legend distinguishes historical Sockmaster results from the EDB reference.
+The reported 15-sample average is directly comparable as a **one-second-equivalent** interpreted BASIC loop count. No reference score is generated or changed by the upgrade.
 
-## Changed/new BASIC files
+## Preservation
 
-| File | Change |
-| --- | --- |
-| `SMBENCH.BAS` | New single-run Sockmaster loop, persistent score/verification, automatic viewer handoff; FIX2 corrects tokenized GOTO/THEN on lines 20, 40 and 70 |
-| `XMM.BAS` | Added `L` menu entry and CLASSIC/SOCK command aliases, preserving all existing diagnostic keys |
-| `XMSHOW.BAS` | Five-page navigation, dedicated Sockmaster score comparison and S shortcut; FIX2 corrects 15 ASCII control-flow keywords in 14 changed lines, restores S input, fixes backward wrap and headings |
-
-A fresh runtime measurement is saved as **`SMBSCORE.DAT`**, a new file with format `SMBSCORE1` followed by the numeric score. It is created on first successful run, **not** pre-injected into the official disk, so a genuine measurement is distinguishable from the fixed reference.
-
-If writing/verification fails, SMBENCH displays the result and an error instead of claiming to have saved it. The viewer shows "CURRENT SCORE --" when there is no valid record.
-
-
-## Implementation and compatibility
-
-The benchmark retains Sockmaster's original 60-tick interpreted BASIC loop. Its result is captured once, stored in a versioned score file when the active drive is writable, verified by readback, and displayed on XMSHOW page **5/5**.
-
-The native CoCo BASIC statements are correctly tokenized. XMSHOW supports **N/P** page navigation, **S** for the Sockmaster page, **Q** to return to XMM, and correct wraparound across all five pages.
-
-This release is the user-promoted FIX2 BENCH baseline. The source and disk-image structure have been verified; independent emulator/hardware runtime testing is a separate validation activity.
-
-## Preservation and verification
-
-The promoted BENCH disk retains all 23 files from the previous official baseline and adds one. Only the contents of `XMM.BAS` and `XMSHOW.BAS` changed; all 21 other original files are byte-for-byte identical. All FAT and directory changes were confined to those two files and the new program; no unrelated data sectors were changed. BOOT and TOOLS remain unchanged; BENCH on GitHub `main` is now the user-promoted FIX2 image.
-
-**Verification:** The official BENCH disk and all its extracted files have passed static integrity checks. Its published Release asset also matches the official disk checksum.
+This change was explicitly promoted by the project owner after receiving the candidate for VCC-EDB testing. Tokenized-BASIC structure, FAT/directory integrity and byte-for-byte preservation of unrelated files were verified. These static tests do not constitute a separate live emulator or hardware run by the assistant.

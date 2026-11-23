@@ -2,7 +2,9 @@
 
 **Platform:** Tandy Color Computer 3 with 512K RAM  
 **Edition:** Complete BASIC-program user handbook - 2026-11-22  
-**Baseline:** Official v15 BOOT with SHIFT-arrow EDIT FIX5, SAVE type initialization, and Sockmaster Classic BASIC FIX2 on BENCH. All three [published v15 Release images](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) match the official repository SHA-256 checksums.
+**Baseline:** Official v15 BOOT with SHIFT-arrow EDIT FIX5 and SAVE type initialization; BENCH now includes the approved Sockmaster **15-second average**. BOOT and TOOLS Release attachments match the repository; the BENCH Release attachment is awaiting the owner's manual update.
+
+**BENCH download:** [Approved repository image](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_bench.dsk) (SHA-256 `005453f873ef2deec20eecbc62601f336d858be27414f3866c9735ba2d633549`). The [GitHub v15 Release attachment](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_bench.dsk) still contains the preceding BENCH image until the owner replaces it.
 
 This is the **main, living EDB v15 handbook**. It explains the entire current BASIC utility environment - startup, volumes, program editing, files, backups, colour, keyboard, memory management, diagnostics and benchmarks - rather than only the original five-command programming workflow.
 
@@ -23,7 +25,7 @@ The authoritative text is versioned in GitHub alongside the verified source extr
 9. [XMM diagnostics and benchmarking](#9-xmm-diagnostics-and-benchmarking)
 10. [Practical recipes](#10-practical-recipes)
 11. [Troubleshooting and data protection](#11-troubleshooting-and-data-protection)
-12. [All 46 BASIC program entries](#12-all-46-candidate-basic-program-entries)
+12. [BASIC program reference](#12-all-46-candidate-basic-program-entries)
 13. [Technical notes and function reference](#13-technical-notes-and-function-reference)
 14. [Maintaining this manual](#14-maintaining-this-manual)
 15. [AI-assisted application development](#15-ai-assisted-application-development)
@@ -794,9 +796,9 @@ It reads `XMSCORE.DAT`, `XBSCORE.DAT`, and reference `XBREF.DAT`; absent scores 
 
 ### Sockmaster Classic BASIC - benchmark and comparison
 
-**Attribution:** Sockmaster. **Availability:** The official BENCH image is available on GitHub `main` and as the verified [v15 Release BENCH download](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_bench.dsk).
+**Attribution:** Sockmaster. **Availability:** The approved 15-second [BENCH image is on GitHub `main`](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_bench.dsk); the v15 Release attachment is awaiting manual replacement.
 
-Open `XMM` and press **L**, or run `XMM CLASSIC`. `SMBENCH.BAS` performs one timed BASIC loop, saves the score in `SMBSCORE.DAT` on the current writable drive, verifies the record, and automatically opens XMSHOW **page 5/5**. No printing or disk access occurs during the timed loop.
+With the approved **15-second BENCH disk**, open `XMM` and press **L**, or run `XMM CLASSIC`. `SMBENCH.BAS` takes 15 consecutive one-second (60-tick) loop measurements, averages the 15 iteration counts with `INT(S/15+.5)`, and stores the result in `SMBSCORE.DAT` if the current drive is writable. It verifies the record and opens XMSHOW **page 5/5**. No screen or disk I/O occurs inside the timed loops.
 
 The original classic benchmark is:
 
@@ -806,7 +808,7 @@ The original classic benchmark is:
 30 PRINT A:RUN
 ```
 
-EDB keeps the timing workload from lines 10 and 20 but captures the score once, without `PRINT A:RUN` repeatedly restarting the test. The result counts interpreted BASIC iterations during 60 TIMER ticks. **Higher is better**, but it is not a pure CPU machine-code benchmark.
+The 15-second implementation retains the original 60-tick workload at lines 10 and 20, but repeats it 15 times, accumulates each loop count, and reports the **rounded mean iterations per 60 ticks**, not the 15-second total. It remains comparable to the historical one-second scores. Execution takes approximately 15 seconds plus slight setup overhead. **Higher is better**, but this is not a pure machine-code CPU benchmark.
 
 | Sockmaster historical baseline | Score |
 | --- | ---: |
@@ -819,7 +821,7 @@ EDB keeps the timing workload from lines 10 and 20 but captures the score once, 
 
 **Separate EDB v15 comparison measurement:** **13,544**, reported by the project author running a Hitachi 6309 in native mode at **125.28 MHz**, using VCC-EDB with custom ROMs. This is a recorded EDB result, not an additional historical Sockmaster baseline.
 
-XMSHOW page 5 displays all six historical bases, the latest saved score, ratios to each base, and the ratio to the 13,544 EDB reference. It uses `SMBSCORE1` as the file format identifier. An absent or invalid file results in `CURRENT SCORE --`.
+XMSHOW page 5 displays the rounded 15-second average alongside all six historical bases and the unchanged 13,544 EDB reference, including speed ratios. The new record identifier is `SMBSCORE15`. Older `SMBSCORE1` score records are rejected rather than being mislabeled as 15-second averages; absent or invalid data appears as `15S AVG SCORE --`.
 
 **Implementation:** The official BENCH image uses correctly tokenized BASIC statements and supports five-page XMSHOW navigation, including the S shortcut and wraparound. The saved score is kept separate from the historical comparison values.
 
@@ -1041,9 +1043,9 @@ The disk-maintenance commands have different risk profiles. `TYPE`, `COMPARE` an
 <a id="12-all-45-basic-program-entries"></a>
 <a id="12-all-46-candidate-basic-program-entries"></a>
 
-## 12. All 46 BASIC program entries
+## 12. BASIC program reference
 
-The official disks contain **26 BOOT + 14 TOOLS + 6 BENCH = 46** BASIC entries, including promoted `SMBENCH.BAS`,  including the literal `*.BAS` startup file. The two large HELP files on TOOLS and BENCH are identical; the BOOT HELP dispatcher is distinct.
+The current disk images contain **26 BOOT + 15 TOOLS + 6 BENCH = 47** BASIC entries (including `SMBENCH.BAS`, `KEYPEEK.BAS` and the literal `*.BAS` startup file). The 46-entry table below predates the addition of `KEYPEEK.BAS`; the new [tokenized source](../extracted/tools/KEYPEEK.BAS) is available in the repository. The HELP files on TOOLS and BENCH are byte-identical; the BOOT HELP dispatcher is distinct.
 
 This table is included **inside the user manual** so every filename is discoverable here. Each link opens a source-audited entry with internal function/subroutine descriptions; the program behavior and syntax are explained in the relevant chapters above.
 
@@ -1135,7 +1137,7 @@ A complete instruction-level driver reference is outside the scope of a BASIC-pr
 
 ### Verification standard
 
-All 46 official BASIC entries were inspected as tokenized source on GitHub. The command descriptions, examples and known limitations are source-grounded; **they do not constitute an additional VCC-EDB or physical CoCo execution test**. Results that depend on disk health, controller support, native resident memory and emulator-specific features still need runtime confirmation.
+The 46 BASIC entries indexed in this chapter were inspected as tokenized source on GitHub; the newly added KEYPEEK.BAS is provided separately in the extracted TOOLS directory. The command descriptions, examples and known limitations are source-grounded; **they do not constitute an additional VCC-EDB or physical CoCo execution test**. Results that depend on disk health, controller support, native resident memory and emulator-specific features still need runtime confirmation.
 
 
 <a id="12-maintaining-this-manual"></a>
@@ -1151,7 +1153,7 @@ The authoritative manual is this file: [`docs/USER_MANUAL.md`](USER_MANUAL.md), 
 - Manual-only changes must not silently alter disk images, BASIC programs, or binary drivers.
 - Record documentation changes through Git commits. Changes to the official EDB software baseline continue to require the user's explicit authorization.
 
-**Source references:** All 46 official BASIC entries, with their dependencies documented in the linked technical chapters.
+**Source references:** 46 existing program reference entries with documented dependencies; `KEYPEEK.BAS` is additionally available in `extracted/tools/`.
 
 
 ## 15. AI-assisted application development
@@ -1199,4 +1201,4 @@ Generated code can still have errors. Keep working backup disk images; provide r
 
 ---
 
-*Enhanced DOS BASIC v15 - Living user manual. Includes the promoted Sockmaster Classic BASIC FIX2 benchmark and all 46 BASIC program entries.*
+*Enhanced DOS BASIC v15 - Living user manual. Documents the approved Sockmaster 15-second-average benchmark and the EDB BASIC command environment.*

@@ -8,7 +8,7 @@ The project has roots dating to **1989**, with continued development in **2026**
 
 EDB is not simply a launcher or a handful of demonstration programs. Its **BOOT**, **TOOLS** and **BENCH** disks work together through tokenized BASIC programs, native `.DRV` and `.BIN` modules, system state, and persistent configuration files.
 
-[**Official v15 User Manual**](docs/USER_MANUAL.md) | [**All 46 BASIC programs and functions**](docs/BASIC_PROGRAM_REFERENCE.md) | [**Download v15**](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15)
+[**Official v15 User Manual**](docs/USER_MANUAL.md) | [**BASIC program and function reference**](docs/BASIC_PROGRAM_REFERENCE.md) | [**Download v15**](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15)
 
 ## Project overview
 
@@ -194,9 +194,9 @@ The test suite can exercise real MMU page mappings; it checks expected resident 
 | `XBENCH.BAS` | Timings for legacy XMEM/XMATH services and vector arithmetic | `XBSCORE.DAT` |
 | `XMBCPU.BAS` | Native 6809/6309 memory fill, mapping, I/O and allocation tests | `XMSCORE.DAT` |
 | `XMSHOW.BAS` | Five pages of current, saved, measured and reference results | Reads the score/reference files |
-| `SMBENCH.BAS` | One-second Sockmaster interpreted BASIC loop | `SMBSCORE.DAT` |
+| `SMBENCH.BAS` | 15 one-second samples; rounded per-second average | `SMBSCORE.DAT` (`SMBSCORE15`) |
 
-The **Sockmaster Classic BASIC** feature was explicitly promoted from FIX2 as part of the official v15 BENCH baseline. It keeps the original loop:
+The **Sockmaster Classic BASIC** benchmark preserves the original one-second timed loop:
 
 ```basic
 10 A=0:TIMER=0
@@ -204,7 +204,7 @@ The **Sockmaster Classic BASIC** feature was explicitly promoted from FIX2 as pa
 30 PRINT A:RUN
 ```
 
-The integrated version runs the timed portion **once** without repeated printing or restart, records its score, saves/verifies the result when the current drive is writable, and opens **XMSHOW page 5/5**. The original loop contains no disk I/O, so score reporting happens after the timed section.
+The approved v15 benchmark repeats the original timed 60-tick loop **15 times**, without printing or disk activity during measurement. It reports the **rounded mean iterations per one-second sample**, saves that score with record marker `SMBSCORE15`, and opens **XMSHOW page 5/5**. Historical comparison values remain unchanged.
 
 **To run:** enter `XMM` and press **L - Classic**, or type `XMM CLASSIC`. In the viewer use **N/P** to change among five pages, **S** to jump to page 5 and **Q** to return to XMM. The original internal XMM S diagnostic remains preserved; the benchmark uses L.
 
@@ -223,15 +223,15 @@ The fifth page shows the current measured score, comparisons to all six historic
 
 [**Sockmaster benchmark documentation**](docs/SOCKMASTER_BENCH.md)
 
-## Official v15 downloads
+## Official v15 disk images
 
-**The [official v15 Release](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) and the repository's `main` branch now provide matching, verified copies of all three images.** Each disk contains 184,320 bytes (40 tracks x 18 sectors x 256 bytes).
+**The three repository disk images are the owner-approved EDB v15 baselines.** BOOT and TOOLS match their [v15 Release attachments](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15). BENCH has just been promoted to the 15-second average on `main`; its Release attachment is still the earlier image until the project owner replaces it manually. Each disk contains 184,320 bytes (40 tracks x 18 sectors x 256 bytes).
 
 | Disk | Files | Contents | Download |
 | --- | ---: | --- | --- |
 | **BOOT** | 54 | Core command environment, native editor, profiles, history and disk/cache drivers | [BOOT image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BOOT.dsk) |
-| **TOOLS** | 16 | HELP, FIND/TYPE, disk checks, copy/install and file utilities | [TOOLS image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_tools.dsk) |
-| **BENCH** | 24 | XMM diagnostics, native benchmarks, XMSHOW page 5 and Sockmaster FIX2 | [BENCH image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_bench.dsk) |
+| **TOOLS** | 17 | HELP, KEYPEEK, FIND/TYPE, disk checks, copy/install and file utilities | [TOOLS image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_tools.dsk) |
+| **BENCH** | 24 | XMM diagnostics, native benchmarks, XMSHOW page 5 and 15-second Sockmaster average | [BENCH image on main](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_bench.dsk) |
 
 **SHA-256 checksums:**
 
@@ -240,22 +240,22 @@ EDB_v15_512k_boot.dsk
 974d15a700765469fdc4e8672b0f0d0ea5c5a5d0b2f038823c72c399d80d50f7
 
 EDB_v15_512k_tools.dsk
-4a2889cfc395f1536e78352041144a0a6463183fa71054985f3a1665f9c7a09b
+3a2d4f990cbb2727e651cc85865feb782c7a36171d22a6eb5f12a77a3e7fa794
 
 EDB_v15_512k_bench.dsk
-9ea442c53e9d73e0cc30f457818f28f937939e3d77021bce22df95744611e67a
+005453f873ef2deec20eecbc62601f336d858be27414f3866c9735ba2d633549
 ```
 
-**Release verification:** All three published [v15 disk images](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) match the SHA-256 checksums above and the official repository copies. BOOT, TOOLS, and the Sockmaster FIX2 BENCH image are synchronized. Future software changes will still require independent Release asset publication.
+**Distribution status:** BOOT and TOOLS Release attachments match `main`. The [v15 Release BENCH attachment](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_bench.dsk) still has SHA-256 `9ea442c53e9d73e0cc30f457818f28f937939e3d77021bce22df95744611e67a` and is **not yet** the 15-second average. Use the BENCH `main` download above until the owner publishes the updated Release attachment. Repository commits do not replace Release downloads automatically.
 
-The matching [`extracted/`](extracted/) tree includes all 94 files from the three current official disks. In particular, `extracted/bench/XMM.BAS`, `XMSHOW.BAS`, and the new `SMBENCH.BAS` correspond to the promoted BENCH image byte-for-byte.
+The [`extracted/`](extracted/) tree contains **95 files** (54 BOOT, 17 TOOLS and 24 BENCH). In BENCH, `XMM.BAS`, `XMSHOW.BAS`, and `SMBENCH.BAS` match the newly promoted image byte-for-byte; the other 22 BENCH files remain unchanged.
 
 ## Getting started with EDB v15
 
 **Recommended for all features:** the [VCC-EDB emulator](https://github.com/neuroviewalex/VCC-EDB). The project previously identified [VCC-EDB v2.1.9.34](https://github.com/neuroviewalex/VCC-EDB/releases/tag/v2.1.9.34) as a compatible build; check its current documentation and releases for updates.
 
 1. Configure a compatible VCC-EDB installation with 512K RAM and the EDB-compatible ROM/driver environment.
-2. Download the verified official BOOT, TOOLS and BENCH disk images from the v15 Release links above.
+2. Download BOOT and TOOLS from the v15 Release, and the promoted BENCH disk from the `main` link above until the Release attachment is updated.
 3. Boot from BOOT. Mount TOOLS when using the full HELP and file utilities, and BENCH for XMM diagnostics/benchmark comparisons.
 4. At EDB's prompt, explore:
 
@@ -282,13 +282,13 @@ EDB_v15_512k_bench.dsk      Official BENCH disk
 
 extracted/
   boot/                     54 extracted BOOT files
-  tools/                    16 extracted TOOLS files
+  tools/                    17 extracted TOOLS files
   bench/                    24 extracted BENCH files
   MANIFEST.json             Hashes, disk geometry, file counts, integrity checks
 
 docs/
   USER_MANUAL.md            Complete v15 user-facing handbook
-  BASIC_PROGRAM_REFERENCE.md  All 46 BASIC entries, linked to the source
+  BASIC_PROGRAM_REFERENCE.md  BASIC program index and source links
   BASIC_PROGRAMS_BOOT.md    BOOT program functions and dependencies
   BASIC_PROGRAMS_TOOLS.md   TOOLS functions and maintenance utilities
   BASIC_PROGRAMS_BENCH.md   XMM, measurements, Sockmaster and viewer
@@ -328,7 +328,7 @@ The project protocol is:
 
 Because EDB includes native code, tokenized BASIC and binary disk images, careful verification matters. Appropriate checks include BASIC token/linked-line structure, byte-for-byte source extraction, directory/FAT chain integrity, checksum comparisons, and clear separation of **static analysis** from **VCC-EDB / hardware runtime tests**.
 
-The promoted Sockmaster FIX2 update changes only `XMM.BAS` and `XMSHOW.BAS` among the previous BENCH programs and adds `SMBENCH.BAS`. BOOT and TOOLS remain byte-for-byte unchanged. The corresponding extracted source and documentation are maintained together with the official image.
+The owner-approved Sockmaster 15-second update modifies **only `SMBENCH.BAS` and `XMSHOW.BAS`** within BENCH. The other 22 BENCH files, BOOT and TOOLS disk images remain byte-identical; tokenized source and benchmark documentation are synchronized with the new repository disk.
 
 ## The spirit of EDB
 
