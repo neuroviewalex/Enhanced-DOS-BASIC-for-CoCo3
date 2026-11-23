@@ -1,5 +1,22 @@
 # EDB v15 baseline history
 
+## 2026-11-22 - Sockmaster Classic BASIC FIX2 - user-promoted BENCH baseline
+
+**Official BENCH disk:** `EDB_v15_512k_bench.dsk`. The user explicitly approved promotion of FIX2 after the correction of `SN BUG at 20`. Previously promoted BOOT FIX5 and TOOLS baselines remain unchanged.
+
+- Promoted exact FIX2 disk from `sockmaster-classic-v15-candidate`: SHA-256 `9ea442c53e9d73e0cc30f457818f28f937939e3d77021bce22df95744611e67a`, Git blob `788456b9474ad23c23d829aa78a41bf88c276a0a`.
+- Added `SMBENCH.BAS`, Git blob `f3cffd2547364c19356570537493403ea31eb889`, which runs Sockmaster's original 60-TIMER-tick interpreted BASIC loop once, saves and verifies a measured score, and opens the comparison viewer.
+- Updated `XMM.BAS`, Git blob `d6234be036733e13301ce4bd94836f9b679cf5d7`, with menu key **L - Classic** and `XMM CLASSIC` / `XMM SOCK` command aliases. The existing native S diagnostic remains preserved.
+- Updated `XMSHOW.BAS`, Git blob `800d1de61b6c162e0d57a742ef067233507ac4d1`, with a fifth Sockmaster comparison page. It includes all six historical Sockmaster references (100, 114, 200, 228, 268, 275) and a separate EDB v15 reference of 13,544 supplied by the user.
+- FIX2 repairs ASCII `GOTO`, `GOSUB` and `THEN` tokenization bugs, corrects the viewer S shortcut, five-page wraparound, and headings 1/5 through 5/5.
+- Promoted BENCH retains all 23 previous files: 21 unchanged and two updated, plus one newly added file. **24 files, 47 allocated granules, 31 free**. All unrelated BENCH files and scores remain byte-identical.
+- Refreshed the exact tokenized `extracted/bench/XMM.BAS`, `XMSHOW.BAS` and `SMBENCH.BAS`, plus `extracted/MANIFEST.json` (94 extracted files, 46 BASIC entries). Updated main user manual, BENCH and master references, Sockmaster notes, README and this history.
+- **Static verification only:** tokenized BASIC structure, disk allocation and extracted-file byte comparison verified. The user promoted FIX2; the assistant did not independently run another VCC-EDB execution test during this promotion. `SMBSCORE.DAT` is created only by an actual benchmark run, not prepopulated with 13,544.
+- Direct repository BENCH download now points to the promoted disk. The GitHub v15 Release page binary attachments must be replaced separately if still older; the repository update does not upload release assets.
+
+---
+
+
 ## 2026-11-22 - EDIT SHIFT navigation, SAVE type reset, end-of-program FIX5 - user-promoted baseline
 
 **Official BOOT baseline:** `EDB_v15_512k_boot.dsk` - promoted after the user's explicit “baseline” confirmation of FIX5. No new VCC-EDB runtime verification is claimed in this repository update.

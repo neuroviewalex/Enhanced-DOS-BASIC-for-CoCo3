@@ -88,14 +88,12 @@
     },
     {
       "filename": "EDB_v15_512k_bench.dsk",
-      "sha256": "4cb0b734ca599caeba1d73586f2ec67fa9c1a4ef0f2eb897053948dfc85e19b2",
-      "git_blob_sha": "815bbda3fdc10cc10b4e0cc266512be332e8f114",
+      "sha256": "9ea442c53e9d73e0cc30f457818f28f937939e3d77021bce22df95744611e67a",
+      "git_blob_sha": "788456b9474ad23c23d829aa78a41bf88c276a0a",
       "size_bytes": 184320,
-      "active_files": 23,
-      "allocated_granules": 45,
+      "active_files": 24,
+      "allocated_granules": 47,
       "free_granules": [
-        0,
-        1,
         7,
         8,
         9,
@@ -130,14 +128,16 @@
       ]
     }
   ],
-  "extracted_files": 93,
+  "extracted_files": 94,
   "verification": [
-    "The BOOT disk is byte-identical to the user-promoted EDIT FIX5 disk; the TOOLS and BENCH disks remain byte-identical to their existing baselines.",
-    "Every active file is mirrored in extracted/ at the exact byte level: BOOT 54, TOOLS 16, BENCH 23 (93 total).",
-    "Only BOOT EDIT.DRV and DOSCORE.DRV differ in file contents from the prior official baseline; EDIT's original granule remains allocated with updated last-sector length and C9 FAT terminal marker.",
-    "All 78-granule FATs and directory chains were checked; BOOT retains 72 allocated and 6 free granules, without looped, invalid or cross-linked chains.",
-    "All unrelated extracted files, TOOLS and BENCH disk images, and BENCH scores and references remain unchanged.",
-    "User explicitly promoted FIX5 to baseline; no new VCC-EDB runtime test is claimed."
+    "Official v15 BENCH Sockmaster Classic FIX2 baseline promoted after explicit user confirmation on 2026-11-22; BOOT FIX5 and TOOLS baselines are unchanged.",
+    "All 24 BENCH files verified byte-for-byte against extracted/bench; XMM.BAS and XMSHOW.BAS changed, SMBENCH.BAS was added, and 21 other original BENCH files are identical.",
+    "The promoted BENCH DSK is 184320 bytes; 24 entries, 47 allocated and 31 free granules. FAT/directory chains checked for invalid links, loops and crosslinks.",
+    "FIX2 fixes invalid ASCII GOTO/THEN in SMBENCH and GOTO/GOSUB/THEN in XMSHOW, repairs input handling/page wraparound and labels pages 1/5 to 5/5.",
+    "The six historical Sockmaster score baselines (100, 114, 200, 228, 268, 275) and 13544 previously observed EDB score are separately labeled references; SMBSCORE.DAT is created only after an actual run.",
+    "All BOOT and TOOLS images and their extracted original files remain byte-identical to previously promoted baselines.",
+    "Promotion is authorized by the user's explicit baseline confirmation; no new independent VCC-EDB test was conducted by the assistant during promotion.",
+    "GitHub v15 release BOOT/BENCH binary attachments may predate main; a repository commit does not automatically replace GitHub release assets."
   ],
-  "source_commit_note": "The manifest and the two changed BOOT extracts are committed atomically with the promoted BOOT disk. Null avoids a circular Git commit reference."
+  "source_commit_note": "Official disk images and exact extracted files are promoted atomically with this manifest; null source_commit avoids a Git commit-reference cycle."
 }

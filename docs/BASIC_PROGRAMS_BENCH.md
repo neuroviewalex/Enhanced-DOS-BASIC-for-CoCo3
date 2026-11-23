@@ -1,6 +1,6 @@
 # EDB v15 BASIC Program Reference - BENCH Disk
 
-**Coverage:** All 5 `.BAS` entries on the authoritative v15 BENCH disk.  
+**Coverage:** All **6 official BENCH `.BAS` entries**, including the user-promoted Sockmaster Classic BASIC FIX2 program.  
 **Method:** Reviewed the tokenized BASIC source and the native files it calls.  
 **Status:** Source-level reference; no new CPU benchmark or emulator run was performed in producing this documentation.  
 **Links:** [Complete program index](BASIC_PROGRAM_REFERENCE.md) | [User manual](USER_MANUAL.md) | [BOOT](BASIC_PROGRAMS_BOOT.md) | [TOOLS](BASIC_PROGRAMS_TOOLS.md).
@@ -14,6 +14,7 @@ The BENCH disk contains the current XMM diagnostic and benchmark environment. So
 | [HELP.BAS](#helpbas---integrated-help-copy) | Full HELP reference copied from TOOLS | Dynamic topic lookup and 10000-series help topics |
 | [XBENCH.BAS](#xbenchbas---legacy-xmemxmath-service-benchmark) | Benchmark legacy XMEM/XMATH services | 9000, 9100, 9200, 9300, 57000-62400, 63000 |
 | [XMBCPU.BAS](#xmbcpubas---6809-and-6309-native-memory-comparison) | Benchmark and compare native CPU-specific memory manager paths | 7000-7350, 8500, 8800, 9000 |
+| [SMBENCH.BAS](#smbenchbas---sockmaster-classic-basic-benchmark) | Classic interpreted BASIC loop, one-run score and verification | 10, 20, 30, 40-90, 900 |
 | [XMM.BAS](#xmmbas---xmm-diagnostics-controller) | XMM menu and native test dispatcher | 7000, 61000, 61600, 62000 |
 | [XMSHOW.BAS](#xmshowbas---saved-results-viewer) | Compare stored CPU and service results | 500, 600, 1500, 1600, 1700, 1710, 2000-2640 |
 
@@ -101,9 +102,36 @@ Timing uses an adaptive number of repetitions aimed at roughly 30 timer ticks. I
 
 **Interpretation:** Run the same benchmark on both CPU configurations to populate a meaningful comparison; until both have valid records, the program reports the comparison as pending.
 
+## SMBENCH.BAS - Sockmaster Classic BASIC benchmark
+
+**Status:** Official BENCH program, user-promoted Sockmaster FIX2. **Credit:** Sockmaster for the original classic three-line loop.
+
+**Launch:** Open `XMM` and press **L**, or enter `XMM CLASSIC` (aliases `XMM SOCK` / `XMM SOCKMASTER`). The timer loop runs once, saves `SMBSCORE.DAT` on the current writable drive, verifies the saved result, then launches `XMSHOW.BAS` in page-5 mode. It does not perform I/O inside the timing loop.
+
+| BASIC lines | Function |
+| --- | --- |
+| 1-5 | Show benchmark name and instructions. |
+| 10 | Initialize A and reset TIMER. |
+| 20 | Repeat Sockmaster's original `IF TIMER<60 THEN A=A+1:GOTO20` loop. |
+| 30 | Capture and print the resulting loop count once. |
+| 40-50 | Install an I/O error handler and write a versioned `SMBSCORE.DAT` record. |
+| 60-70 | Reopen the score record and check its identifier and numeric value. |
+| 80-90 | Set a page-5 navigation marker and chain to XMSHOW. |
+| 900 | Report failure to save/verify without claiming the score was persisted. |
+
+**Historical bases:** 6809/1 MHz = 100; 6309 native/1 MHz = 114; 6809/2 MHz = 200; 6309 native/2 MHz = 228; doubled-clock 6809 = 268; doubled-clock native 6309 = 275. These are the supplied historical Sockmaster results, not newly tested EDB measurements.
+
+**Separate EDB measurement:** **13,544**, recorded by the author using a Hitachi 6309 native at 125.28 MHz on EDB v15 in VCC-EDB with custom ROMs. The program only displays this number as a fixed comparison reference; it does **not** seed `SMBSCORE.DAT` with that value.
+
+**FIX2 repair:** The first candidate encoded ASCII `GOTO20` in its tokenized BASIC, causing `SN BUG at 20`. FIX2 corrects the control-flow token bytes for SMBENCH lines 20, 40 and 70; it also repairs 15 ASCII keyword occurrences in 14 changed XMSHOW lines. FIX2 preserves the existing XMM.BAS bytes.
+
+**Dependencies and safety:** `XMM.BAS` to launch, `XMSHOW.BAS` to report, and a writable score-file destination. Running `SMBENCH.BAS` may overwrite an earlier `SMBSCORE.DAT`; back up scores you want to retain. It has been validated through static token/disk checks only; VCC-EDB runtime testing is required before baseline promotion.
+
+See the [user manual](USER_MANUAL.md#sockmaster-classic-basic---benchmark-and-comparison) and [benchmark notes](SOCKMASTER_BENCH.md).
+
 ## XMM.BAS - XMM diagnostics controller
 
-**Syntax:** `XMM` opens the menu; supported arguments include `XMM HW`, `XMM ALLOC`, `XMM ARENA`, `XMM API`, `XMM OBJ`, `XMM GC`, `XMM MATH`/`MUL`, `XMM SIGNED`, `XMM PAGE`, `XMM ALL`, `XMM BENCH`, `XMM STATUS`, and `XMM ?`.
+**Syntax:** `XMM` opens the menu; supported arguments include `XMM HW`, `XMM ALLOC`, `XMM ARENA`, `XMM API`, `XMM OBJ`, `XMM GC`, `XMM MATH`/`MUL`, `XMM SIGNED`, `XMM PAGE`, `XMM ALL`, `XMM BENCH`, `XMM STATUS`, and `XMM ?`. The promoted version supports `XMM CLASSIC`, `XMM SOCK`, and `XMM SOCKMASTER` to run `SMBENCH.BAS`.
 
 **Menu:**
 
@@ -121,10 +149,11 @@ Timing uses an adaptive number of repetitions aimed at roughly 30 timer ticks. I
 | A | Run all tests | Native/test-module sequence |
 | B | Legacy-service benchmark | `XBENCH.BAS` |
 | C | CPU comparison benchmark | `XMBCPU.BAS` |
+| L | Sockmaster Classic BASIC benchmark | `SMBENCH.BAS` |
 | V | Saved result viewer | `XMSHOW.BAS` |
 | N | Native manager test | CPU-specific XMM engine |
 
-The menu also recognizes diagnostic letters P, Q, R, S, T and U for development; they are **not** part of the ordinary public workflow.
+The menu also recognizes diagnostic letters P, Q, R, S, T and U for development; they are **not** part of the ordinary public workflow. The current version uses **L**, rather than S, for Sockmaster to preserve the existing XMM S diagnostic behavior.
 
 **Routines:**
 
@@ -141,7 +170,7 @@ The menu also recognizes diagnostic letters P, Q, R, S, T and U for development;
 | 61600-61680 | Select `XMM6809.BIN` or `XMM6309.BIN` based on CPU profile. |
 | 62000-62900 | Restore `HISTORY.DRV` and report failures requiring reboot. |
 
-**Dependencies:** `XKEY.DRV`, `HISTORY.DRV`, `sysinfo.inf`, native XMM6809/XMM6309 binaries, `XT*.DRV` test modules, XBENCH/XMBCPU/XMSHOW and XMM-specific memory signatures.
+**Dependencies:** `XKEY.DRV`, `HISTORY.DRV`, `sysinfo.inf`, native XMM6809/XMM6309 binaries, `XT*.DRV` test modules, XBENCH/XMBCPU/XMSHOW, SMBENCH and XMM-specific memory signatures.
 
 **Caution:** XMM operates on real native memory allocation and MMU mappings. The code checks for live pages, expected memory hook signatures and compatible 512K profile before significant operations. Never interpret the existence of an XMM option as authorization to disrupt a separate live manager.
 
@@ -149,9 +178,9 @@ The menu also recognizes diagnostic letters P, Q, R, S, T and U for development;
 
 **Intended entry:** V from the XMM diagnostics menu.
 
-**Use:** Read and present up to four screens of saved CPU-native and XMEM/XMATH service benchmark results. Distinguishes measured values (**M**) from saved reference/fallback estimates (**R**) and missing entries.
+**Use:** Read and present the five official comparison pages including Sockmaster on page 5 of saved CPU-native and XMEM/XMATH service benchmark results. Distinguishes measured values (**M**) from saved reference/fallback estimates (**R**) and missing entries.
 
-**Navigation:** N = next page, P = previous page, Q = return to XMM menu. The source handles keyboard polling and key-release logic.
+**Navigation:** N = next page, P = previous page, Q = return to XMM menu, and **S** = jump to Sockmaster page 5. FIX2 preserves `INKEY$` instead of immediately blanking its value and wraps backward from page 1 to page 5. The user promoted FIX2; the assistant did not independently execute a new VCC-EDB test during this promotion.
 
 **Pages:**
 
@@ -161,6 +190,7 @@ The menu also recognizes diagnostic letters P, Q, R, S, T and U for development;
 | 2 | XMEM service reload, object/status, read/write throughput. |
 | 3 | Math/vector operations and BASIC/XMATH dot rates. |
 | 4 | Math/cycles and additional service statistics. |
+| 5 | Sockmaster Classic BASIC score, six historical base scores, speed ratios, and the separate 13,544 EDB reference. |
 
 **Internal routines:**
 
@@ -174,9 +204,11 @@ The menu also recognizes diagnostic letters P, Q, R, S, T and U for development;
 | 2000-2110 | Read `XBSCORE.DAT`; handle missing values. |
 | 2300-2420 | Load `XBREF.DAT` fallback data where measurements are missing. |
 | 2500-2640 | Supply built-in native reference values and adjust a reference to the measured clock if possible. |
+| 15000-15410 | Render Sockmaster comparison page and ratios for six fixed baselines. |
+| 16500-16595 | Read and validate `SMBSCORE.DAT`; return a missing-score state if no valid file is available. |
 | 30000-31010 | Data labels and built-in reference records. |
 
-**Persistent files:** `XMSCORE.DAT` (native CPU), `XBSCORE.DAT` (legacy services), `XBREF.DAT` (reference data). Source-level viewer code opens these for input and uses local arrays; it does not overwrite their score records.
+**Persistent files:** `XMSCORE.DAT` (native CPU), `XBSCORE.DAT` (legacy services), `XBREF.DAT` (reference data) and `SMBSCORE.DAT` (last Sockmaster loop score). Source-level viewer code opens these for input and uses local arrays; it does not overwrite their score records.
 
 **Caution:** Reference and clock-projected figures are not fresh measurements. Use actual saved measurements from each CPU when comparing hardware or emulator performance.
 
@@ -189,9 +221,10 @@ The menu also recognizes diagnostic letters P, Q, R, S, T and U for development;
       | - XTOBJ / XTGC / XTMATH / XTSIGN / XTPAGE
       | - XBENCH.BAS -> XMEMHW.DRV + XMATH.DRV -> XBSCORE.DAT
       | - XMBCPU.BAS -> XMM6809.BIN or XMM6309.BIN -> XMSCORE.DAT
+      | - SMBENCH.BAS -> SMBSCORE.DAT -> XMSHOW page 5
       | - XMSHOW.BAS -> XMSCORE.DAT + XBSCORE.DAT + XBREF.DAT
       | - HELP.BAS (shared topic reference)
 
 ## Scope and preservation
 
-This document covers **every BASIC file** in the five-file BENCH inventory. It does not claim to disassemble or document every native DRV/BIN instruction. For those programs, see the source dependencies listed above. The original BENCH scores and images were not regenerated, erased, or altered during this documentation audit.
+This reference covers **all six official BENCH BASIC programs**, including SMBENCH.BAS. It does not claim to disassemble or document every native DRV/BIN instruction. For those programs, see the source dependencies listed above. The original BENCH scores and images were not regenerated, erased, or altered during this documentation audit.

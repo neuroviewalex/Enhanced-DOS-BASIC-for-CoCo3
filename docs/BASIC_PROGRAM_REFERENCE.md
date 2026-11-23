@@ -1,16 +1,16 @@
 # EDB v15 - Complete BASIC Program and Function Reference
 
-**Official program inventory for the current promoted v15 disks**  
-**Source baseline:** `EDB_v15_512k_boot.dsk` SHA-256 `974d15a700765469fdc4e8672b0f0d0ea5c5a5d0b2f038823c72c399d80d50f7`, plus the unchanged official TOOLS and BENCH disks.  
-**Documentation coverage:** **45 of 45** current `.BAS` directory entries audited and documented, including the literal `*.BAS` file and all three HELP.BAS variants/copies.  
-**Validation:** Static inspection of tokenized CoCo BASIC files from `extracted/` on GitHub. These descriptions are not a claim of new VCC-EDB or hardware testing.
+**Official v15 inventory: BOOT, TOOLS and the user-promoted Sockmaster FIX2 BENCH disk**  
+**Source baseline:** `EDB_v15_512k_boot.dsk` SHA-256 `974d15a700765469fdc4e8672b0f0d0ea5c5a5d0b2f038823c72c399d80d50f7`, plus the official TOOLS and Sockmaster FIX2 BENCH disks.  
+**Documentation coverage:** **46 of 46** current official BASIC entries (including `SMBENCH.BAS`), including the literal `*.BAS` file and all three HELP.BAS variants/copies.  
+**Validation:** Static inspection of tokenized CoCo BASIC files from `extracted/` on GitHub. Sockmaster FIX2 was explicitly promoted by the user; the assistant did not perform a new VCC-EDB test during promotion. GitHub release attachments may be older.
 
 ## Start here
 
-- [**Official EDB v15 User Manual**](USER_MANUAL.md) - user-oriented command syntax, FIND/LOAD/EDIT/SAVE examples and troubleshooting.
+- [**Official EDB v15 User Manual**](USER_MANUAL.md) - all commands, FIND/LOAD/EDIT/SAVE, XMM, and Sockmaster Classic instructions.
 - [**BOOT BASIC programs and functions**](BASIC_PROGRAMS_BOOT.md) - **26 entries**. Startup, profiles, disk navigation, display, editor dispatcher, file commands and upgrades.
 - [**TOOLS BASIC programs and functions**](BASIC_PROGRAMS_TOOLS.md) - **14 entries**. HELP, FIND/TYPE, disk checks, guarded copying, installation and memory reporting.
-- [**BENCH BASIC programs and functions**](BASIC_PROGRAMS_BENCH.md) - **5 entries**. XMM diagnostics, service/native benchmarks and results viewer.
+- [**BENCH BASIC programs and functions**](BASIC_PROGRAMS_BENCH.md) - **6 entries**. XMM diagnostics, service/native benchmarks and results viewer.
 
 Every program section explains its purpose, command syntax where applicable, implementation paths, important GOSUB routine entry points, dependencies, side effects, and known limitations. A `GOSUB` line number is local to its own BASIC file; it is not a command name.
 
@@ -64,13 +64,14 @@ Every program section explains its purpose, command syntax where applicable, imp
 | `T40.BAS` | [Compatibility CHKDSK wrapper](BASIC_PROGRAMS_TOOLS.md#t40bas---geometry-checker-compatibility-wrapper) | [File](../extracted/tools/T40.BAS) |
 | `TYPE.BAS` | [TYPE and FIND engine](BASIC_PROGRAMS_TOOLS.md#typebas---disk-file-viewer-and-find-engine) | [File](../extracted/tools/TYPE.BAS) |
 
-## BENCH disk - 5 BASIC entries
+## BENCH disk - 6 BASIC entries
 
 | File | Documentation | Direct source |
 | --- | --- | --- |
 | `HELP.BAS` | [Duplicate full help engine](BASIC_PROGRAMS_BENCH.md#helpbas---integrated-help-copy) | [File](../extracted/bench/HELP.BAS) |
 | `XBENCH.BAS` | [XMEM/XMATH service benchmark](BASIC_PROGRAMS_BENCH.md#xbenchbas---legacy-xmemxmath-service-benchmark) | [File](../extracted/bench/XBENCH.BAS) |
 | `XMBCPU.BAS` | [6809 / 6309 native tests](BASIC_PROGRAMS_BENCH.md#xmbcpubas---6809-and-6309-native-memory-comparison) | [File](../extracted/bench/XMBCPU.BAS) |
+| `SMBENCH.BAS` | [Sockmaster Classic BASIC loop](BASIC_PROGRAMS_BENCH.md#smbenchbas---sockmaster-classic-basic-benchmark) | [File](../extracted/bench/SMBENCH.BAS) |
 | `XMM.BAS` | [Diagnostics controller](BASIC_PROGRAMS_BENCH.md#xmmbas---xmm-diagnostics-controller) | [File](../extracted/bench/XMM.BAS) |
 | `XMSHOW.BAS` | [Saved benchmark viewer](BASIC_PROGRAMS_BENCH.md#xmshowbas---saved-results-viewer) | [File](../extracted/bench/XMSHOW.BAS) |
 
@@ -108,11 +109,12 @@ See the [complete user workflow](USER_MANUAL.md#2-the-five-command-programming-w
     XMM.BAS -> native XT*.DRV tests
     XMM.BAS -> XBENCH.BAS -> XBSCORE.DAT
     XMM.BAS -> XMBCPU.BAS -> XMSCORE.DAT
+    XMM.BAS -> SMBENCH.BAS -> SMBSCORE.DAT -> XMSHOW page 5
     XMM.BAS -> XMSHOW.BAS -> saved measurements/reference
 
 ## Source, terminology and scope
 
-- The official BOOT, TOOLS and BENCH disks are represented in [`extracted/`](../extracted/) and verified by [`MANIFEST.json`](../extracted/MANIFEST.json). In total there are 93 extracted files, of which **45** end in `.BAS`.
+- The official BOOT, TOOLS and BENCH disks are represented in [`extracted/`](../extracted/) and verified by [`MANIFEST.json`](../extracted/MANIFEST.json). The official disks now contain **94 extracted files (46 BASIC)**, including SMBENCH.BAS. The prior baseline had 93 extracted files (45 BASIC).
 - Files are stored in their original tokenized CoCo BASIC format. Text shown in the reference was reconstructed from BASIC tokens and reviewed by program line number; it was **not** substituted into the disks.
 - `*.BAS` is a **literal directory filename** on BOOT; do not count it as a wildcard file collection.
 - The three `HELP.BAS` directory entries are counted separately. TOOLS and BENCH hold the same full program; BOOT holds a different small dispatcher.
@@ -130,4 +132,4 @@ For each authorized future change to an EDB `.BAS` file:
 4. Commit documentation changes with a clear explanation and verify the Git diff.
 5. Never silently modify EDB binaries or declare a new software baseline as part of a manual-only edit.
 
-The authoritative reference always lives on GitHub in these Markdown files, alongside [`USER_MANUAL.md`](USER_MANUAL.md).
+The authoritative reference lives on GitHub alongside [`USER_MANUAL.md`](USER_MANUAL.md). Sockmaster Classic FIX2 has been explicitly promoted as the official BENCH baseline. GitHub release attachments may predate the current repository disks.

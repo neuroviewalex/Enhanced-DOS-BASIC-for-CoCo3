@@ -2,7 +2,7 @@
 
 **Platform:** Tandy Color Computer 3 with 512K RAM  
 **Edition:** Complete BASIC-program user handbook - 2026-11-22  
-**Baseline:** Official v15 BOOT with SHIFT-arrow EDIT FIX5 and SAVE type initialization, plus official TOOLS and BENCH disks.
+**Baseline:** Official v15 BOOT with SHIFT-arrow EDIT FIX5 and SAVE type initialization. **Official BENCH baseline:** Sockmaster Classic BASIC FIX2, explicitly promoted by the user. The GitHub v15 release attachments may predate the repository images.
 
 This is the **main, living EDB v15 handbook**. It explains the entire current BASIC utility environment - startup, volumes, program editing, files, backups, colour, keyboard, memory management, diagnostics and benchmarks - rather than only the original five-command programming workflow.
 
@@ -23,7 +23,7 @@ The authoritative text is versioned in GitHub alongside the unchanged source ext
 9. [XMM diagnostics and benchmarking](#9-xmm-diagnostics-and-benchmarking)
 10. [Practical recipes](#10-practical-recipes)
 11. [Troubleshooting and data protection](#11-troubleshooting-and-data-protection)
-12. [All 45 BASIC program entries](#12-all-45-basic-program-entries)
+12. [All 46 BASIC program entries](#12-all-46-candidate-basic-program-entries)
 13. [Technical notes and function reference](#13-technical-notes-and-function-reference)
 14. [Maintaining this manual](#14-maintaining-this-manual)
 
@@ -727,7 +727,7 @@ See Chapter 3 for finding the full HELP database. HELP uses topic tables within 
 
 ## 9. XMM diagnostics and benchmarking
 
-The BENCH disk holds the v15 memory manager diagnostics and performance tools. The relevant five BASIC entries are `HELP.BAS`, `XMM.BAS`, `XBENCH.BAS`, `XMBCPU.BAS`, and `XMSHOW.BAS`.
+The official BENCH disk has **six BASIC programs**, including the user-promoted `SMBENCH.BAS` Sockmaster Classic BASIC benchmark.
 
 ### XMM - diagnostics menu and controller
 
@@ -755,10 +755,13 @@ Running `XMM` opens the diagnostics menu. The current controller dispatches test
 | A | Run all diagnostics |
 | B | XMEM/XMATH services benchmark |
 | C | CPU-specific native benchmark |
+| L | Sockmaster Classic BASIC benchmark |
 | V | View saved benchmark results |
 | N | Native manager diagnostic |
 
 The controller also recognizes named arguments such as `HW`, `ALLOC`, `ARENA`, `API`, `OBJ`, `GC`, `MATH`, `SIGNED`, `PAGE`, `ALL`, `BENCH` and `STATUS`.
+
+Supported command aliases: `XMM CLASSIC`, `XMM SOCK`, and `XMM SOCKMASTER`. The original XMM internal S diagnostic remains unchanged; **L** launches Sockmaster.
 
 Before significant operations it checks expected history hooks, hardware memory profile and whether conflicting native pages/services are in use. The menu uses hold BREAK/ESC exit handling. Some additional letter keys are development/debug paths, not recommended normal commands.
 
@@ -782,11 +785,44 @@ For a valid CPU comparison, run the same test in both configurations under compa
 
 ### XMSHOW - results browser
 
-Open XMM and select **V**. The four pages display native CPU scores, XMEM service throughput, vector math speed and math/cycle results.
+Open XMM and select **V**. The official v15 FIX2 version has five comparison pages, ending with **Sockmaster page 5/5**, after the existing native CPU, XMEM services, vector, and math pages.
 
-**Keys:** N = next, P = previous, Q = menu. Values marked **M** are measured; values marked **R** are reference/projection data, not fresh measurements.
+**Keys:** N = next, P = previous, Q = menu. S jumps straight to Sockmaster page 5/5; N/P cycle through five pages. Labels M and R on the original benchmark pages continue to mean measured and reference values.
 
-It reads `XMSCORE.DAT`, `XBSCORE.DAT`, and reference `XBREF.DAT`; absent scores are identified rather than fabricated as measured data.
+It reads `XMSCORE.DAT`, `XBSCORE.DAT`, and reference `XBREF.DAT`; absent scores are identified rather than fabricated as measured data. Page 5 additionally reads `SMBSCORE.DAT` and displays `--` when no valid score is saved.
+
+### Sockmaster Classic BASIC - benchmark and comparison
+
+**Attribution:** Sockmaster. **Availability:** official BENCH image on GitHub `main`. The GitHub v15 release-page binary attachment may be older than this repository baseline.
+
+Open `XMM` and press **L**, or run `XMM CLASSIC`. `SMBENCH.BAS` performs one timed BASIC loop, saves the score in `SMBSCORE.DAT` on the current writable drive, verifies the record, and automatically opens XMSHOW **page 5/5**. No printing or disk access occurs during the timed loop.
+
+The original classic benchmark is:
+
+```basic
+10 A=0:TIMER=0
+20 IF TIMER<60 THEN A=A+1:GOTO20
+30 PRINT A:RUN
+```
+
+EDB keeps the timing workload from lines 10 and 20 but captures the score once, without `PRINT A:RUN` repeatedly restarting the test. The result counts interpreted BASIC iterations during 60 TIMER ticks. **Higher is better**, but it is not a pure CPU machine-code benchmark.
+
+| Sockmaster historical baseline | Score |
+| --- | ---: |
+| 6809, 1 MHz | 100 |
+| 6309 native, 1 MHz | 114 |
+| 6809, 2 MHz | 200 |
+| 6309 native, 2 MHz | 228 |
+| 6809, doubled-clock 4 MHz accelerator | 268 |
+| 6309 native, doubled-clock 4 MHz accelerator | 275 |
+
+**Separate EDB v15 comparison measurement:** **13,544**, reported by the project author running a Hitachi 6309 in native mode at **125.28 MHz**, using VCC-EDB with custom ROMs. This is a recorded EDB result, not an additional historical Sockmaster baseline.
+
+XMSHOW page 5 displays all six historical bases, the latest saved score, ratios to each base, and the ratio to the 13,544 EDB reference. It uses `SMBSCORE1` as the file format identifier. An absent or invalid file results in `CURRENT SCORE --`.
+
+**FIX2:** The first candidate had `SN BUG at 20` because its generated BASIC stored ASCII `GOTO20` instead of the tokenized BASIC operation. FIX2 corrects that and other ASCII `GOTO`, `GOSUB` and `THEN` errors, restores the S key input, fixes page wraparound and updates page titles to 1/5 through 5/5. These changes have been verified against extracted tokenized files and the promoted disk. The user explicitly promoted FIX2, but the assistant did not perform a separate VCC-EDB test during this promotion.
+
+See the [benchmark notes](SOCKMASTER_BENCH.md) and the [SMBENCH technical entry](BASIC_PROGRAMS_BENCH.md#smbenchbas---sockmaster-classic-basic-benchmark).
 
 ### BENCH HELP.BAS
 
@@ -874,7 +910,7 @@ overwrites every sector on the destination disk. Double-check both drives before
 XMM
 ```
 
-Select V to view measured/reference results. Use B for XMEM/XMATH service benchmarks and C for the native CPU comparison. The score displays are not equivalent to rerunning the test.
+Select V to review saved results. Use B for XMEM/XMATH service benchmarks and C for native CPU tests. On the official BENCH disk, **L** runs Sockmaster and **V, then S** opens its fifth comparison page. Viewing a score does not rerun a benchmark.
 
 
 <a id="8-worked-examples"></a>
@@ -1001,10 +1037,12 @@ The disk-maintenance commands have different risk profiles. `TYPE`, `COMPARE` an
 
 
 <a id="13-complete-basic-program-and-function-reference"></a>
+<a id="12-all-45-basic-program-entries"></a>
+<a id="12-all-46-candidate-basic-program-entries"></a>
 
-## 12. All 45 BASIC program entries
+## 12. All 46 BASIC program entries
 
-The current official disk images contain **26 BOOT, 14 TOOLS and 5 BENCH `.BAS` directory entries**, including the literal `*.BAS` startup file. The two large HELP files on TOOLS and BENCH are identical; the BOOT HELP dispatcher is distinct.
+The official disks contain **26 BOOT + 14 TOOLS + 6 BENCH = 46** BASIC entries, including promoted `SMBENCH.BAS`,  including the literal `*.BAS` startup file. The two large HELP files on TOOLS and BENCH are identical; the BOOT HELP dispatcher is distinct.
 
 This table is included **inside the user manual** so every filename is discoverable here. Each link opens a source-audited entry with internal function/subroutine descriptions; the program behavior and syntax are explained in the relevant chapters above.
 
@@ -1058,13 +1096,14 @@ This table is included **inside the user manual** so every filename is discovera
 | `T40.BAS` | [Compatibility CHKDSK wrapper](BASIC_PROGRAMS_TOOLS.md#t40bas---geometry-checker-compatibility-wrapper) | [File](../extracted/tools/T40.BAS) |
 | `TYPE.BAS` | [TYPE and FIND engine](BASIC_PROGRAMS_TOOLS.md#typebas---disk-file-viewer-and-find-engine) | [File](../extracted/tools/TYPE.BAS) |
 
-### BENCH - 5 programs
+### BENCH - 6 programs
 
 | File | Documentation | Direct source |
 | --- | --- | --- |
 | `HELP.BAS` | [Duplicate full help engine](BASIC_PROGRAMS_BENCH.md#helpbas---integrated-help-copy) | [File](../extracted/bench/HELP.BAS) |
 | `XBENCH.BAS` | [XMEM/XMATH service benchmark](BASIC_PROGRAMS_BENCH.md#xbenchbas---legacy-xmemxmath-service-benchmark) | [File](../extracted/bench/XBENCH.BAS) |
 | `XMBCPU.BAS` | [6809 / 6309 native tests](BASIC_PROGRAMS_BENCH.md#xmbcpubas---6809-and-6309-native-memory-comparison) | [File](../extracted/bench/XMBCPU.BAS) |
+| `SMBENCH.BAS` | [Sockmaster Classic BASIC](BASIC_PROGRAMS_BENCH.md#smbenchbas---sockmaster-classic-basic-benchmark) | [File](../extracted/bench/SMBENCH.BAS) |
 | `XMM.BAS` | [Diagnostics controller](BASIC_PROGRAMS_BENCH.md#xmmbas---xmm-diagnostics-controller) | [File](../extracted/bench/XMM.BAS) |
 | `XMSHOW.BAS` | [Saved benchmark viewer](BASIC_PROGRAMS_BENCH.md#xmshowbas---saved-results-viewer) | [File](../extracted/bench/XMSHOW.BAS) |
 
@@ -1077,7 +1116,7 @@ This manual is written for people using EDB. The [source-audited BASIC program r
 
 - [BOOT - 26 BASIC entries](BASIC_PROGRAMS_BOOT.md) - startup, profiles, CD, file utilities, display and cache maintenance.
 - [TOOLS - 14 BASIC entries](BASIC_PROGRAMS_TOOLS.md) - disk checkers, guarded copying, HELP, FIND/TYPE and routing.
-- [BENCH - 5 BASIC entries](BASIC_PROGRAMS_BENCH.md) - XMM menu, 6809/6309 native benchmarks and result handling.
+- [BENCH - 6 BASIC entries](BASIC_PROGRAMS_BENCH.md) - XMM menu, 6809/6309 native benchmarks and result handling.
 
 ### How the commands communicate
 
@@ -1095,7 +1134,7 @@ A complete instruction-level driver reference is outside the scope of a BASIC-pr
 
 ### Verification standard
 
-All 45 BASIC entries documented here were inspected as tokenized source on GitHub. The command descriptions, examples and known limitations are source-grounded; **they do not constitute an additional VCC-EDB or physical CoCo execution test**. Results that depend on disk health, controller support, native resident memory and emulator-specific features still need runtime confirmation.
+All 46 official BASIC entries were inspected as tokenized source on GitHub. The command descriptions, examples and known limitations are source-grounded; **they do not constitute an additional VCC-EDB or physical CoCo execution test**. Results that depend on disk health, controller support, native resident memory and emulator-specific features still need runtime confirmation.
 
 
 <a id="12-maintaining-this-manual"></a>
@@ -1111,8 +1150,8 @@ The authoritative manual is this file: [`docs/USER_MANUAL.md`](USER_MANUAL.md), 
 - Manual-only changes must not silently alter disk images, BASIC programs, or binary drivers.
 - Record documentation changes through Git commits. Changes to the official EDB software baseline continue to require the user's explicit authorization.
 
-**Source references:** All 45 program entries from BOOT, TOOLS and BENCH, with program-specific dependencies in the linked source-audited reference chapters.
+**Source references:** All 46 official BASIC entries, with their dependencies documented in the linked technical chapters.
 
 ---
 
-*Enhanced DOS BASIC v15 - Official living user manual. Covers all current BOOT, TOOLS and BENCH BASIC programs and related native commands.*
+*Enhanced DOS BASIC v15 - Living user manual. Includes the promoted Sockmaster Classic BASIC FIX2 benchmark and all 46 BASIC program entries.*
