@@ -9,6 +9,8 @@ https://github.com/neuroviewalex/VCC-EDB/releases/tag/v2.1.9.34
 
 EDB is for people who love the CoCo 3 and want to *use it*: write programs, explore disks, organize projects, experiment with 512K memory, and get things done without constantly juggling little utility programs.
 
+**Official User Manual:** [Read the EDB v15 User Manual](docs/USER_MANUAL.md) - the living, version-controlled reference for commands, examples, and development workflows.
+
 ## What can you do with EDB?
 
 ### Find your way around your disks
