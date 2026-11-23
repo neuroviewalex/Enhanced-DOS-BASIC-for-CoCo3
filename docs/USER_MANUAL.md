@@ -1,28 +1,32 @@
 # Enhanced DOS BASIC (EDB) v15 - Official User Manual
 
-**Platform:** Tandy Color Computer 3, 512K RAM  
-**Manual status:** Living manual - comprehensive BASIC program reference added, 2026-11-22  
-**Software baseline covered:** EDB v15 BOOT, user-promoted EDIT SHIFT navigation / SAVE correction / end-of-program FIX5.
+**Platform:** Tandy Color Computer 3 with 512K RAM  
+**Edition:** Complete BASIC-program user handbook - 2026-11-22  
+**Baseline:** Official v15 BOOT with SHIFT-arrow EDIT FIX5 and SAVE type initialization, plus official TOOLS and BENCH disks.
 
-This is the official, version-controlled EDB v15 user manual. It lives alongside the EDB source extracts and disk images so additions and corrections can be reviewed in GitHub history. This initial edition concentrates on loading, finding, editing, and saving BASIC programs. Other commands will be documented in subsequent editions; the absence of a command here does not mean EDB lacks it.
+This is the **main, living EDB v15 handbook**. It explains the entire current BASIC utility environment - startup, volumes, program editing, files, backups, colour, keyboard, memory management, diagnostics and benchmarks - rather than only the original five-command programming workflow.
 
-For the current software images, see the [repository README](../README.md) and [baseline history](../BASELINE_HISTORY.md). 
+The authoritative text is versioned in GitHub alongside the unchanged source extractions. For the current software images, see the [repository README](../README.md) and [baseline history](../BASELINE_HISTORY.md).
+
+
 
 ## Contents
 
 1. [Getting started](#1-getting-started)
-2. [The five-command programming workflow](#2-the-five-command-programming-workflow)
-3. [LAST - filename history](#3-last---filename-history)
-4. [LOAD - selecting a BASIC program](#4-load---selecting-a-basic-program)
-5. [FIND - locating text](#5-find---locating-text)
-6. [EDIT - changing program lines](#6-edit---changing-program-lines)
-7. [SAVE - writing a BASIC program](#7-save---writing-a-basic-program)
-8. [Worked examples](#8-worked-examples)
-9. [TYPE - viewing disk files](#9-type---viewing-disk-files)
-10. [Troubleshooting and data protection](#10-troubleshooting-and-data-protection)
-11. [Related EDB commands](#11-related-edb-commands)
-12. [Maintaining this manual](#12-maintaining-this-manual)
-13. [Complete BASIC program and function reference](#13-complete-basic-program-and-function-reference)
+2. [Command map and conventions](#2-command-map-and-conventions)
+3. [Booting and startup profiles](#3-booting-and-startup-profiles)
+4. [Drives, volumes and directory navigation](#4-drives-volumes-and-directory-navigation)
+5. [BASIC programming, finding and editing](#5-basic-programming-finding-and-editing)
+6. [Files, disk maintenance and backups](#6-files-disk-maintenance-and-backups)
+7. [Display and keyboard controls](#7-display-and-keyboard-controls)
+8. [System identification and memory information](#8-system-identification-and-memory-information)
+9. [XMM diagnostics and benchmarking](#9-xmm-diagnostics-and-benchmarking)
+10. [Practical recipes](#10-practical-recipes)
+11. [Troubleshooting and data protection](#11-troubleshooting-and-data-protection)
+12. [All 45 BASIC program entries](#12-all-45-basic-program-entries)
+13. [Technical notes and function reference](#13-technical-notes-and-function-reference)
+14. [Maintaining this manual](#14-maintaining-this-manual)
+
 
 ## 1. Getting started
 
@@ -50,7 +54,211 @@ The integrated `HELP` program resides on the Tools disk. Commands and filenames 
 
 **Important distinction:** A BASIC program in RAM is not the same thing as a copy saved on disk. Changes made with EDIT exist in memory until SAVE writes them to disk.
 
-## 2. The five-command programming workflow
+<a id="11-related-edb-commands"></a>
+
+## 2. Command map and conventions
+
+EDB combines **native BASIC statements**, **native machine-code extensions** and **BASIC utilities** stored as files. The distinction matters:
+
+- **Native statements**, such as `LOAD`, `SAVE`, `RUN`, `COPY` and `DRIVE`, are understood by the BASIC environment directly.
+- **Native extensions**, such as the current line-editing functionality in `EDIT.DRV`, add operations without requiring a matching user BASIC program to stay in RAM.
+- **Command utilities**, such as `DIR.BAS`, `CD.BAS`, `FIND.BAS` and `XMM.BAS`, are BASIC programs invoked by EDB's command environment. Running one can replace whatever BASIC program you had loaded.
+
+**Save important work before invoking a utility BASIC program.** A successful `RUN` from memory does not prove that a disk copy is current.
+
+Most user commands accept a trailing question mark for their built-in help. The more extensive `HELP` database is on TOOLS (and also on BENCH). The BOOT `HELP.BAS` finds that database when available.
+
+### Quick command directory
+
+| Area | Commands and utilities |
+| --- | --- |
+| Start, log in, configure | `*` (boot stub), `DOS`, `STARTUP`, `USER`, `ADMIN`, `AUTORUN`, `REBOOT`, `UPGRADE` |
+| Disks and paths | `CD`, `JUMP`, `FLIP`, `DIR`, `VOL`, `LABEL`, `PATH`, `DRIVE` |
+| BASIC development | `LOAD`, `SAVE`, `RUN`, `LIST`, `LAST`, `FIND`, `EDIT`, `TYPE` |
+| Files and backups | `DEL`, `REN`, `COMPARE`, `DISKCOPY`, `INSTALL`, `CHKDSK`, `T40`, `FORMAT`, `COPY`, `KILL`, `RENAME` |
+| Screen and keyboard | `WIDTH`, `COLOR`, `CURSOR`, `KEYREP` |
+| System information | `VER`, `ID`, `CPUID`, `VCC`, `MEM`, `MEM MAP`, `SYSMAP`, `HELP` |
+| XMM and performance | `XMM`, `XMM BENCH`, `XBENCH`, `XMBCPU`, `XMSHOW` |
+
+Only use examples on an appropriately mounted drive. A colon and drive number, such as `"GAME.BAS:1"`, explicitly addresses a disk drive in compatible BASIC file commands.
+
+### Where a command lives
+
+The BOOT disk is the startup environment. TOOLS provides HELP, disk utilities, FIND/TYPE and supporting commands. BENCH contains XMM controller and CPU benchmark programs. Some commands dispatch to machine-code `.DRV` or `.BIN` programs, which are documented as dependencies in this manual.
+
+**A warning for `*.BAS`:** This is a literal filename used for BOOT startup, not a request to run or edit every `.BAS` file.
+
+
+## 3. Booting and startup profiles
+
+### Boot startup - * and DOS
+
+The BOOT disk contains the literal `*.BAS` startup stub. It checks the expected FD-50X-style disk environment, rejects incompatible CoCoSDC configurations, initializes palette and width, then starts `BOOT.DRV`.
+
+The `DOS` command enters the native Enhanced DOS BASIC environment. Do not use `*.BAS` as a wildcard command. The supported system is a CoCo 3 with 512K RAM; VCC-EDB provides the enhanced emulator integrations described in the repository README.
+
+### STARTUP - edit the active profile
+
+```text
+STARTUP
+```
+
+STARTUP edits the BOOT disk's `startup.inf` fields: username, `WIDTH` setting, `COLOR` setting and an optional program to run before the command prompt. It reads the current values, prompts for replacements and verifies the saved profile by reading it back. Unlike USER/ADMIN, it normally does **not** reboot immediately.
+
+Example configuration values:
+
+```text
+Username: Guest
+Width: WIDTH 80
+Color: COLOR YELLOW ON BLACK
+Program:
+```
+
+An empty answer usually preserves the shown username/width/color, while the program field can be cleared. The command refuses to run while the resident XEDIT signature is active.
+
+### USER and ADMIN - profiles and login
+
+```text
+USER
+USER LOGIN
+ADMIN
+ADMIN LOGIN
+```
+
+`USER` edits `user.inf`; `ADMIN` edits `admin.inf`. Each stores a four-field profile and updates `startup.inf`, then invokes REBOOT. The `LOGIN` forms select the matching stored profile as active and restart without opening the full editor.
+
+`CD.BAS` also contains a boot profile selector, with USER and ADMIN pathways. Changes to an active profile affect startup behavior, not just the appearance of the current screen.
+
+### AUTORUN - disk-specific startup action
+
+```text
+AUTORUN
+AUTORUN ON
+AUTORUN OFF
+AUTORUN 1
+```
+
+No argument displays current autorun status. ON/OFF updates the global launch flag. An explicit drive number from 0 to 3 edits that disk's `autorun.inf`, supplying an application name, width, colour and optional program to launch when `CD` selects that disk.
+
+The BOOT drive cannot be configured with this edit mode. **When AUTORUN is enabled, a subsequent CD can start another program.** Use `AUTORUN OFF` before disk exploration when you do not want automatic launches.
+
+### REBOOT - restart the system
+
+```text
+REBOOT
+```
+
+Restores a standard startup display state and invokes the native reboot entry point. Any BASIC program edits not saved first are lost.
+
+### UPGRADE - installation and cache refreshing
+
+```text
+UPGRADE
+UPGRADE CACHE
+UPGRADE EDIT.DRV:3
+```
+
+`UPGRADE` without arguments installs a set of files from the drive-3 source to BOOT; `UPGRADE CACHE` requests a refresh of the RAM-backed drive-3 cache; a filename optionally qualified by source drive selects a targeted upgrade. The program calls `RAMBOOT.DRV` and includes a manifest-generation path. It protects disk-specific `volume.inf` from the single-file upgrade mode.
+
+**Treat UPGRADE as a system-maintenance command, not a read-only refresh.** It may overwrite installed files and alter cache state. Make a backup before running it. The current cache/driver implementation is specific to this EDB baseline.
+
+### HELP - on-disk documentation
+
+```text
+HELP
+HELP CD
+HELP XMM
+HELP EDIT
+```
+
+The BOOT `HELP.BAS` searches mounted disks for a full HELP and XMM installation. The full 480-line HELP engine appears on TOOLS and BENCH. Use `HELP BOOT1`, `HELP BOOT2`, `HELP TOOLS1` and `HELP TOOLS2` for built-in indexes. If it cannot find a full HELP installation, BOOT displays mounting instructions.
+
+The manual records code-verified behavior where HELP wording and implementation differ; see FIND in Chapter 5.
+
+
+## 4. Drives, volumes and directory navigation
+
+### CD - change drive or find a disk by name
+
+```text
+CD
+CD 1
+CD TOOLS
+CD ALL
+CD ..
+```
+
+`CD` selects drive 0 when no argument is supplied. Drives 0-3 can be selected numerically. A name such as `TOOLS` searches `volume.inf` labels case-insensitively, starting with visible drives. `CD ALL` lists mounted disk labels; period/slash forms can return to drive 0.
+
+On compatible VCC-EDB versions, a miss among visible drives can trigger a search of drive 3's disk-image playlist via native `CDSEQ.DRV`. That extension is **not** a generic real-CoCo feature. `CD` also coordinates volume display, screen preferences, and optional AUTORUN launching.
+
+### DIR - see files and free space
+
+```text
+DIR
+DIR 2
+DIR *.BAS
+DIR .DRV
+DIR GAME.BAS
+DIR INFO
+```
+
+`DIR [0-3] [name|.ext|INFO]` lists disk directory entries, filters by filename or extension and reports file count and approximate free disk space. It formats output for 32-, 40- or 80-column screens.
+
+The utility reads FAT and directory sectors directly. If a disk is missing `volume.inf`, its error recovery may create a default label file, so the listing is **not guaranteed read-only**. It concludes using `NEW`, so save a loaded BASIC program before running it.
+
+### VOL and LABEL - display or change volume names
+
+```text
+VOL
+VOL 2
+LABEL
+LABEL 2
+```
+
+`VOL` displays the name in `volume.inf` for the current or selected disk. If the label is absent and a disk is writable, it can create a `New disk` placeholder. `LABEL` prompts for and writes a new volume name. EDB volume names are **file-backed labels**, not media geometry.
+
+Labels make `CD TOOLS` and other name-based navigation practical.
+
+### PATH - see search order
+
+```text
+PATH
+```
+
+Displays the search priority: current drive, distinct RAM-cache drive, distinct boot drive, then other drives 0-3. PATH reports this order without modifying drive settings.
+
+### JUMP - change drive and optionally run
+
+```text
+JUMP 2
+JUMP 2 GAME.BAS
+```
+
+JUMP attempts drive selection, applies compatible RAM/physical routing where required, and either lists the destination directory or runs the named program. A supplied file replaces the active BASIC program. If it reports a skipped FLIP operation, verify the active drive rather than assuming a switch occurred.
+
+### FLIP - RAM/physical drive routing
+
+```text
+FLIP
+FLIP 3
+FLIP 0
+```
+
+FLIP manipulates EDB's RAM-cache and physical-disk routing after checking expected 512K driver signatures, and then displays the resulting volume or hands control to CD.
+
+**Current v15 caveat:** The `FLIP.BAS` source has an immediate branch that routes a requested `FLIP 2` to its "Drive 2 is physical" message before the later drive-2 toggle code. Do not rely on `FLIP 2` as an available toggle in this baseline without testing and a separately approved repair.
+
+**Native DRIVE:** BASIC's `DRIVE n` directly chooses the default disk number (0-3); it does not search by volume name or playlist.
+
+
+## 5. BASIC programming, finding and editing
+
+These commands form one workflow for editing the current BASIC program. Read the filename-history rules carefully - `FIND` searches a disk file, while native `EDIT` changes RAM.
+
+<a id="2-the-five-command-programming-workflow"></a>
+
+### The five-command programming workflow
 
 Five EDB commands form a useful programming workflow:
 
@@ -70,9 +278,11 @@ FIND  ->  LOAD  ->  EDIT  ->  SAVE  ->  LOAD  ->  RUN
 
 The initial FIND step can be omitted if you already know which line needs editing. Using `LOAD` **after** FIND is intentional: the current FIND utility runs BASIC helper code and searches the disk file, so it should not be treated as an in-memory editor or assumed to preserve the previously loaded program.
 
-## 3. LAST - filename history
+<a id="3-last---filename-history"></a>
 
-### Syntax
+### LAST - filename history
+
+#### Syntax
 
 ```basic
 LAST
@@ -94,13 +304,15 @@ These values are history records, **not** proof that the named file exists or th
 
 The native history storage is separate from the program text. In the v15 implementation, LAST displays the strings beginning at `$5EE0` (Last load), `$5EED` (Last run), and `$78DE` (Next save). These addresses are provided for technical reference, not as locations applications should modify.
 
-### When to use LAST
+#### When to use LAST
 
 Use LAST before an omitted-filename LOAD or SAVE to check which file EDB intends to use. If there is any doubt, use an explicit quoted filename instead.
 
-## 4. LOAD - selecting a BASIC program
+<a id="4-load---selecting-a-basic-program"></a>
 
-### Syntax
+### LOAD - selecting a BASIC program
+
+#### Syntax
 
 ```basic
 LOAD "filename"
@@ -125,7 +337,7 @@ EDB v15 also provides filename-free `LOAD`. The command uses the available **Nex
 
 Loading a program replaces the BASIC program presently in memory. SAVE unsaved changes first if they matter.
 
-### After searching with FIND
+#### After searching with FIND
 
 To edit a matching line reported by FIND, first load the intended file:
 
@@ -136,9 +348,11 @@ EDIT 120
 
 This makes it clear which file's contents you are changing.
 
-## 5. FIND - locating text
+<a id="5-find---locating-text"></a>
 
-### Syntax
+### FIND - locating text
+
+#### Syntax
 
 ```basic
 FIND "text" "filename"
@@ -163,7 +377,7 @@ Illustrative results:
 
 FIND's text matching is case-insensitive.
 
-### Omitting the filename
+#### Omitting the filename
 
 ```basic
 FIND "SCORE"
@@ -173,7 +387,7 @@ In the current v15 implementation, FIND obtains the **Last load** filename and u
 
 This is a key difference from the brief text in the existing `HELP FIND` screen, which describes the omitted-filename search as a loaded-program search. The underlying `FIND.BAS` and `TYPE.BAS` code is authoritative: the search is file-based.
 
-### Why a saved copy matters
+#### Why a saved copy matters
 
 If you modify line 120 with EDIT but have not yet saved the program, searching the disk file will still return the previous saved text. SAVE before searching for changes you just made.
 
@@ -181,16 +395,18 @@ FIND runs its search through `TYPE.BAS`, preloading the source to a temporary `E
 
 **Do not assume FIND preserves an unsaved BASIC program in RAM.** Save valuable changes and LOAD the program again before using EDIT.
 
-### Useful FIND messages
+#### Useful FIND messages
 
 - `No matches.` - no matching text was found.
 - `FIND: no loaded BASIC program` - the filename-free form could not identify a suitable Last load `.BAS` entry; this does not prove what is currently in RAM.
 - `FIND: binary file` - the file was not interpreted as supported search text/BASIC.
 - A preload/read error - check the filename, mounted disks, available space, and source/destination access.
 
-## 6. EDIT - changing program lines
+<a id="6-edit---changing-program-lines"></a>
 
-### Syntax
+### EDIT - changing program lines
+
+#### Syntax
 
 ```basic
 EDIT 120
@@ -217,7 +433,7 @@ to:
 
 Press **ENTER** to commit the edited line to the program in RAM.
 
-### Navigation without a line number
+#### Navigation without a line number
 
 Bare `EDIT` enters the native editor's line-browsing mode. The v15 FIX5 baseline supports:
 
@@ -234,15 +450,17 @@ At the beginning and end of the program, navigation stops on the boundary line. 
 
 **Commit changes with ENTER before navigating to another line.** Navigating must not silently discard an unfinished change.
 
-### What EDIT changes
+#### What EDIT changes
 
 EDIT updates the program held in memory; it does **not** save the file automatically. Once the changed program runs correctly, use SAVE to keep it.
 
 The `EDIT filename` command shown in the built-in help is a separate filename-loading form. For the search/edit workflow in this manual, use `LOAD "filename"` followed by `EDIT line-number` or bare `EDIT`.
 
-## 7. SAVE - writing a BASIC program
+<a id="7-save---writing-a-basic-program"></a>
 
-### Syntax
+### SAVE - writing a BASIC program
+
+#### Syntax
 
 ```basic
 SAVE "filename"
@@ -264,7 +482,7 @@ SAVE "GAME.BAS",A
 
 For routine EDB BASIC development, prefer the normal tokenized format unless you specifically need a text-format copy.
 
-### Saving without a filename
+#### Saving without a filename
 
 The v15 filename-history support allows:
 
@@ -274,7 +492,7 @@ SAVE
 
 EDB selects a recorded filename from its Next save / Last load state. Because the selected filename may not be the one you expect, first inspect `LAST` or supply a name explicitly.
 
-### Overwriting an existing file
+#### Overwriting an existing file
 
 ```basic
 SAVE "GAME.BAS"
@@ -288,15 +506,382 @@ For important work, preserve the original:
 SAVE "GAME2.BAS"
 ```
 
-### Save-format correction in v15 FIX5
+#### Save-format correction in v15 FIX5
 
 The user-promoted v15 FIX5 BOOT baseline restores `STX $0957` in `DOSCORE.DRV` before tokenized SAVE. This resets the BASIC file type and ASCII flags, preventing stale values from an earlier operation from being reused in a new directory entry.
 
 This correction does **not** make overwrite atomic, and it does not remove the need to verify a saved program after reloading.
 
-## 8. Worked examples
+<a id="9-type---viewing-disk-files"></a>
 
-### A. Find, change, save, and verify a program
+### TYPE - viewing disk files
+
+The Tools disk also includes TYPE, a viewing utility often used alongside FIND:
+
+```basic
+TYPE "GAME.BAS"
+```
+
+TYPE can display supported text and BASIC files page by page. At its `-- more --` prompt, use **Q** to quit or another key to continue, as described by the built-in HELP text.
+
+TYPE is for viewing; use EDIT to modify a loaded BASIC program. Like FIND, TYPE is a utility BASIC program, so do not treat running it as preserving unsaved program memory.
+
+## 6. Files, disk maintenance and backups
+
+### DEL, KILL and REN - delete and rename
+
+```text
+DEL OLD.BAS
+REN OLD.BAS TO NEW.BAS
+```
+
+`DEL` wraps BASIC's `KILL` and deletes the specified file on the active or explicitly addressed drive. **Deletion cannot be undone.**
+
+`REN` implements a guarded rename: it copies the source file to the destination, opens both as random-record files, verifies length **and every byte**, and then deletes the original. It supports drive-qualified names. On verification failure it attempts to preserve the source. Keep backups when the destination may already exist.
+
+BASIC's native `RENAME`, `KILL` and `COPY` statements are separate facilities; unlike the REN wrapper, their behavior does not automatically include the extra readback checks described above.
+
+### COMPARE - inspect two files
+
+```text
+COMPARE GAME.BAS TO GAME2.BAS
+```
+
+Opens both as random-record files, reports the byte lengths, and compares each byte if lengths are equal. The result distinguishes identical files from different contents and differing lengths. No file contents are modified by the comparison routine.
+
+### DISKCOPY - file backup or full disk image copy
+
+```text
+DISKCOPY 0 TO 1
+DISKCOPY FULL 0 TO 1
+```
+
+**Normal mode** iterates the source directory and copies files using temporary staging, size/byte verification, a recovery journal and conditional overwrite prompts. It reserves names such as `EDBTEMP.TMP`, `EDBOLD.BAK`, and `EDBSWAP.JRN`. It requires sufficient temporary free space and directory slots.
+
+**FULL mode** copies complete disk sectors, writing track 17 (FAT and directory) last. It requires matching 35-track or 40-track geometry and **overwrites the entire destination disk**.
+
+For either mode, select source and destination carefully. Avoid deleting recovery journals by hand after an interrupted operation; inspect the destination first.
+
+### INSTALL - protected file installation and backup
+
+```text
+INSTALL
+INSTALL BACKUP
+```
+
+Moves files between the configured physical/RAM-cache environment in installation or reverse backup direction. It uses a staged copy, comparison, optional overwrite confirmation and journal-assisted rollback, similar to normal DISKCOPY.
+
+It depends on the correct 512K FLIP driver/cache configuration and physical disk; it is not a general-purpose installer that can safely run on every emulation or hardware setup. Both forms write files.
+
+### CHKDSK - examine disk allocation and integrity
+
+```text
+CHKDSK
+CHKDSK 1
+CHKDSK 1 REPAIR
+```
+
+CHKDSK determines whether the disk has a 35-track/68-granule or 40-track/78-granule layout and runs the matching worker program, `CHKDSK35.BAS` or `CHKDSK40.BAS`.
+
+The check reports files, used/free granules, lost granules, crosslinks, broken chains, loops and invalid links. The **REPAIR** form can change FAT links, directory entries or file data sectors and then rescan to report what remains.
+
+On the 40-track worker, a specialized FAT-extension recovery checks a known expected directory signature and refuses ambiguous layouts. It is not a universal disk-reconstruction algorithm.
+
+**Recommended sequence:** Back up the disk image, run diagnostic `CHKDSK`, inspect the report, then use `CHKDSK ... REPAIR` only on a backed-up copy.
+
+### T40 - compatibility diagnostic
+
+```text
+T40
+```
+
+T40 is a small dispatcher into CHKDSK, not a separate 40-track-only formatter or repair engine. CHKDSK still probes the disk geometry. It may clear the inherited command argument buffer before chaining to CHKDSK.
+
+### FORMAT - initialize disk filesystem metadata
+
+```text
+FORMAT
+FORMAT 2
+```
+
+Prompts for a target drive if omitted, warns that all disk data will be lost, and requires `Y` to continue. It overwrites the disk's FAT and directory allocation metadata and then creates a `volume.inf` label.
+
+**Destructive:** It does not first make a backup or verify that the destination is disposable. This procedure is a filesystem initialization rather than proof of a physical low-level track format. Never use it on the only copy of a disk.
+
+### Filesystem reference
+
+CoCo disk files live in directory sectors and a granule allocation table. Ordinary EDB file operations still depend on sufficient free granules and correct directory metadata. On failure, **stop writing to the suspect disk** and preserve an image before attempting recovery.
+
+
+## 7. Display and keyboard controls
+
+### WIDTH - text columns
+
+```text
+WIDTH 32
+WIDTH 40
+WIDTH 80
+WIDTH
+```
+
+Selects 32-, 40- or 80-column text. With no argument, prompts for a width. The utility preserves palette/control registers during the switch.
+
+**Caution:** The current `WIDTH.BAS` implementation ends with `NEW`, which clears the BASIC program in memory. SAVE anything important first. An active XEDIT resident mode blocks the width change.
+
+### COLOR - named foreground/background colours
+
+```text
+COLOR
+COLOR YELLOW ON BLACK
+COLOR ON BLUE
+COLOR NAMES
+COLOR CHART
+```
+
+No arguments displays the current foreground and background. `COLOR fg ON bg` (or supported short forms) changes the palette; `COLOR NAMES` pages through all 64 named colours; `COLOR CHART` shows a graphical palette and restores the previous screen/palette after exit.
+
+Common colour names have aliases such as `BLUE` meaning `BRIGHT-BLUE`. Use `COLOR NAMES` for the exact 64-name list instead of guessing spellings.
+
+### CURSOR - restore standard cursor
+
+```text
+CURSOR
+```
+
+Restores cursor behavior appropriate for the current 32/40/80 display mode. It writes the associated screen/cursor machine-code bytes as necessary. This is not a cosmetic setting alone.
+
+### KEYREP - keyboard repeat rate and delay
+
+```text
+KEYREP
+KEYREP ON
+KEYREP OFF
+KEYREP 20 .5
+KEYREP BOOT
+```
+
+No arguments shows current settings. ON sets approximately 20 repeats/second with 0.5 seconds initial delay; OFF maps to 1 repeat/second with 4 seconds delay. Numeric rates accept 1-60 repeats/sec, and delay accepts 0.1-4 seconds. `KEYREP BOOT` records the current values as BOOT defaults in `keyrep.inf`.
+
+The program updates keyboard timing state directly and reports failure if it cannot save BOOT defaults.
+
+
+## 8. System identification and memory information
+
+### VER - EDB version
+
+```text
+VER
+```
+
+Displays the Enhanced DOS BASIC version using the current version marker, falling back to v15 if the marker is absent. It is a version display, not a hardware verification test.
+
+### ID and CPUID - cached system profile
+
+```text
+ID
+CPUID
+```
+
+`ID` reads the cached `sysinfo.inf` string and displays the system identification. `CPUID` routes to ID on the EDB cache drive. These report **boot-detected/cached** data, not a fresh processor probe.
+
+### VCC - emulator identification signal
+
+```text
+VCC
+```
+
+Checks the expected VCC-EDB signature in several memory-mapped registers. A successful message indicates that particular expected signature was detected; it is not a generic emulator compatibility benchmark.
+
+### MEM and MEM MAP - BASIC workspace
+
+```text
+MEM
+MEM MAP
+```
+
+MEM displays BASIC workspace free, string reserve, string used/free, and total memory available to BASIC. `MEM MAP` displays the program, array, string and BASIC-top addresses read from interpreter pointers.
+
+The utility uses `XKEY.DRV` for a hold-BREAK exit. Its memory display is informational, not a request to change the native MMU allocation.
+
+### SYSMAP - overview of memory architecture
+
+```text
+SYSMAP
+```
+
+Prints a short comparison of the historical 128K CoCo architecture and the current 512K XMM arrangement, including 64 physical 8K banks and the XMM native-code region.
+
+The printed 128K text is historical background, **not** a current feature restriction. SYSMAP is a static explanation rather than a full runtime bank scan.
+
+### HELP - available topics
+
+```text
+HELP
+HELP MEM
+HELP SAVE
+HELP TOOLS1
+```
+
+See Chapter 3 for finding the full HELP database. HELP uses topic tables within a BASIC program; its wording may occasionally lag an approved code fix. The official manual and detailed source reference document verified implementation differences.
+
+
+## 9. XMM diagnostics and benchmarking
+
+The BENCH disk holds the v15 memory manager diagnostics and performance tools. The relevant five BASIC entries are `HELP.BAS`, `XMM.BAS`, `XBENCH.BAS`, `XMBCPU.BAS`, and `XMSHOW.BAS`.
+
+### XMM - diagnostics menu and controller
+
+```text
+XMM
+XMM ?
+XMM STATUS
+XMM BENCH
+XMM ALL
+```
+
+Running `XMM` opens the diagnostics menu. The current controller dispatches tests to native `XT*.DRV` routines and selects a compatible native memory engine depending on CPU/profile.
+
+| Menu key | Operation |
+| --- | --- |
+| 1 | Hardware diagnostics |
+| 2 | Allocator |
+| 3 | Arena |
+| 4 | Native API |
+| 5 | Object services |
+| 6 | Garbage collection |
+| 7 | Mathematics |
+| 8 | Signed arithmetic |
+| 9 | Page mapping |
+| A | Run all diagnostics |
+| B | XMEM/XMATH services benchmark |
+| C | CPU-specific native benchmark |
+| V | View saved benchmark results |
+| N | Native manager diagnostic |
+
+The controller also recognizes named arguments such as `HW`, `ALLOC`, `ARENA`, `API`, `OBJ`, `GC`, `MATH`, `SIGNED`, `PAGE`, `ALL`, `BENCH` and `STATUS`.
+
+Before significant operations it checks expected history hooks, hardware memory profile and whether conflicting native pages/services are in use. The menu uses hold BREAK/ESC exit handling. Some additional letter keys are development/debug paths, not recommended normal commands.
+
+### XBENCH - legacy XMEM/XMATH services
+
+```text
+XMM BENCH
+```
+
+Invokes `XBENCH.BAS` through the expected XMM entry state. It measures driver reload time, object-service operations, read/write throughput, DOT8/SUM8/SAD8/DOT8S/DOTQ7 vectors, and BASIC versus XMATH dot products.
+
+The program verifies numerical results and MMU register restoration before accepting measurements. Results for 6809 and 6309 are stored in `XBSCORE.DAT`, validated by reopening the file. Directly running `XBENCH.BAS` without XMM's entry state is rejected by its guard.
+
+### XMBCPU - native 6809 versus 6309 comparison
+
+Open XMM and select **C**. `XMBCPU.BAS` runs CPU-specific native memory engines: `XMM6809.BIN` or `XMM6309.BIN`.
+
+The four tested phases are: 16 KiB memory fill, page sweep with sentinels, buffered write/read verification, and allocation/free throughput. It records timings and measured clock data in `XMSCORE.DAT`, with read-back verification. Failed native tests print a failure and do **not** save a supposedly successful result.
+
+For a valid CPU comparison, run the same test in both configurations under comparable clock and emulator conditions.
+
+### XMSHOW - results browser
+
+Open XMM and select **V**. The four pages display native CPU scores, XMEM service throughput, vector math speed and math/cycle results.
+
+**Keys:** N = next, P = previous, Q = menu. Values marked **M** are measured; values marked **R** are reference/projection data, not fresh measurements.
+
+It reads `XMSCORE.DAT`, `XBSCORE.DAT`, and reference `XBREF.DAT`; absent scores are identified rather than fabricated as measured data.
+
+### BENCH HELP.BAS
+
+The BENCH `HELP.BAS` is the same comprehensive 480-line command reference as TOOLS `HELP.BAS`; BOOT's smaller `HELP.BAS` is only the dispatcher.
+
+**Safety:** XMM and its tests exercise native memory mappings. Do not run them alongside incompatible active native memory managers, and do not treat one benchmark's observed speed as a hardware specification.
+
+
+## 10. Practical recipes
+
+### Explore EDB without changing a disk
+
+```text
+VER
+CPUID
+MEM
+PATH
+HELP TOOLS1
+```
+
+These primarily report state. If a utility program is required, save any BASIC program currently in RAM first. Unlike the commands above, `VOL` and `DIR` can initialize a missing `volume.inf` as part of their recovery behavior.
+
+### Find a program by disk label
+
+```text
+CD ALL
+CD TOOLS
+DIR .BAS
+HELP FIND
+```
+
+On supported VCC-EDB versions, CD can also search a configured drive-3 image playlist. With AUTORUN enabled, CD may launch a configured program; disable it first when exploring unknown disks.
+
+### Find, edit, save and verify BASIC
+
+```text
+FIND "LASER" "GAME.BAS"
+LOAD "GAME.BAS"
+EDIT 350
+SAVE "GAME2.BAS"
+LOAD "GAME2.BAS"
+LIST
+RUN
+```
+
+The line number 350 is illustrative. Choose the line FIND actually reports. Because FIND searches a disk file through a utility program, LOAD it **again** before EDIT. The fresh LOAD after SAVE verifies the disk copy, not merely the in-memory program.
+
+### Keep one original and a working copy
+
+```text
+LOAD "GAME.BAS"
+EDIT
+SAVE "GAME2.BAS"
+LOAD "GAME2.BAS"
+RUN
+```
+
+Use SHIFT + Up/Down in EDIT to browse existing line numbers, ENTER to commit and BREAK to cancel. Do not overwrite your only known-good version.
+
+### Check disk health before trying repairs
+
+```text
+CHKDSK 1
+```
+
+Review reported free/used granules, lost chains and crosslinks. Create a backup before any `REPAIR` action. A 40-track special-case recovery is intentionally conservative and does not apply to every disk.
+
+### Back up a set of files versus a full disk
+
+```text
+DISKCOPY 0 TO 1
+```
+
+Copies files with staging/verification. By contrast:
+
+```text
+DISKCOPY FULL 0 TO 1
+```
+
+overwrites every sector on the destination disk. Double-check both drives before using FULL.
+
+### Read existing benchmark scores
+
+```text
+XMM
+```
+
+Select V to view measured/reference results. Use B for XMEM/XMATH service benchmarks and C for the native CPU comparison. The score displays are not equivalent to rerunning the test.
+
+
+<a id="8-worked-examples"></a>
+
+### More worked examples
+
+#### A. Find, change, save, and verify a program
 
 You want to change the value awarded for scoring in `GAME.BAS`.
 
@@ -344,7 +929,7 @@ RUN
 
 If the reloaded copy behaves correctly, your edited file has passed a basic save-and-reload test.
 
-### B. Make several changes using line navigation
+#### B. Make several changes using line navigation
 
 ```basic
 LOAD "GAME.BAS"
@@ -359,7 +944,7 @@ LOAD "GAME2.BAS"
 RUN
 ```
 
-### C. Search again after saving
+#### C. Search again after saving
 
 ```basic
 SAVE "GAME2.BAS"
@@ -370,7 +955,7 @@ EDIT 480
 
 The line number 480 is illustrative. Use the number actually reported by FIND.
 
-### D. Check filename history before saving
+#### D. Check filename history before saving
 
 ```basic
 LAST
@@ -380,19 +965,9 @@ LAST
 
 Compare the history records to the filename you intended to use. Do not rely on filename-free SAVE when there is any risk of overwriting your source file.
 
-## 9. TYPE - viewing disk files
+<a id="10-troubleshooting-and-data-protection"></a>
 
-The Tools disk also includes TYPE, a viewing utility often used alongside FIND:
-
-```basic
-TYPE "GAME.BAS"
-```
-
-TYPE can display supported text and BASIC files page by page. At its `-- more --` prompt, use **Q** to quit or another key to continue, as described by the built-in HELP text.
-
-TYPE is for viewing; use EDIT to modify a loaded BASIC program. Like FIND, TYPE is a utility BASIC program, so do not treat running it as preserving unsaved program memory.
-
-## 10. Troubleshooting and data protection
+## 11. Troubleshooting and data protection
 
 | Symptom | What to check |
 | --- | --- |
@@ -407,24 +982,125 @@ TYPE is for viewing; use EDIT to modify a loaded BASIC program. Like FIND, TYPE 
 
 A safe habit for valuable programs is **save to a new name, reload, inspect, and run**. Do not overwrite your only working copy.
 
-## 11. Related EDB commands
 
-The full v15 environment has additional capabilities not yet covered in depth by this initial edition:
+### Other common questions
 
-| Command | General purpose |
+| Situation | Recommended action |
 | --- | --- |
-| `DIR` | List files and disk space. |
-| `CD` / `JUMP` / `FLIP` | Navigate drives and disk images. |
-| `HELP` | Consult the integrated command reference on the Tools disk. |
-| `COMPARE` | Compare files. |
-| `CHKDSK` | Check disk structures. |
-| `DISKCOPY` / `INSTALL` | Disk/file copy and backup workflows. |
-| `MEM` / `INFO` / `XMM` | Memory information and diagnostics. |
-| `WIDTH` / `COLOR` / `KEYREP` | Screen and keyboard configuration. |
+| `CD TOOLS` cannot locate a volume | Use `CD ALL`, `DIR`, and `VOL`; check which drives or playlist are actually mounted. |
+| A disk command unexpectedly launches a program | Inspect `AUTORUN` and the disk's autorun.inf; use `AUTORUN OFF` for manual navigation. |
+| A loaded program disappears after WIDTH or DIR | Those BASIC utilities can end using `NEW` or replace the in-memory program. Save first. |
+| `DISKCOPY` or `INSTALL` stops with swap files present | Preserve the image and its journal/temp files. Do not delete them until recovery state has been examined. |
+| `CHKDSK` reports crosslinks or loops | Back up the disk before `REPAIR`; treat recovery as best effort. |
+| `UPGRADE CACHE` fails or disk cache differs | Check the supported 512K routing and the promoted boot/cache driver versions. Do not mix unrelated driver revisions. |
+| `FLIP 2` cannot select drive 2 | The current branch in FLIP.BAS makes the later drive-2 code unreachable; document or test a separately approved fix. |
+| XMM reports busy or mismatched history hooks | Leave active native allocations intact; restore normal XMM environment or reboot after saving work. |
+| A score marked R differs from the measured value | R is a fallback/reference projection, not the current measured CPU result. |
 
-Future chapters should document these commands from their actual v15 sources, with tested syntax, examples, error cases, and limitations.
+The disk-maintenance commands have different risk profiles. `TYPE`, `COMPARE` and ordinary `CHKDSK` are analysis/view workflows, whereas `FORMAT`, `REPAIR`, `DISKCOPY FULL`, `UPGRADE` and `INSTALL` can deliberately write substantial data. Even a seemingly read-oriented utility can create a missing volume label or temporary scan file.
 
-## 12. Maintaining this manual
+
+<a id="13-complete-basic-program-and-function-reference"></a>
+
+## 12. All 45 BASIC program entries
+
+The current official disk images contain **26 BOOT, 14 TOOLS and 5 BENCH `.BAS` directory entries**, including the literal `*.BAS` startup file. The two large HELP files on TOOLS and BENCH are identical; the BOOT HELP dispatcher is distinct.
+
+This table is included **inside the user manual** so every filename is discoverable here. Each link opens a source-audited entry with internal function/subroutine descriptions; the program behavior and syntax are explained in the relevant chapters above.
+
+### BOOT - 26 programs
+
+| File | Documentation | Direct source |
+| --- | --- | --- |
+| `*.BAS` | [Startup stub](BASIC_PROGRAMS_BOOT.md#bas---boot-entry-stub) | [File](../extracted/boot/*.BAS) |
+| `ADMIN.BAS` | [Administrator profile](BASIC_PROGRAMS_BOOT.md#adminbas---administrator-profile) | [File](../extracted/boot/ADMIN.BAS) |
+| `AUTORUN.BAS` | [Autorun state and profile](BASIC_PROGRAMS_BOOT.md#autorunbas---per-disk-autorun) | [File](../extracted/boot/AUTORUN.BAS) |
+| `CD.BAS` | [Drive/volume and playlist navigation](BASIC_PROGRAMS_BOOT.md#cdbas---drive-and-volume-navigation) | [File](../extracted/boot/CD.BAS) |
+| `COLOR.BAS` | [Foreground/background/palette](BASIC_PROGRAMS_BOOT.md#colorbas---text-colour-and-palette) | [File](../extracted/boot/COLOR.BAS) |
+| `CPUID.BAS` | [Hardware-identity dispatcher](BASIC_PROGRAMS_BOOT.md#cpuidbas---hardware-identification) | [File](../extracted/boot/CPUID.BAS) |
+| `CURSOR.BAS` | [Cursor restoration](BASIC_PROGRAMS_BOOT.md#cursorbas---cursor-restoration) | [File](../extracted/boot/CURSOR.BAS) |
+| `DEL.BAS` | [Delete file](BASIC_PROGRAMS_BOOT.md#delbas---delete-a-file) | [File](../extracted/boot/DEL.BAS) |
+| `DIR.BAS` | [Directory filters and free space](BASIC_PROGRAMS_BOOT.md#dirbas---directory-and-free-space) | [File](../extracted/boot/DIR.BAS) |
+| `EDIT.BAS` | [Filename-based editor dispatcher](BASIC_PROGRAMS_BOOT.md#editbas---edit-filename-dispatcher) | [File](../extracted/boot/EDIT.BAS) |
+| `FORMAT.BAS` | [Directory/FAT initialization](BASIC_PROGRAMS_BOOT.md#formatbas---initialize-a-disk-directory) | [File](../extracted/boot/FORMAT.BAS) |
+| `HELP.BAS` | [Help dispatcher](BASIC_PROGRAMS_BOOT.md#helpbas---boot-help-dispatcher) | [File](../extracted/boot/HELP.BAS) |
+| `ID.BAS` | [Cached system information](BASIC_PROGRAMS_BOOT.md#idbas---cached-system-information) | [File](../extracted/boot/ID.BAS) |
+| `KEYREP.BAS` | [Key repeat settings](BASIC_PROGRAMS_BOOT.md#keyrepbas---keyboard-repeat) | [File](../extracted/boot/KEYREP.BAS) |
+| `LABEL.BAS` | [Volume label editor](BASIC_PROGRAMS_BOOT.md#labelbas---change-volume-label) | [File](../extracted/boot/LABEL.BAS) |
+| `LAST.BAS` | [File history](BASIC_PROGRAMS_BOOT.md#lastbas---filename-history) | [File](../extracted/boot/LAST.BAS) |
+| `PATH.BAS` | [Disk search order](BASIC_PROGRAMS_BOOT.md#pathbas---drive-search-order) | [File](../extracted/boot/PATH.BAS) |
+| `REBOOT.BAS` | [Native reboot](BASIC_PROGRAMS_BOOT.md#rebootbas---restart-edb) | [File](../extracted/boot/REBOOT.BAS) |
+| `REN.BAS` | [Verified rename](BASIC_PROGRAMS_BOOT.md#renbas---verified-file-rename) | [File](../extracted/boot/REN.BAS) |
+| `STARTUP.BAS` | [Startup profile](BASIC_PROGRAMS_BOOT.md#startupbas---active-startup-profile) | [File](../extracted/boot/STARTUP.BAS) |
+| `UPGRADE.BAS` | [Install and cache refresh](BASIC_PROGRAMS_BOOT.md#upgradebas---install-and-refresh-cache) | [File](../extracted/boot/UPGRADE.BAS) |
+| `USER.BAS` | [User profile](BASIC_PROGRAMS_BOOT.md#userbas---user-profile-and-login) | [File](../extracted/boot/USER.BAS) |
+| `VCC.BAS` | [Emulator signature](BASIC_PROGRAMS_BOOT.md#vccbas---emulator-check) | [File](../extracted/boot/VCC.BAS) |
+| `VER.BAS` | [EDB version](BASIC_PROGRAMS_BOOT.md#verbas---version-information) | [File](../extracted/boot/VER.BAS) |
+| `VOL.BAS` | [Disk volume display](BASIC_PROGRAMS_BOOT.md#volbas---volume-name) | [File](../extracted/boot/VOL.BAS) |
+| `WIDTH.BAS` | [32/40/80 text mode](BASIC_PROGRAMS_BOOT.md#widthbas---text-display-width) | [File](../extracted/boot/WIDTH.BAS) |
+
+### TOOLS - 14 programs
+
+| File | Documentation | Direct source |
+| --- | --- | --- |
+| `CHKDSK.BAS` | [Geometry dispatcher](BASIC_PROGRAMS_TOOLS.md#chkdskbas---geometry-aware-checker-dispatcher) | [File](../extracted/tools/CHKDSK.BAS) |
+| `CHKDSK35.BAS` | [35-track engine](BASIC_PROGRAMS_TOOLS.md#chkdsk35bas---35-track-fat-audit-and-repair) | [File](../extracted/tools/CHKDSK35.BAS) |
+| `CHKDSK40.BAS` | [40-track engine](BASIC_PROGRAMS_TOOLS.md#chkdsk40bas---40-track-fat-audit-and-repair) | [File](../extracted/tools/CHKDSK40.BAS) |
+| `COMPARE.BAS` | [File comparison](BASIC_PROGRAMS_TOOLS.md#comparebas---byte-for-byte-file-comparison) | [File](../extracted/tools/COMPARE.BAS) |
+| `DISKCOPY.BAS` | [Verified copy / FULL](BASIC_PROGRAMS_TOOLS.md#diskcopybas---verified-file-copy-or-full-disk-backup) | [File](../extracted/tools/DISKCOPY.BAS) |
+| `FIND.BAS` | [FIND dispatcher](BASIC_PROGRAMS_TOOLS.md#findbas---find-dispatcher) | [File](../extracted/tools/FIND.BAS) |
+| `FLIP.BAS` | [RAM and physical drive routing](BASIC_PROGRAMS_TOOLS.md#flipbas---ram-and-physical-drive-routing) | [File](../extracted/tools/FLIP.BAS) |
+| `HELP.BAS` | [Full help engine](BASIC_PROGRAMS_TOOLS.md#helpbas---integrated-topic-reference) | [File](../extracted/tools/HELP.BAS) |
+| `INSTALL.BAS` | [Guarded install/backup](BASIC_PROGRAMS_TOOLS.md#installbas---guarded-file-install-and-backup) | [File](../extracted/tools/INSTALL.BAS) |
+| `JUMP.BAS` | [Drive/program navigation](BASIC_PROGRAMS_TOOLS.md#jumpbas---drive-navigation-with-optional-program) | [File](../extracted/tools/JUMP.BAS) |
+| `MEM.BAS` | [Memory status/map](BASIC_PROGRAMS_TOOLS.md#membas---basic-memory-status-and-map) | [File](../extracted/tools/MEM.BAS) |
+| `SYSMAP.BAS` | [Memory map explainer](BASIC_PROGRAMS_TOOLS.md#sysmapbas---legacy-and-512k-map-overview) | [File](../extracted/tools/SYSMAP.BAS) |
+| `T40.BAS` | [Compatibility CHKDSK wrapper](BASIC_PROGRAMS_TOOLS.md#t40bas---geometry-checker-compatibility-wrapper) | [File](../extracted/tools/T40.BAS) |
+| `TYPE.BAS` | [TYPE and FIND engine](BASIC_PROGRAMS_TOOLS.md#typebas---disk-file-viewer-and-find-engine) | [File](../extracted/tools/TYPE.BAS) |
+
+### BENCH - 5 programs
+
+| File | Documentation | Direct source |
+| --- | --- | --- |
+| `HELP.BAS` | [Duplicate full help engine](BASIC_PROGRAMS_BENCH.md#helpbas---integrated-help-copy) | [File](../extracted/bench/HELP.BAS) |
+| `XBENCH.BAS` | [XMEM/XMATH service benchmark](BASIC_PROGRAMS_BENCH.md#xbenchbas---legacy-xmemxmath-service-benchmark) | [File](../extracted/bench/XBENCH.BAS) |
+| `XMBCPU.BAS` | [6809 / 6309 native tests](BASIC_PROGRAMS_BENCH.md#xmbcpubas---6809-and-6309-native-memory-comparison) | [File](../extracted/bench/XMBCPU.BAS) |
+| `XMM.BAS` | [Diagnostics controller](BASIC_PROGRAMS_BENCH.md#xmmbas---xmm-diagnostics-controller) | [File](../extracted/bench/XMM.BAS) |
+| `XMSHOW.BAS` | [Saved benchmark viewer](BASIC_PROGRAMS_BENCH.md#xmshowbas---saved-results-viewer) | [File](../extracted/bench/XMSHOW.BAS) |
+
+
+## 13. Technical notes and function reference
+
+This manual is written for people using EDB. The [source-audited BASIC program reference](BASIC_PROGRAM_REFERENCE.md) complements it with internal BASIC function-group documentation, including GOSUB addresses, dependencies, native hooks and limits.
+
+**Per-disk technical reference:**
+
+- [BOOT - 26 BASIC entries](BASIC_PROGRAMS_BOOT.md) - startup, profiles, CD, file utilities, display and cache maintenance.
+- [TOOLS - 14 BASIC entries](BASIC_PROGRAMS_TOOLS.md) - disk checkers, guarded copying, HELP, FIND/TYPE and routing.
+- [BENCH - 5 BASIC entries](BASIC_PROGRAMS_BENCH.md) - XMM menu, 6809/6309 native benchmarks and result handling.
+
+### How the commands communicate
+
+Many EDB BASIC wrappers use the command text at `$FC80` and a 60000-series function to dispatch a trailing `?` request to HELP. `TYPE.BAS` detokenizes BASIC programs for display and powers FIND. `EDIT.BAS` finds/loads a BASIC file by name, while `EDIT.DRV` performs native line editing. `DOSCORE.DRV` extends native BASIC file operations and records relevant filename history.
+
+### Native dependencies are separate programs
+
+Some important routines are machine code, not `.BAS`:
+
+- `BOOT.DRV`, `DOSCORE.DRV`, `EDIT.DRV`, `CDINIT.DRV`, `CDSEQ.DRV`, `RAMBOOT.DRV` - native boot, editing, disk and cache integration.
+- `XKEY.DRV`, `HISTORY.DRV`, the `XT*.DRV` diagnostic modules and `XMM6809.BIN` / `XMM6309.BIN` - keyboard/history and native XMM tests.
+- `XMEMHW.DRV` and `XMATH.DRV` - the legacy service interfaces timed by XBENCH.
+
+A complete instruction-level driver reference is outside the scope of a BASIC-program manual. Do not treat undocumented memory-mapped addresses as stable public APIs.
+
+### Verification standard
+
+All 45 BASIC entries documented here were inspected as tokenized source on GitHub. The command descriptions, examples and known limitations are source-grounded; **they do not constitute an additional VCC-EDB or physical CoCo execution test**. Results that depend on disk health, controller support, native resident memory and emulator-specific features still need runtime confirmation.
+
+
+<a id="12-maintaining-this-manual"></a>
+
+## 14. Maintaining this manual
 
 The authoritative manual is this file: [`docs/USER_MANUAL.md`](USER_MANUAL.md), on the repository's `main` branch.
 
@@ -435,22 +1111,8 @@ The authoritative manual is this file: [`docs/USER_MANUAL.md`](USER_MANUAL.md), 
 - Manual-only changes must not silently alter disk images, BASIC programs, or binary drivers.
 - Record documentation changes through Git commits. Changes to the official EDB software baseline continue to require the user's explicit authorization.
 
-**Source references for this edition:** `extracted/boot/LAST.BAS`, `EDIT.BAS`, `EDIT.DRV`, `DOSCORE.DRV`, `extracted/tools/FIND.BAS`, `TYPE.BAS`, `HELP.BAS`, and `BASELINE_HISTORY.md`.
-
-
-## 13. Complete BASIC program and function reference
-
-The current promoted v15 BOOT, TOOLS and BENCH disks include **45 `.BAS` directory entries** (26 BOOT, 14 TOOLS, 5 BENCH). Every entry has an individual source-audited reference section, including its role, command usage where applicable, important internal GOSUB routines, dependencies, side effects and cautions.
-
-- **[Complete 45-program alphabetical/disk index](BASIC_PROGRAM_REFERENCE.md)** - every .BAS file, linked to its description and original extracted source.
-- **[BOOT BASIC programs](BASIC_PROGRAMS_BOOT.md)** - startups, profiles, CD/autorun, editing, disk commands, upgrades and display routines.
-- **[TOOLS BASIC programs](BASIC_PROGRAMS_TOOLS.md)** - HELP, FIND/TYPE, CHKDSK engines, guarded file copies, INSTALL and memory status.
-- **[BENCH BASIC programs](BASIC_PROGRAMS_BENCH.md)** - XMM, native 6809/6309 benchmark controller, service benchmark and saved-results viewer.
-
-The directory entry `*.BAS` is a literal BOOT file, not a wildcard. The three HELP.BAS entries are each accounted for (with the TOOLS and BENCH copies identical). Native .DRV and .BIN dependencies are identified but not individually disassembled in this BASIC-specific reference.
-
-For new command features or software changes, the relevant program page and this manual should be updated together - with separate approval for any EDB code or disk-image changes.
+**Source references:** All 45 program entries from BOOT, TOOLS and BENCH, with program-specific dependencies in the linked source-audited reference chapters.
 
 ---
 
-*Enhanced DOS BASIC v15 - Official living user manual. This first edition covers program search, editing, and disk persistence; expansion is ongoing.*
+*Enhanced DOS BASIC v15 - Official living user manual. Covers all current BOOT, TOOLS and BENCH BASIC programs and related native commands.*
