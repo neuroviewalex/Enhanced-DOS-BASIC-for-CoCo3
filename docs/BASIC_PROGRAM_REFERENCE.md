@@ -1,16 +1,16 @@
 # EDB v15 - Complete BASIC Program and Function Reference
 
-**Official v15 inventory: BOOT, TOOLS and the user-promoted Sockmaster FIX2 BENCH disk**  
-**Source baseline:** `EDB_v15_512k_boot.dsk` SHA-256 `974d15a700765469fdc4e8672b0f0d0ea5c5a5d0b2f038823c72c399d80d50f7`, plus the official TOOLS and Sockmaster FIX2 BENCH disks.  
-**Documentation coverage:** **46 of 46** current official BASIC entries (including `SMBENCH.BAS`), including the literal `*.BAS` file and all three HELP.BAS variants/copies.  
+**Official v15 inventory: BOOT, TOOLS and the full-color XMM BENCH disk**  
+**Source baseline:** All three v15 release disks, verified in [MANIFEST.json](../extracted/MANIFEST.json).  
+**Documentation coverage:** **49 BASIC entries** (26 BOOT, 15 TOOLS, 8 BENCH), including the literal `*.BAS` file and three HELP entries.  
 **Validation:** Source-level inspection of tokenized CoCo BASIC files from `extracted/`. The current [v15 Release disks](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) have been verified against the repository image SHA-256 checksums. Source auditing does not replace independent emulator or hardware execution tests.
 
 ## Start here
 
 - [**Official EDB v15 User Manual**](USER_MANUAL.md) - all commands, FIND/LOAD/EDIT/SAVE, XMM, and Sockmaster Classic instructions.
 - [**BOOT BASIC programs and functions**](BASIC_PROGRAMS_BOOT.md) - **26 entries**. Startup, profiles, disk navigation, display, editor dispatcher, file commands and upgrades.
-- [**TOOLS BASIC programs and functions**](BASIC_PROGRAMS_TOOLS.md) - **14 entries**. HELP, FIND/TYPE, disk checks, guarded copying, installation and memory reporting.
-- [**BENCH BASIC programs and functions**](BASIC_PROGRAMS_BENCH.md) - **6 entries**. XMM diagnostics, service/native benchmarks and results viewer.
+- [**TOOLS BASIC programs and functions**](BASIC_PROGRAMS_TOOLS.md) - **15 entries**. HELP, FIND/TYPE, disk checks, guarded copying, installation and memory reporting.
+- [**BENCH BASIC programs and functions**](BASIC_PROGRAMS_BENCH.md) - **8 entries**. XMM diagnostics, service/native benchmarks and results viewer.
 
 Every program section explains its purpose, command syntax where applicable, implementation paths, important GOSUB routine entry points, dependencies, side effects, and known limitations. A `GOSUB` line number is local to its own BASIC file; it is not a command name.
 
@@ -45,7 +45,7 @@ Every program section explains its purpose, command syntax where applicable, imp
 | `VOL.BAS` | [Disk volume display](BASIC_PROGRAMS_BOOT.md#volbas---volume-name) | [File](../extracted/boot/VOL.BAS) |
 | `WIDTH.BAS` | [32/40/80 text mode](BASIC_PROGRAMS_BOOT.md#widthbas---text-display-width) | [File](../extracted/boot/WIDTH.BAS) |
 
-## TOOLS disk - 14 BASIC entries
+## TOOLS disk - 15 BASIC entries
 
 | File | Documentation | Direct source |
 | --- | --- | --- |
@@ -59,12 +59,13 @@ Every program section explains its purpose, command syntax where applicable, imp
 | `HELP.BAS` | [Full help engine](BASIC_PROGRAMS_TOOLS.md#helpbas---integrated-topic-reference) | [File](../extracted/tools/HELP.BAS) |
 | `INSTALL.BAS` | [Guarded install/backup](BASIC_PROGRAMS_TOOLS.md#installbas---guarded-file-install-and-backup) | [File](../extracted/tools/INSTALL.BAS) |
 | `JUMP.BAS` | [Drive/program navigation](BASIC_PROGRAMS_TOOLS.md#jumpbas---drive-navigation-with-optional-program) | [File](../extracted/tools/JUMP.BAS) |
+| `KEYPEEK.BAS` | Keyboard diagnostic (tokenized source) | [File](../extracted/tools/KEYPEEK.BAS) |
 | `MEM.BAS` | [Memory status/map](BASIC_PROGRAMS_TOOLS.md#membas---basic-memory-status-and-map) | [File](../extracted/tools/MEM.BAS) |
 | `SYSMAP.BAS` | [Memory map explainer](BASIC_PROGRAMS_TOOLS.md#sysmapbas---legacy-and-512k-map-overview) | [File](../extracted/tools/SYSMAP.BAS) |
 | `T40.BAS` | [Compatibility CHKDSK wrapper](BASIC_PROGRAMS_TOOLS.md#t40bas---geometry-checker-compatibility-wrapper) | [File](../extracted/tools/T40.BAS) |
 | `TYPE.BAS` | [TYPE and FIND engine](BASIC_PROGRAMS_TOOLS.md#typebas---disk-file-viewer-and-find-engine) | [File](../extracted/tools/TYPE.BAS) |
 
-## BENCH disk - 6 BASIC entries
+## BENCH disk - 8 BASIC entries
 
 | File | Documentation | Direct source |
 | --- | --- | --- |
@@ -74,6 +75,8 @@ Every program section explains its purpose, command syntax where applicable, imp
 | `SMBENCH.BAS` | [Sockmaster Classic BASIC loop](BASIC_PROGRAMS_BENCH.md#smbenchbas---sockmaster-classic-basic-benchmark) | [File](../extracted/bench/SMBENCH.BAS) |
 | `XMM.BAS` | [Diagnostics controller](BASIC_PROGRAMS_BENCH.md#xmmbas---xmm-diagnostics-controller) | [File](../extracted/bench/XMM.BAS) |
 | `XMSHOW.BAS` | [Saved benchmark viewer](BASIC_PROGRAMS_BENCH.md#xmshowbas---saved-results-viewer) | [File](../extracted/bench/XMSHOW.BAS) |
+| `XMENU.BAS` | [Full-color main menu](BASIC_PROGRAMS_BENCH.md#xmenubas---mouse-driven-main-menu) | [File](../extracted/bench/XMENU.BAS) |
+| `XMALL.BAS` | [System information viewer](BASIC_PROGRAMS_BENCH.md#xmallbas---system-information-viewer) | [File](../extracted/bench/XMALL.BAS) |
 
 ## Key cross-program interactions
 
@@ -106,15 +109,15 @@ See the [complete user workflow](USER_MANUAL.md#2-the-five-command-programming-w
 
 ### XMM and benchmarks
 
-    XMM.BAS -> native XT*.DRV tests
-    XMM.BAS -> XBENCH.BAS -> XBSCORE.DAT
-    XMM.BAS -> XMBCPU.BAS -> XMSCORE.DAT
-    XMM.BAS -> SMBENCH.BAS -> SMBSCORE.DAT -> XMSHOW page 5
-    XMM.BAS -> XMSHOW.BAS -> saved measurements/reference
+    XMM.BAS -> XMENU.BAS
+      B -> XMBCPU.BAS -> XBENCH.BAS -> SMBENCH.BAS -> XMSHOW.BAS (5 pages)
+      S -> native engine + XT*.DRV checks -> XMALL.BAS (10 pages)
+      XMENU / XMSHOW / XMALL -> XKEY.DRV + HRTANDY.DRV + XHOVER.BIN + X32 templates
+      Viewer EXIT -> XMM menu; menu EXIT -> EDB
 
 ## Source, terminology and scope
 
-- The official BOOT, TOOLS and BENCH disks are represented in [`extracted/`](../extracted/) and verified by [`MANIFEST.json`](../extracted/MANIFEST.json). The official disks now contain **94 extracted files (46 BASIC)**, including SMBENCH.BAS. The prior baseline had 93 extracted files (45 BASIC).
+- The official BOOT, TOOLS and BENCH disks are represented in [`extracted/`](../extracted/) and verified by [`MANIFEST.json`](../extracted/MANIFEST.json). There are **116 extracted files (49 BASIC)**.
 - Files are stored in their original tokenized CoCo BASIC format. Text shown in the reference was reconstructed from BASIC tokens and reviewed by program line number; it was **not** substituted into the disks.
 - `*.BAS` is a **literal directory filename** on BOOT; do not count it as a wildcard file collection.
 - The three `HELP.BAS` directory entries are counted separately. TOOLS and BENCH hold the same full program; BOOT holds a different small dispatcher.
@@ -132,4 +135,4 @@ For each authorized future change to an EDB `.BAS` file:
 4. Commit documentation changes with a clear explanation and verify the Git diff.
 5. Never silently modify EDB binaries or declare a new software baseline as part of a manual-only edit.
 
-The authoritative reference lives alongside [`USER_MANUAL.md`](USER_MANUAL.md). All three official [v15 Release images](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15), including Sockmaster Classic FIX2 on BENCH, match their repository disk copies.
+The authoritative reference lives alongside [`USER_MANUAL.md`](USER_MANUAL.md). All three official [v15 Release images](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15), including the full-color XMM BENCH, match their repository disk copies.

@@ -20,10 +20,10 @@ EDB is not simply a launcher or a handful of demonstration programs. Its **BOOT*
 | **RAM-disk integration** | Cached drive support, physical/RAM routing, cache refresh and VCC-EDB playlist integration |
 | **Personal configuration** | USER, ADMIN and STARTUP profiles, automatic launches, 32/40/80 columns, 64 named colours, key repeat |
 | **Memory and diagnostics** | 512K XMM memory tools, memory maps, native test modules, CPU-specific 6809/6309 engines |
-| **Benchmarks** | Memory-service tests, CPU-native measurements and Sockmaster Classic BASIC comparison page |
+| **Benchmarks** | Automatic native CPU, services/vector/math and Sockmaster benchmarks; five-page full-color mouse viewer |
 | **Documentation** | On-screen HELP, complete user handbook, per-program technical references and verified extracted source |
 
-**Current promoted v15 core:** 54 files on BOOT, 16 on TOOLS, and 24 on BENCH - **94 files**, including **46 tokenized BASIC program entries** (26 BOOT, 14 TOOLS, 6 BENCH).
+**Current v15 core:** 54 BOOT, 17 TOOLS and 45 BENCH files — **116 files**, including **49 tokenized BASIC entries** (26 BOOT, 15 TOOLS, 8 BENCH).
 
 ## How EDB works
 
@@ -181,81 +181,69 @@ XMM BENCH
 - **VCC** checks the expected VCC-EDB register signature.
 - **XMM** manages the native memory diagnostic suite.
 
-XMM tests hardware behavior, page allocation, arenas, native API calls, object services, garbage collection, math, signed arithmetic and page mapping. The BENCH disk includes CPU-specific `XMM6809.BIN` and `XMM6309.BIN` engines, native `XT*.DRV` test modules, and separate measurement programs.
+The XMM suite tests MMU isolation, allocation, arenas, API calls, objects, garbage collection, math, signed arithmetic and the native engine. Pager test 9 is available separately but excluded from SHOW SYSTEM INFO.
 
 The test suite can exercise real MMU page mappings; it checks expected resident drivers and conflicting active allocation state before sensitive operations. Results depend on the configured processor, emulator, clock, native code, and BASIC interpreter. Use the tests as diagnostics and comparisons, not as absolute specifications.
 
-### Performance comparisons - including Sockmaster Classic BASIC
+### XMM — full-color diagnostics and benchmarks
 
-**XMM's benchmark system** includes:
+Mount a writable copy of BENCH, select its drive, save any BASIC program in memory, and enter `XMM`. The full-color, mouse-driven main menu has exactly two test selections:
 
-| Program | Purpose | Saved data |
+| Selection | Keyboard | Action |
 | --- | --- | --- |
-| `XBENCH.BAS` | Timings for legacy XMEM/XMATH services and vector arithmetic | `XBSCORE.DAT` |
-| `XMBCPU.BAS` | Native 6809/6309 memory fill, mapping, I/O and allocation tests | `XMSCORE.DAT` |
-| `XMSHOW.BAS` | Five pages of current, saved, measured and reference results | Reads the score/reference files |
-| `SMBENCH.BAS` | 15 one-second samples; rounded per-second average | `SMBSCORE.DAT` (`SMBSCORE15`) |
+| RUN BENCHMARK TESTS | B | Runs CPU memory comparison, legacy services/vector/math timings and Sockmaster automatically; opens the five-page BENCH viewer at page 1. |
+| SHOW SYSTEM INFO | S | Runs the native integrity checks and tests 1–8; opens the ten-page diagnostic viewer at page 1. |
+| `<exit>` | Q | Leaves XMM and returns to the EDB prompt. |
 
-The **Sockmaster Classic BASIC** benchmark preserves the original one-second timed loop:
+Both viewers support mouse PREV/NEXT with wraparound, the centered `<exit>` button to return to the main menu, and keyboard N/P/Q. S jumps to page 5 in the benchmark viewer or page 1 in the system-information viewer. The mouse uses a blinking lowercase x, reveals the underlying character between blink phases, and inverts the hovered button (black on yellow). Position the pointer over a button before clicking; very fast movement and clicking together can select the previous sample. The UI renders native GIME 32-column color attributes: cyan headings, white labels, green PASS, red FAIL and blue buttons. It restores the ordinary EDB display on normal exit. The original progress text is still used during tests; mouse polling and color rendering are not part of the timed loops.
 
-```basic
-10 A=0:TIMER=0
-20 IF TIMER<60 THEN A=A+1:GOTO20
-30 PRINT A:RUN
-```
+SHOW SYSTEM INFO checks hardware/MMU isolation, allocation, arenas, the callable API, object management, garbage collection, vector/math, signed/fixed-point arithmetic and native CPU-specific memory operations. The native-engine check runs before the numbered test chain; the signed tests are included in the math chain. Pager test 9 is excluded from this workflow; `XMM PAGE` and `XTPAGE.DRV` remain available separately. The diagnostic path verifies the expected history hooks, a compatible 512K profile and conflicting live allocations before sensitive operations. Save work first; do not run with incompatible memory managers active.
 
-The approved v15 benchmark repeats the original timed 60-tick loop **15 times**, without printing or disk activity during measurement. It reports the **rounded mean iterations per one-second sample**, saves that score with record marker `SMBSCORE15`, and opens **XMSHOW page 5/5**. Historical comparison values remain unchanged.
+The ten XMMALL templates have only placeholders, not prefilled PASS or CPU results. The controller clears a runtime status block and the checks write outcomes. PASS means the corresponding check succeeded; FAIL means a reported failure; `--` means not confirmed/not reached. CPU identity, engine filename, engine-loaded status and post-free difference are populated at runtime. Early aborts or prerequisite failures can leave subsequent checks unconfirmed; an unconfirmed check is never a successful result.
 
-**To run:** enter `XMM` and press **L - Classic**, or type `XMM CLASSIC`. In the viewer use **N/P** to change among five pages, **S** to jump to page 5 and **Q** to return to XMM. The original internal XMM S diagnostic remains preserved; the benchmark uses L.
+The timed suite measures the **currently configured CPU only**; it does not switch CPUs. Run separately on each CPU with comparable clock, ROM and emulator settings to collect both columns. `XMSCORE.DAT` (XMMSCORE1) stores five native metrics and clock text per CPU; `XBSCORE.DAT` (XBSCORE1) stores 18 service/math values per CPU; `XBREF.DAT` supplies fallback service values. The viewer also has built-in CPU reference values at 125.28 MHz and can scale the missing CPU column to the measured clock. The 32-column templates do not mark every reference value individually: a populated column is not proof of a fresh measurement. Missing/unavailable values may appear as `--`. Keep the score records and test configuration with any published comparison. The three timed programs verify successful score writes before normal suite handoff; a failed suite must not be treated as a fresh complete result.
 
-| Historical Sockmaster reference | Score |
-| --- | ---: |
-| Motorola 6809 - 1 MHz | 100 |
-| Hitachi 6309 native - 1 MHz | 114 |
-| Motorola 6809 - 2 MHz | 200 |
-| Hitachi 6309 native - 2 MHz | 228 |
-| Motorola 6809 - doubled-clock accelerator | 268 |
-| Hitachi 6309 native - doubled-clock accelerator | 275 |
+Sockmaster's original 60-tick interpreted BASIC loop runs 15 times without printing or disk I/O inside the timed loop. `SMBENCH.BAS` calculates `INT(S/15+.5)` (rounded mean iterations per 60 ticks, not the total), saves and rereads `SMBSCORE.DAT` with marker `SMBSCORE15`. Older SMBSCORE1 records are not accepted as averages. At 60 TIMER ticks/sec the measurement window is approximately 15 seconds; other tick rates must be accounted for when comparing results. In the full suite the viewer opens at page 1; press S or navigate to page 5. Direct aliases `XMM CLASSIC`, `XMM SOCK` and `XMM SOCKMASTER` launch just this test and open page 5 after successful saving.
 
-**Separate EDB reference:** **13,544** from a Hitachi 6309 in native mode running EDB v15 at **125.28 MHz** on VCC-EDB with custom ROMs. That measurement was provided by the project author; it is neither an additional Sockmaster historical baseline nor a new result generated automatically by EDB.
+The current page 5 layout compares the saved score to the historical 6809 bases 100 (1 MHz) and 200 (2 MHz). It has separate 125.28 MHz point fields for 6809 and 6309. A fresh run with matching CPU/clock profile supplies the applicable field; the 6309 field otherwise retains the project author's historical EDB reference of 13,544. The saved Sockmaster record contains no CPU or MHz tag; it is not two independently persisted CPU scores. Do not attribute a previously saved score to a CPU without the run context. The full historical reference table remains in the documentation, not all on the current screen.
 
-The fifth page shows the current measured score, comparisons to all six historical references, and the comparison against the separate EDB reference. A missing saved score displays `--`. It measures **interpreted BASIC loop throughput**, not pure machine-code CPU speed.
+**Verification scope:** The two-menu predecessor completed both workflows under VCC-EDB x64 in Motorola 6809 and Hitachi 6309 configurations. Subsequent native-GIME/full-color/clean-template changes were tested in 6809 mode, including all ten dynamically populated system-information pages, viewer navigation and exit. The earlier diagnostic failure-injection test verified FAIL and unconfirmed fields on a disposable disk; it was not repeated on the final release. Fresh full timed-suite and 6309 runs of the final color revision, physical CoCo 3 testing and standard-clock stress testing remain outstanding. The release images and extracted files were checksum-verified in [synchronization commit 25312509](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/commit/25312509dfe36b52f5f7141199dcac3e14c31297); this documentation update performs no new runtime test.
 
-[**Sockmaster benchmark documentation**](docs/SOCKMASTER_BENCH.md)
+See the [BENCH technical reference](docs/BASIC_PROGRAMS_BENCH.md), [user manual](docs/USER_MANUAL.md#9-xmm-diagnostics-and-benchmarking) and [Sockmaster benchmark notes](docs/SOCKMASTER_BENCH.md).
 
 ## Official v15 disk images
 
-**The three repository disk images are the owner-approved EDB v15 baselines.** BOOT and TOOLS match their [v15 Release attachments](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15). BENCH has just been promoted to the 15-second average on `main`; its Release attachment is still the earlier image until the project owner replaces it manually. Each disk contains 184,320 bytes (40 tracks x 18 sectors x 256 bytes).
+**All three repository disk images match the owner-approved [v15 Release attachments](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15).** Each disk contains 184,320 bytes (40 tracks x 18 sectors x 256 bytes).
 
 | Disk | Files | Contents | Download |
 | --- | ---: | --- | --- |
 | **BOOT** | 54 | Core command environment, native editor, profiles, history and disk/cache drivers | [BOOT image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BOOT.dsk) |
 | **TOOLS** | 17 | HELP, KEYPEEK, FIND/TYPE, disk checks, copy/install and file utilities | [TOOLS image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_tools.dsk) |
-| **BENCH** | 24 | XMM diagnostics, native benchmarks, XMSHOW page 5 and 15-second Sockmaster average | [BENCH image on main](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_bench.dsk) |
+| **BENCH** | 45 | Full-color XMM menu, eight BASIC programs, 16 X32 templates, native diagnostics and timed benchmarks | [BENCH image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk) |
 
 **SHA-256 checksums:**
 
 ```text
 EDB_v15_512k_boot.dsk
-974d15a700765469fdc4e8672b0f0d0ea5c5a5d0b2f038823c72c399d80d50f7
+2eb0c3a47cad5c0ebe38c8ea634ac2195f8d86c769f732b399ea21d364e4cb19
 
 EDB_v15_512k_tools.dsk
 3a2d4f990cbb2727e651cc85865feb782c7a36171d22a6eb5f12a77a3e7fa794
 
 EDB_v15_512k_bench.dsk
-005453f873ef2deec20eecbc62601f336d858be27414f3866c9735ba2d633549
+d731fadab3c6d9972ec58e795538264d75b4f775f3d4b6781052eb67f40b5df0
 ```
 
-**Distribution status:** BOOT and TOOLS Release attachments match `main`. The [v15 Release BENCH attachment](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_bench.dsk) still has SHA-256 `9ea442c53e9d73e0cc30f457818f28f937939e3d77021bce22df95744611e67a` and is **not yet** the 15-second average. Use the BENCH `main` download above until the owner publishes the updated Release attachment. Repository commits do not replace Release downloads automatically.
+**Distribution status:** BOOT, TOOLS and BENCH Release attachments and their repository copies match the SHA-256 checksums above.
 
-The [`extracted/`](extracted/) tree contains **95 files** (54 BOOT, 17 TOOLS and 24 BENCH). In BENCH, `XMM.BAS`, `XMSHOW.BAS`, and `SMBENCH.BAS` match the newly promoted image byte-for-byte; the other 22 BENCH files remain unchanged.
+The [`extracted/`](extracted/) tree contains **116 files** (54 BOOT, 17 TOOLS, 45 BENCH), preserved byte-for-byte from the three release disks.
 
 ## Getting started with EDB v15
 
 **Recommended for all features:** the [VCC-EDB emulator](https://github.com/neuroviewalex/VCC-EDB). The project previously identified [VCC-EDB v2.1.9.34](https://github.com/neuroviewalex/VCC-EDB/releases/tag/v2.1.9.34) as a compatible build; check its current documentation and releases for updates.
 
 1. Configure a compatible VCC-EDB installation with 512K RAM and the EDB-compatible ROM/driver environment.
-2. Download BOOT and TOOLS from the v15 Release, and the promoted BENCH disk from the `main` link above until the Release attachment is updated.
+2. Download all three disks from the v15 Release.
 3. Boot from BOOT. Mount TOOLS when using the full HELP and file utilities, and BENCH for XMM diagnostics/benchmark comparisons.
 4. At EDB's prompt, explore:
 
@@ -269,7 +257,7 @@ HELP
 XMM
 ```
 
-5. Run **XMM → L** for Sockmaster Classic BASIC, or consult [Chapter 5 of the User Manual](docs/USER_MANUAL.md#5-basic-programming-finding-and-editing) for programming and editing examples.
+5. Open **XMM** and choose **RUN BENCHMARK TESTS** or **SHOW SYSTEM INFO**, or consult [Chapter 5 of the User Manual](docs/USER_MANUAL.md#5-basic-programming-finding-and-editing) for programming and editing examples.
 
 **Physical CoCo 3:** The project is centered on a 512K Color Computer 3. Traditional disk/BASIC tasks can work with compatible real hardware. VCC-specific features - notably certain high-speed execution options, custom-ROM integrations and disk-image playlists - depend on the VCC-EDB environment rather than a stock machine. A VCC clock setting such as 125.28 MHz is an emulator configuration, not a stock 6809 clock rate.
 
@@ -283,7 +271,7 @@ EDB_v15_512k_bench.dsk      Official BENCH disk
 extracted/
   boot/                     54 extracted BOOT files
   tools/                    17 extracted TOOLS files
-  bench/                    24 extracted BENCH files
+  bench/                    45 extracted BENCH files
   MANIFEST.json             Hashes, disk geometry, file counts, integrity checks
 
 docs/
@@ -304,7 +292,7 @@ The source inventory and technical documents identify internal GOSUB routines, f
 ## Documentation and technical references
 
 - [**Complete EDB v15 User Manual**](docs/USER_MANUAL.md) - daily commands, configuration, programming, file management, XMM, examples and precautions.
-- [**Complete BASIC program/function index**](docs/BASIC_PROGRAM_REFERENCE.md) - all **46** `.BAS` entries, with disk locations and links.
+- [**Complete BASIC program/function index**](docs/BASIC_PROGRAM_REFERENCE.md) - all **49** `.BAS` entries, with disk locations and links.
 - [BOOT program reference](docs/BASIC_PROGRAMS_BOOT.md) - startup, drive/volume commands, editing, configuration, upgrade and cache functions.
 - [TOOLS program reference](docs/BASIC_PROGRAMS_TOOLS.md) - HELP, FIND/TYPE, DISKCOPY, CHKDSK, INSTALL, MEM and related commands.
 - [BENCH program reference](docs/BASIC_PROGRAMS_BENCH.md) - XMM, 6809/6309 native benchmarks, Sockmaster and comparison page details.
@@ -328,7 +316,7 @@ The project protocol is:
 
 Because EDB includes native code, tokenized BASIC and binary disk images, careful verification matters. Appropriate checks include BASIC token/linked-line structure, byte-for-byte source extraction, directory/FAT chain integrity, checksum comparisons, and clear separation of **static analysis** from **VCC-EDB / hardware runtime tests**.
 
-The owner-approved Sockmaster 15-second update modifies **only `SMBENCH.BAS` and `XMSHOW.BAS`** within BENCH. The other 22 BENCH files, BOOT and TOOLS disk images remain byte-identical; tokenized source and benchmark documentation are synchronized with the new repository disk.
+The current release was synchronized without altering disk payloads; see [MANIFEST.json](extracted/MANIFEST.json). Subsequent documentation-only changes do not create a new executable baseline.
 
 ## The spirit of EDB
 
