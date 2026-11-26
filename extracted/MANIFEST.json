@@ -15,8 +15,8 @@
   "disks": [
     {
       "filename": "EDB_v15_512k_boot.dsk",
-      "sha256": "974d15a700765469fdc4e8672b0f0d0ea5c5a5d0b2f038823c72c399d80d50f7",
-      "git_blob_sha": "4598c5b418ee60109b9f92373137f9718b1ddefd",
+      "sha256": "2eb0c3a47cad5c0ebe38c8ea634ac2195f8d86c769f732b399ea21d364e4cb19",
+      "git_blob_sha": "90e4614fcbe3769bbe1be18d6460eff0d391bc47",
       "size_bytes": 184320,
       "active_files": 54,
       "allocated_granules": 72,
@@ -86,57 +86,28 @@
     },
     {
       "filename": "EDB_v15_512k_bench.dsk",
-      "sha256": "005453f873ef2deec20eecbc62601f336d858be27414f3866c9735ba2d633549",
-      "git_blob_sha": "24fc14b502a2d8a649dbb3b8954d25bf13483191",
+      "sha256": "d731fadab3c6d9972ec58e795538264d75b4f775f3d4b6781052eb67f40b5df0",
+      "git_blob_sha": "d4a9b6990326bb5ddf121631a0798f304f6448d5",
       "size_bytes": 184320,
-      "active_files": 24,
-      "allocated_granules": 47,
+      "active_files": 45,
+      "allocated_granules": 71,
       "free_granules": [
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        16,
-        17,
-        18,
-        19,
-        21,
-        23,
-        24,
-        41,
-        42,
-        43,
-        44,
-        46,
-        47,
-        49,
-        63,
-        64,
-        65,
-        66,
-        67,
+        70,
         71,
+        73,
         74,
         75,
-        76
+        76,
+        77
       ]
     }
   ],
-  "extracted_files": 95,
+  "extracted_files": 116,
   "verification": [
-    "Owner-approved EDB v15 repository baseline: Sockmaster Classic BASIC 15-sample average on BENCH.",
-    "BOOT and TOOLS repository disk images exactly match their current v15 GitHub Release attachments; their contents and extracted files are unchanged.",
-    "BENCH disk SHA-256 005453f873ef2deec20eecbc62601f336d858be27414f3866c9735ba2d633549; 184320 bytes, 24 files, 47 allocated and 31 free granules.",
-    "SMBENCH.BAS takes 15 separate 60-tick samples with the original Sockmaster loop and reports the rounded arithmetic mean INT(S/15+.5).",
-    "Score format SMBSCORE15 distinguishes 15-second average results from prior one-second SMBSCORE1 records; XMSHOW page 5 displays 15S AVG SCORE.",
-    "All 24 BENCH files and directory/FAT chains verified: only SMBENCH.BAS and XMSHOW.BAS changed; the other 22 BENCH files remain byte-identical.",
-    "All 95 extracted files are present across BOOT (54), TOOLS (17) and BENCH (24).",
-    "The owner explicitly approved promotion of this candidate. Verification is static; no fresh VCC-EDB execution test by the assistant is claimed.",
-    "At this repository promotion, the v15 Release BENCH attachment still has the previous SHA-256 9ea442c53e9d73e0cc30f457818f28f937939e3d77021bce22df95744611e67a; the owner publishes Release attachments manually. The updated repository BENCH image awaits that publication."
+    "All three owner-designated v15 release disk images match published SHA-256 digests.",
+    "Raw file payloads extracted without changes; FAT ownership verified.",
+    "Repository root images and extracted files synchronized to release assets.",
+    "Static verification only; no new emulator or hardware testing claimed."
   ],
-  "source_commit_note": "The owner approves repository baseline promotion explicitly. Current Release attachments remain the distribution reference and may be updated manually after this commit; null avoids a commit hash reference cycle."
+  "source_commit_note": "Release assets are authoritative; null avoids a commit hash cycle."
 }
