@@ -4,7 +4,7 @@
 **Edition:** Complete BASIC-program user handbook - 2026-11-22  
 **Baseline:** Official v15 BOOT, TOOLS and full-color XMM BENCH. All three release assets match the repository disk images.
 
-**BENCH download:** [Official v15 Release image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk) (SHA-256 `d731fadab3c6d9972ec58e795538264d75b4f775f3d4b6781052eb67f40b5df0`).
+**BENCH download:** [Official v15 Release image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk) (SHA-256 `5cbb1aa04714d420783b34ab421c5bf3a86629a43f0d70f55ae7ced4644758c7`).
 
 This is the **main, living EDB v15 handbook**. It explains the entire current BASIC utility environment - startup, volumes, program editing, files, backups, colour, keyboard, memory management, diagnostics and benchmarks - rather than only the original five-command programming workflow.
 
@@ -618,6 +618,10 @@ CoCo disk files live in directory sectors and a granule allocation table. Ordina
 
 ## 7. Display and keyboard controls
 
+### Keyboard handling (November 26 baseline)
+
+The November 26, 2026 owner-approved keyboard revision uses XMM/KEYPEEK-derived interrupt-protected eight-column PIA matrix scans, fresh physical key presses, stable release and input-buffer isolation. COLOR NAMES and COLOR CHART advance once per deliberate press/release. FORMAT requires a fresh Y confirmation; CD profile selection uses physical F1/F2 detection. TYPE retains Q-to-quit and clears residual input before returning. HELP COLOR delegates its wait to COLOR via the private NAMES! argument; both full HELP copies remain identical. The BOOT HELP dispatcher, KEYPEEK SHIFT logic, EDIT, mouse routines, layouts and persistent KEYREP settings are unchanged. The owner confirmed testing complete; this synchronization performs byte-level verification, not a new runtime test.
+
 ### WIDTH - text columns
 
 ```text
@@ -804,7 +808,7 @@ The separate 13,544 reference was reported by the project author on VCC-EDB with
 
 ### Advanced diagnostic commands
 
-`XMM ALL` runs the system-information workflow. The source retains named individual commands `XMM HW`, `ALLOC`, `ARENA`, `API`, `OBJ`, `GC`, `MATH` / `MUL`, `SIGNED`, `PAGE` and `STATUS` (each prefixed with XMM). These are separate diagnostic paths, not extra menu buttons. `XMM ?` dispatches to HELP; the unchanged on-disk HELP can retain older menu wording, so use this manual for the current interface.
+`XMM ALL` runs the system-information workflow. The source retains named individual commands `XMM HW`, `ALLOC`, `ARENA`, `API`, `OBJ`, `GC`, `MATH` / `MUL`, `SIGNED`, `PAGE` and `STATUS` (each prefixed with XMM). These are separate diagnostic paths, not extra menu buttons. `XMM ?` dispatches to HELP; the on-disk HELP can retain older XMM menu wording, so use this manual for the current interface.
 
 ### BENCH HELP.BAS
 

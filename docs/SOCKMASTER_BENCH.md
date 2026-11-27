@@ -6,13 +6,15 @@
 
 ## Disk image and verification
 
+The November 26 keyboard baseline updates only BENCH HELP.BAS. All benchmark code, scores, UI and templates are unchanged from the full-color clean release.
+
 [Download the official BENCH disk](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk)
 
 | Property | Value |
 | --- | --- |
 | Image size | 184,320 bytes |
-| SHA-256 | `d731fadab3c6d9972ec58e795538264d75b4f775f3d4b6781052eb67f40b5df0` |
-| Git blob SHA | `d4a9b6990326bb5ddf121631a0798f304f6448d5` |
+| SHA-256 | `5cbb1aa04714d420783b34ab421c5bf3a86629a43f0d70f55ae7ced4644758c7` |
+| Git blob SHA | `3825728ca02805ed00d195ebe35f58977cd9f51a` |
 | Contents | 45 files; 71 allocated and 7 free granules |
 
 The official release and extracted files were synchronized and verified against the [manifest](../extracted/MANIFEST.json).

@@ -1,6 +1,6 @@
 # EDB v15 BASIC Program Reference - BENCH Disk
 
-**Coverage:** All eight BASIC programs on the official 45-file BENCH disk. SHA-256 `d731fadab3c6d9972ec58e795538264d75b4f775f3d4b6781052eb67f40b5df0`. See [manifest](../extracted/MANIFEST.json) for exact extraction.
+**Coverage:** All eight BASIC programs on the official 45-file BENCH disk. SHA-256 `5cbb1aa04714d420783b34ab421c5bf3a86629a43f0d70f55ae7ced4644758c7`. See [manifest](../extracted/MANIFEST.json) for exact extraction.
 
 ## Complete BENCH file inventory
 
@@ -14,7 +14,9 @@
 
 ## HELP.BAS - Integrated HELP copy
 
-**Use:** Full topic-based EDB HELP reference, stored on BENCH as a convenience. The file is **byte-identical** to `extracted/tools/HELP.BAS` in the promoted v15 baseline (Git blob `81662be3d31c4c15eeb3182a86cd8d3ea39b93eb`).
+**Keyboard revision:** This is the same corrected HELP payload as TOOLS, including the NAMES! handoff to COLOR. XMM benchmark engines, scores, templates, mouse and keyboard routines are unchanged by this revision.
+
+**Use:** Full topic-based EDB HELP reference, stored on BENCH as a convenience. The file is **byte-identical** to `extracted/tools/HELP.BAS` in the promoted v15 baseline (Git blob `a8a737d7092e9e64cc91c50238cb9d36aaf09d4f`).
 
 **Routines and behavior:** Main lines 10-60 parse the command tail; 70-240 search REM topic markers in the tokenized BASIC program and patch the dynamic jump line; 300 displays "No help for this topic"; 400-500 resolve the dispatch target. Each 10000-40100 topic block provides on-screen help.
 
@@ -119,7 +121,7 @@ The ten XMMALL templates have only placeholders, not prefilled PASS or CPU resul
 
 The menu itself is XMENU.BAS. XMM.BAS retains the command-tail parser at 60000–60150, the prerequisites/engine selection at 61000–61680, and native cleanup at 62000-series routines. The native allocation/write/read/free test is at 7000–7091, with the 6309 fill/read check at 7200–7295. Lines 200–201 open XMENU; 430–440 initialize the runtime status block and launch the diagnostic chain/viewer; 450–461 dispatch the benchmark chain and handle an incomplete suite. The state markers at $78F8–$78FA coordinate the handoff; they are internal, not a public API.
 
-Named commands retained: XMM HW, ALLOC, ARENA, API, OBJ, GC, MATH/MUL, SIGNED, PAGE, ALL, BENCH, STATUS, CLASSIC/SOCK/SOCKMASTER and ?. Prefix each argument with XMM. XMM ALL runs system info; XMM BENCH is services-only; normal B selection runs the full sequence. The unchanged HELP file may describe older menu keys.
+Named commands retained: XMM HW, ALLOC, ARENA, API, OBJ, GC, MATH/MUL, SIGNED, PAGE, ALL, BENCH, STATUS, CLASSIC/SOCK/SOCKMASTER and ?. Prefix each argument with XMM. XMM ALL runs system info; XMM BENCH is services-only; normal B selection runs the full sequence. The HELP file may describe older XMM menu keys; its keyboard correction is confined to the COLOR handoff.
 
 ## XMENU.BAS - Mouse-driven main menu
 

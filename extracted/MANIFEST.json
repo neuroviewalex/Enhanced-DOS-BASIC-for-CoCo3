@@ -15,8 +15,8 @@
   "disks": [
     {
       "filename": "EDB_v15_512k_boot.dsk",
-      "sha256": "2eb0c3a47cad5c0ebe38c8ea634ac2195f8d86c769f732b399ea21d364e4cb19",
-      "git_blob_sha": "90e4614fcbe3769bbe1be18d6460eff0d391bc47",
+      "sha256": "ddb13725d8e87ec1e35dd3cc2d1fc71b8a6e01726fa2d59f7b624292e0b9a444",
+      "git_blob_sha": "79e367db36a4a63f24736d6181452c2e3c043c43",
       "size_bytes": 184320,
       "active_files": 54,
       "allocated_granules": 72,
@@ -31,8 +31,8 @@
     },
     {
       "filename": "EDB_v15_512k_tools.dsk",
-      "sha256": "3a2d4f990cbb2727e651cc85865feb782c7a36171d22a6eb5f12a77a3e7fa794",
-      "git_blob_sha": "bba3f0e68202873a8678e43011edb660a0e1aab8",
+      "sha256": "440f26177b03cb93e8afa692e4c58fabed1bbb33213bdfe494d4985f54adf121",
+      "git_blob_sha": "3595180354bed8fda9896405724fa9c9bc9aff06",
       "size_bytes": 184320,
       "active_files": 17,
       "allocated_granules": 33,
@@ -86,8 +86,8 @@
     },
     {
       "filename": "EDB_v15_512k_bench.dsk",
-      "sha256": "d731fadab3c6d9972ec58e795538264d75b4f775f3d4b6781052eb67f40b5df0",
-      "git_blob_sha": "d4a9b6990326bb5ddf121631a0798f304f6448d5",
+      "sha256": "5cbb1aa04714d420783b34ab421c5bf3a86629a43f0d70f55ae7ced4644758c7",
+      "git_blob_sha": "3825728ca02805ed00d195ebe35f58977cd9f51a",
       "size_bytes": 184320,
       "active_files": 45,
       "allocated_granules": 71,
@@ -104,10 +104,11 @@
   ],
   "extracted_files": 116,
   "verification": [
-    "All three owner-designated v15 release disk images match published SHA-256 digests.",
-    "Raw file payloads extracted without changes; FAT ownership verified.",
-    "Repository root images and extracted files synchronized to release assets.",
-    "Static verification only; no new emulator or hardware testing claimed."
+    "Owner explicitly approved the three keyboard-corrected EDB v15 disks as baselines and confirmed testing complete on 2026-11-26.",
+    "All approved disk images reproduced exactly and verified against their recorded SHA-256 checksums; FAT chains validated.",
+    "Six changed file entries (five unique BASIC programs); 110 unaffected payloads byte-identical. No new/deleted files or additional allocated granules.",
+    "BOOT: CD.BAS, COLOR.BAS, FORMAT.BAS; TOOLS: HELP.BAS, TYPE.BAS; BENCH: identical HELP.BAS.",
+    "Owner-confirmed testing complete; no new emulator or hardware tests performed by this synchronization job."
   ],
-  "source_commit_note": "Release assets are authoritative; null avoids a commit hash cycle."
+  "source_commit_note": "Owner-approved images are authoritative. Null avoids a commit hash cycle."
 }

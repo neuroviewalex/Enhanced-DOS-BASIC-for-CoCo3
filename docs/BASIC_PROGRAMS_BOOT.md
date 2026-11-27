@@ -78,6 +78,8 @@ The filenames below are the **actual files on the BOOT disk**. A `GOSUB` line nu
 
 ## CD.BAS - Drive and volume navigation
 
+**Keyboard revision:** Lines 8650–8800 and 57100–57220 use an interrupt-protected physical matrix scan, including F1/F2 bits, neutral/release detection and the existing profile-selection interval. The USER/ADMIN selection logic is retained.
+
 **Examples:**
 
     CD
@@ -109,6 +111,8 @@ The filenames below are the **actual files on the BOOT disk**. A `GOSUB` line nu
 **Caution:** CD can change the active drive, screen mode and colours and may launch an autorun program. Playlist searching is emulator-specific; do not assume it works on real hardware.
 
 ## COLOR.BAS - Text colour and palette
+
+**Keyboard revision:** Lines 11050, 11110 and 20200 call 57000–57300. The routine waits for a fresh physical press and stable release (four TIMER ticks), then clears residual input and preserves keyboard settings. The private NAMES! entry at line 11 accepts the HELP COLOR handoff. Both eight-page displays keep their original layouts.
 
 **Examples:**
 
@@ -179,6 +183,8 @@ The filenames below are the **actual files on the BOOT disk**. A `GOSUB` line nu
 **Caution:** Loading an editor target changes current BASIC memory. Back up unsaved program edits first.
 
 ## FORMAT.BAS - Initialize a disk directory
+
+**Keyboard revision:** Line 230 calls 57000–57300. Confirmation requires a fresh physical Y press and stable release; other input cancels. The actual filesystem-writing routines are unchanged.
 
 **Syntax:** `FORMAT [0-3]` (drive prompt appears if omitted).
 

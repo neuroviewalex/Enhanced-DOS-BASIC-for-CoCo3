@@ -39,6 +39,10 @@ The CoCo's disk filesystem is still relevant. EDB uses directory entries and all
 
 ## Key features
 
+### Reliable keyboard input
+
+The November 26, 2026 owner-approved keyboard revision uses XMM/KEYPEEK-derived interrupt-protected eight-column PIA matrix scans, fresh physical key presses, stable release and input-buffer isolation. COLOR NAMES and COLOR CHART advance once per deliberate press/release. FORMAT requires a fresh Y confirmation; CD profile selection uses physical F1/F2 detection. TYPE retains Q-to-quit and clears residual input before returning. HELP COLOR delegates its wait to COLOR via the private NAMES! argument; both full HELP copies remain identical. The BOOT HELP dispatcher, KEYPEEK SHIFT logic, EDIT, mouse routines, layouts and persistent KEYREP settings are unchanged. The owner confirmed testing complete; this synchronization performs byte-level verification, not a new runtime test.
+
 ### A more practical command prompt
 
 Explore the system without writing a new BASIC utility for every task:
@@ -225,13 +229,13 @@ See the [BENCH technical reference](docs/BASIC_PROGRAMS_BENCH.md), [user manual]
 
 ```text
 EDB_v15_512k_boot.dsk
-2eb0c3a47cad5c0ebe38c8ea634ac2195f8d86c769f732b399ea21d364e4cb19
+ddb13725d8e87ec1e35dd3cc2d1fc71b8a6e01726fa2d59f7b624292e0b9a444
 
 EDB_v15_512k_tools.dsk
-3a2d4f990cbb2727e651cc85865feb782c7a36171d22a6eb5f12a77a3e7fa794
+440f26177b03cb93e8afa692e4c58fabed1bbb33213bdfe494d4985f54adf121
 
 EDB_v15_512k_bench.dsk
-d731fadab3c6d9972ec58e795538264d75b4f775f3d4b6781052eb67f40b5df0
+5cbb1aa04714d420783b34ab421c5bf3a86629a43f0d70f55ae7ced4644758c7
 ```
 
 **Distribution status:** BOOT, TOOLS and BENCH Release attachments and their repository copies match the SHA-256 checksums above.

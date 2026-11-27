@@ -136,6 +136,8 @@ TOOLS includes a number of potentially destructive disk utilities. **CHKDSK with
 
 ## HELP.BAS - Integrated topic reference
 
+**Keyboard revision:** The COLOR topic at 14554 sets the private NAMES! command tail and chains to COLOR, which owns physical press/release handling. This avoids extra memory use in HELP and prevents a held key from skipping the first page.
+
 **Syntax:** `HELP`, `HELP topic`, or supported commands followed by `?`.
 
 **Use:** The comprehensive HELP engine on TOOLS. Reads the command argument from `$FC80`, normalizes it to uppercase, locates the matching `REM` topic in its own BASIC program, then patches a dispatch line and prints the topic's help screen.
@@ -214,6 +216,8 @@ TOOLS includes a number of potentially destructive disk utilities. **CHKDSK with
 **Caution:** Does not itself execute format or repair.
 
 ## TYPE.BAS - Disk-file viewer and FIND engine
+
+**Keyboard revision:** The pager calls 57000–57300 at line 8075 for fresh physical key detection, Q recognition, stable release and buffer cleanup. FIND retains its existing non-paginated search path.
 
 **Syntax:** `TYPE filename`; FIND uses its internal private `@F` mode. `@M` is recognized for ordinary viewer mode.
 
