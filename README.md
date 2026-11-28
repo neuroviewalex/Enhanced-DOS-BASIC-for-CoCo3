@@ -1,5 +1,7 @@
 # Enhanced DOS BASIC for the Tandy Color Computer 3
 
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments are the authoritative disks. This documentation reflects the approved EDIT R3 and XMM Display Restoration R2 behavior. The repository disk images and extracted payloads still represent the previous snapshot; do not treat their hashes or source line maps as verified against the new release until re-extraction is complete. See [release synchronization status](docs/RELEASE_SYNC.md).
+
 ### The CoCo 3 BASIC environment, expanded into a capable DOS-style workspace
 
 **Enhanced DOS BASIC (EDB) v15** is a comprehensive command, programming, disk-management, and diagnostics environment for the **Tandy Color Computer 3 with 512K RAM**. It builds on the familiar CoCo BASIC experience, adding native extensions, BASIC command utilities, flexible disk navigation, integrated help, editor improvements, file and disk maintenance, configurable startup profiles, and a native 512K memory management and benchmarking suite.
@@ -23,7 +25,7 @@ EDB is not simply a launcher or a handful of demonstration programs. Its **BOOT*
 | **Benchmarks** | Automatic native CPU, services/vector/math and Sockmaster benchmarks; five-page full-color mouse viewer |
 | **Documentation** | On-screen HELP, complete user handbook, per-program technical references and verified extracted source |
 
-**Current v15 core:** 54 BOOT, 17 TOOLS and 45 BENCH files — **116 files**, including **49 tokenized BASIC entries** (26 BOOT, 15 TOOLS, 8 BENCH).
+**Previous verified v15 core inventory (new release counts pending):** 54 BOOT, 17 TOOLS and 45 BENCH files — **116 files**, including **49 tokenized BASIC entries** (26 BOOT, 15 TOOLS, 8 BENCH).
 
 ## How EDB works
 
@@ -41,7 +43,7 @@ The CoCo's disk filesystem is still relevant. EDB uses directory entries and all
 
 ### Reliable keyboard input
 
-The November 26, 2026 owner-approved keyboard revision uses XMM/KEYPEEK-derived interrupt-protected eight-column PIA matrix scans, fresh physical key presses, stable release and input-buffer isolation. COLOR NAMES and COLOR CHART advance once per deliberate press/release. FORMAT requires a fresh Y confirmation; CD profile selection uses physical F1/F2 detection. TYPE retains Q-to-quit and clears residual input before returning. HELP COLOR delegates its wait to COLOR via the private NAMES! argument; both full HELP copies remain identical. The BOOT HELP dispatcher, KEYPEEK SHIFT logic, EDIT, mouse routines, layouts and persistent KEYREP settings are unchanged. The owner confirmed testing complete; this synchronization performs byte-level verification, not a new runtime test.
+The November 26, 2026 owner-approved keyboard revision uses XMM/KEYPEEK-derived interrupt-protected eight-column PIA matrix scans, fresh physical key presses, stable release and input-buffer isolation. COLOR NAMES and COLOR CHART advance once per deliberate press/release. FORMAT requires a fresh Y confirmation; CD profile selection uses physical F1/F2 detection. TYPE retains Q-to-quit and clears residual input before returning. HELP COLOR delegates its wait to COLOR via the private NAMES! argument; the November 26 full HELP copies were identical. The BOOT HELP dispatcher, KEYPEEK SHIFT logic, EDIT, mouse routines, layouts and persistent KEYREP settings are unchanged. The owner confirmed testing of that earlier revision; the current release HELP copies require re-extraction.
 
 ### A more practical command prompt
 
@@ -61,7 +63,7 @@ HELP CD
 
 ### Search, edit, save and resume BASIC programs
 
-The current BOOT baseline includes an improved native `EDIT.DRV`, with **bare EDIT** for browsing existing BASIC lines. **SHIFT + Up/Down** moves between real line numbers and respects the end-of-program boundary. `EDIT n` opens a chosen numbered line. Press **ENTER** to commit an edit or **BREAK** to cancel.
+`EDIT` with no argument opens the first existing line in RAM; if no program is loaded, it reports `No program loaded.` and returns to the prompt. `EDIT filename` (for example, `EDIT VCC` or `EDIT VCC.BAS`) loads the BASIC listing, opens its first existing line, and leaves it in RAM for subsequent editing or SAVE. A missing filename reports failure without replacing the current listing. `EDIT n` edits the requested existing line. SHIFT + Up/Down browses existing line numbers; ENTER commits and exits. BREAK cancellation remains under investigation; do not rely on it to discard edits until verified. Save valuable unsaved work before loading another program.
 
 The tools disk's `FIND` and `TYPE` programs support searching and viewing disk files. `LAST` shows the recorded Last load, Last run and Next save filenames. Together they form a convenient but important-to-understand workflow:
 
@@ -191,6 +193,8 @@ The test suite can exercise real MMU page mappings; it checks expected resident 
 
 ### XMM — full-color diagnostics and benchmarks
 
+XMM clears before each diagnostic and benchmark stage, including the first, and on button activation. System Info uses a six-TIMER-tick pause (approximately 100 ms at 60 Hz), outside measured benchmark intervals. For transitions, blank both screen buffers before changing video mode, suppress the palette while drawing, then reveal the completed screen. XMM temporarily uses WIDTH 32 but preserves the inherited width, palette (all 16 entries), border and text attributes across program chains and restores them on normal exit. All future EDB graphical applications must restore their inherited video environment, not a fixed default; reuse this template for ASKBENCH. Abnormal exit and full 6809 regression coverage remain outstanding.
+
 Mount a writable copy of BENCH, select its drive, save any BASIC program in memory, and enter `XMM`. The full-color, mouse-driven main menu has exactly two test selections:
 
 | Selection | Keyboard | Action |
@@ -199,7 +203,7 @@ Mount a writable copy of BENCH, select its drive, save any BASIC program in memo
 | SHOW SYSTEM INFO | S | Runs the native integrity checks and tests 1–8; opens the ten-page diagnostic viewer at page 1. |
 | `<exit>` | Q | Leaves XMM and returns to the EDB prompt. |
 
-Both viewers support mouse PREV/NEXT with wraparound, the centered `<exit>` button to return to the main menu, and keyboard N/P/Q. S jumps to page 5 in the benchmark viewer or page 1 in the system-information viewer. The mouse uses a blinking lowercase x, reveals the underlying character between blink phases, and inverts the hovered button (black on yellow). Position the pointer over a button before clicking; very fast movement and clicking together can select the previous sample. The UI renders native GIME 32-column color attributes: cyan headings, white labels, green PASS, red FAIL and blue buttons. It restores the ordinary EDB display on normal exit. The original progress text is still used during tests; mouse polling and color rendering are not part of the timed loops.
+Both viewers support mouse PREV/NEXT with wraparound, the centered `<exit>` button to return to the main menu, and keyboard N/P/Q. S jumps to page 5 in the benchmark viewer or page 1 in the system-information viewer. The mouse uses a blinking lowercase x, reveals the underlying character between blink phases, and inverts the hovered button (black on yellow). Position the pointer over a button before clicking; very fast movement and clicking together can select the previous sample. The UI renders native GIME 32-column color attributes: cyan headings, white labels, green PASS, red FAIL and blue buttons. It restores the exact inherited display on normal exit. The original progress text is still used during tests; mouse polling and color rendering are not part of the timed loops.
 
 SHOW SYSTEM INFO checks hardware/MMU isolation, allocation, arenas, the callable API, object management, garbage collection, vector/math, signed/fixed-point arithmetic and native CPU-specific memory operations. The native-engine check runs before the numbered test chain; the signed tests are included in the math chain. Pager test 9 is excluded from this workflow; `XMM PAGE` and `XTPAGE.DRV` remain available separately. The diagnostic path verifies the expected history hooks, a compatible 512K profile and conflicting live allocations before sensitive operations. Save work first; do not run with incompatible memory managers active.
 
@@ -207,40 +211,40 @@ The ten XMMALL templates have only placeholders, not prefilled PASS or CPU resul
 
 The timed suite measures the **currently configured CPU only**; it does not switch CPUs. Run separately on each CPU with comparable clock, ROM and emulator settings to collect both columns. `XMSCORE.DAT` (XMMSCORE1) stores five native metrics and clock text per CPU; `XBSCORE.DAT` (XBSCORE1) stores 18 service/math values per CPU; `XBREF.DAT` supplies fallback service values. The viewer also has built-in CPU reference values at 125.28 MHz and can scale the missing CPU column to the measured clock. The 32-column templates do not mark every reference value individually: a populated column is not proof of a fresh measurement. Missing/unavailable values may appear as `--`. Keep the score records and test configuration with any published comparison. The three timed programs verify successful score writes before normal suite handoff; a failed suite must not be treated as a fresh complete result.
 
-Sockmaster's original 60-tick interpreted BASIC loop runs 15 times without printing or disk I/O inside the timed loop. `SMBENCH.BAS` calculates `INT(S/15+.5)` (rounded mean iterations per 60 ticks, not the total), saves and rereads `SMBSCORE.DAT` with marker `SMBSCORE15`. Older SMBSCORE1 records are not accepted as averages. At 60 TIMER ticks/sec the measurement window is approximately 15 seconds; other tick rates must be accounted for when comparing results. In the full suite the viewer opens at page 1; press S or navigate to page 5. Direct aliases `XMM CLASSIC`, `XMM SOCK` and `XMM SOCKMASTER` launch just this test and open page 5 after successful saving.
+Sockmaster's original 60-tick interpreted BASIC loop runs four times without printing or disk I/O inside the timed loop. `SMBENCH.BAS` calculates a rounded mean per 60 ticks, not the sum, and preserves the `SMBSCORE.DAT` record format (`SMBSCORE15` is a compatibility marker, not the current number of trials). At 60 TIMER ticks/sec each trial lasts one second; the benchmark interface displays only basic test/score information, not sample count or duration. In the full suite the viewer opens at page 1; press S or navigate to page 5. Direct aliases `XMM CLASSIC`, `XMM SOCK` and `XMM SOCKMASTER` launch just this test and open page 5 after successful saving.
 
 The current page 5 layout compares the saved score to the historical 6809 bases 100 (1 MHz) and 200 (2 MHz). It has separate 125.28 MHz point fields for 6809 and 6309. A fresh run with matching CPU/clock profile supplies the applicable field; the 6309 field otherwise retains the project author's historical EDB reference of 13,544. The saved Sockmaster record contains no CPU or MHz tag; it is not two independently persisted CPU scores. Do not attribute a previously saved score to a CPU without the run context. The full historical reference table remains in the documentation, not all on the current screen.
 
-**Verification scope:** The two-menu predecessor completed both workflows under VCC-EDB x64 in Motorola 6809 and Hitachi 6309 configurations. Subsequent native-GIME/full-color/clean-template changes were tested in 6809 mode, including all ten dynamically populated system-information pages, viewer navigation and exit. The earlier diagnostic failure-injection test verified FAIL and unconfirmed fields on a disposable disk; it was not repeated on the final release. Fresh full timed-suite and 6309 runs of the final color revision, physical CoCo 3 testing and standard-clock stress testing remain outstanding. The release images and extracted files were checksum-verified in [synchronization commit 25312509](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/commit/25312509dfe36b52f5f7141199dcac3e14c31297); this documentation update performs no new runtime test.
+**Verification scope:** On the approved local candidates, VCC-EDB 6309 at 125.28 MHz successfully completed full XMM benchmark and System Info routes from WIDTH 80 with cyan/red colors, plus menu exits from WIDTH 40 (yellow/blue) and WIDTH 32 (green/black). Before/after visible RGB colors matched. The EDIT R3 local candidate passed bare EDIT, empty memory, named and numbered entry, missing-file preservation and LAST tracking; R2 also passed SAVE/NEW/LOAD/RUN and short tests at WIDTH 32/40/80. BREAK, long lines, disk-read failure, abnormal-exit recovery, and further 6809 regression testing are still outstanding. These are earlier candidate test results, not a new test of the uploaded release bytes.
 
 See the [BENCH technical reference](docs/BASIC_PROGRAMS_BENCH.md), [user manual](docs/USER_MANUAL.md#9-xmm-diagnostics-and-benchmarking) and [Sockmaster benchmark notes](docs/SOCKMASTER_BENCH.md).
 
 ## Official v15 disk images
 
-**All three repository disk images match the owner-approved [v15 Release attachments](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15).** Each disk contains 184,320 bytes (40 tracks x 18 sectors x 256 bytes).
+**The owner-designated [v15 Release attachments](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) are authoritative.** Each contains 184,320 bytes (40 tracks x 18 sectors x 256 bytes). Repository copies and extracted sources are awaiting exact binary synchronization.
 
 | Disk | Files | Contents | Download |
 | --- | ---: | --- | --- |
-| **BOOT** | 54 | Core command environment, native editor, profiles, history and disk/cache drivers | [BOOT image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BOOT.dsk) |
-| **TOOLS** | 17 | HELP, KEYPEEK, FIND/TYPE, disk checks, copy/install and file utilities | [TOOLS image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_tools.dsk) |
-| **BENCH** | 45 | Full-color XMM menu, eight BASIC programs, 16 X32 templates, native diagnostics and timed benchmarks | [BENCH image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk) |
+| **BOOT** | 54 (prior) | Core command environment, native editor, profiles, history and disk/cache drivers | [BOOT image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BOOT.dsk) |
+| **TOOLS** | 17 (prior) | HELP, KEYPEEK, FIND/TYPE, disk checks, copy/install and file utilities | [TOOLS image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_TOOLS.dsk) |
+| **BENCH** | 45 (prior) | Full-color XMM menu, eight BASIC programs, 16 X32 templates, native diagnostics and timed benchmarks | [BENCH image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk) |
 
-**SHA-256 checksums:**
+**Authoritative release asset SHA-256 checksums (GitHub metadata):**
 
 ```text
 EDB_v15_512k_boot.dsk
-ddb13725d8e87ec1e35dd3cc2d1fc71b8a6e01726fa2d59f7b624292e0b9a444
+2869705a904eabafb1b9de541d0f265a8db4d6ace0851e0aad661e47b16e6175
 
 EDB_v15_512k_tools.dsk
-440f26177b03cb93e8afa692e4c58fabed1bbb33213bdfe494d4985f54adf121
+3afcb90370d9aff975be06ff1cdde0ce5aea89e7abb959c7324617cc4f1b196e
 
 EDB_v15_512k_bench.dsk
-5cbb1aa04714d420783b34ab421c5bf3a86629a43f0d70f55ae7ced4644758c7
+15293d31bcc4a81e16f5298640fbf75c08d1f4c6ab04bf31e4824b57565b581a
 ```
 
-**Distribution status:** BOOT, TOOLS and BENCH Release attachments and their repository copies match the SHA-256 checksums above.
+**Distribution status:** The release digests above are verified from GitHub metadata. Local repository images and extracted payloads have not yet been synchronized against these exact assets.
 
-The [`extracted/`](extracted/) tree contains **116 files** (54 BOOT, 17 TOOLS, 45 BENCH), preserved byte-for-byte from the three release disks.
+The [`extracted/`](extracted/) tree contains 116 files from the previous verified snapshot. See [release synchronization status](docs/RELEASE_SYNC.md) before using the extracted code.
 
 ## Getting started with EDB v15
 
@@ -320,7 +324,7 @@ The project protocol is:
 
 Because EDB includes native code, tokenized BASIC and binary disk images, careful verification matters. Appropriate checks include BASIC token/linked-line structure, byte-for-byte source extraction, directory/FAT chain integrity, checksum comparisons, and clear separation of **static analysis** from **VCC-EDB / hardware runtime tests**.
 
-The current release was synchronized without altering disk payloads; see [MANIFEST.json](extracted/MANIFEST.json). Subsequent documentation-only changes do not create a new executable baseline.
+The previous extraction is recorded in [MANIFEST.json](extracted/MANIFEST.json). The latest release assets remain untouched; this documentation-only update does not create a new executable baseline.
 
 ## The spirit of EDB
 

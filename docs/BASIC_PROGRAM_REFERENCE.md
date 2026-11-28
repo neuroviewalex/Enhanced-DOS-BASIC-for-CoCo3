@@ -1,7 +1,9 @@
 # EDB v15 - Complete BASIC Program and Function Reference
 
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments are the authoritative disks. This documentation reflects the approved EDIT R3 and XMM Display Restoration R2 behavior. The repository disk images and extracted payloads still represent the previous snapshot; do not treat their hashes or source line maps as verified against the new release until re-extraction is complete. See [release synchronization status](RELEASE_SYNC.md).
+
 **Official v15 inventory: BOOT, TOOLS and the full-color XMM BENCH disk**  
-**Source baseline:** All three v15 release disks, verified in [MANIFEST.json](../extracted/MANIFEST.json).  
+**Source baseline:** Prior v15 extraction verified in [MANIFEST.json](../extracted/MANIFEST.json); current owner-designated release assets are newer.  
 **Documentation coverage:** **49 BASIC entries** (26 BOOT, 15 TOOLS, 8 BENCH), including the literal `*.BAS` file and three HELP entries.  
 **Validation:** Source-level inspection of tokenized CoCo BASIC files from `extracted/`. The current [v15 Release disks](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) have been verified against the repository image SHA-256 checksums. Source auditing does not replace independent emulator or hardware execution tests.
 
@@ -82,10 +84,12 @@ Every program section explains its purpose, command syntax where applicable, imp
 
 ### Programming and editing
 
+`EDIT` with no argument opens the first existing line in RAM; if no program is loaded, it reports `No program loaded.` and returns to the prompt. `EDIT filename` (for example, `EDIT VCC` or `EDIT VCC.BAS`) loads the BASIC listing, opens its first existing line, and leaves it in RAM for subsequent editing or SAVE. A missing filename reports failure without replacing the current listing. `EDIT n` edits the requested existing line. SHIFT + Up/Down browses existing line numbers; ENTER commits and exits. BREAK cancellation remains under investigation; do not rely on it to discard edits until verified. Save valuable unsaved work before loading another program.
+
     FIND.BAS -> TYPE.BAS -> saved disk .BAS
     LOAD "FILE.BAS" -> BASIC RAM program
-    EDIT [line] -> native EDIT.DRV
-    EDIT filename -> EDIT.BAS wrapper -> file loader
+    EDIT [line] -> native EDIT.DRV; no line = first existing line (or graceful empty exit)
+    EDIT filename -> EDIT.BAS wrapper -> load listing -> native editor at first line
     SAVE "FILE.BAS" -> DOSCORE.DRV save hook
     LAST.BAS -> last-load / last-run / next-save records
 
@@ -135,4 +139,4 @@ For each authorized future change to an EDB `.BAS` file:
 4. Commit documentation changes with a clear explanation and verify the Git diff.
 5. Never silently modify EDB binaries or declare a new software baseline as part of a manual-only edit.
 
-The authoritative reference lives alongside [`USER_MANUAL.md`](USER_MANUAL.md). All three official [v15 Release images](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15), including the full-color XMM BENCH, match their repository disk copies.
+The authoritative reference lives alongside [`USER_MANUAL.md`](USER_MANUAL.md). The owner-designated [v15 Release images](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) supersede the repository snapshot. Exact disk and extracted-source synchronization is pending.

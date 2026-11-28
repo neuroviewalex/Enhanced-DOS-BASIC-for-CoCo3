@@ -1,10 +1,12 @@
 # Enhanced DOS BASIC (EDB) v15 - Official User Manual
 
-**Platform:** Tandy Color Computer 3 with 512K RAM  
-**Edition:** Complete BASIC-program user handbook - 2026-11-22  
-**Baseline:** Official v15 BOOT, TOOLS and full-color XMM BENCH. All three release assets match the repository disk images.
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments are the authoritative disks. This documentation reflects the approved EDIT R3 and XMM Display Restoration R2 behavior. The repository disk images and extracted payloads still represent the previous snapshot; do not treat their hashes or source line maps as verified against the new release until re-extraction is complete. See [release synchronization status](RELEASE_SYNC.md).
 
-**BENCH download:** [Official v15 Release image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk) (SHA-256 `5cbb1aa04714d420783b34ab421c5bf3a86629a43f0d70f55ae7ced4644758c7`).
+**Platform:** Tandy Color Computer 3 with 512K RAM  
+**Edition:** Complete BASIC-program user handbook - 2026-11-27  
+**Baseline:** The owner-designated v15 BOOT, TOOLS and BENCH release attachments are authoritative; exact source synchronization is pending.
+
+**BENCH download:** [Official v15 Release image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk) (SHA-256 `15293d31bcc4a81e16f5298640fbf75c08d1f4c6ab04bf31e4824b57565b581a`).
 
 This is the **main, living EDB v15 handbook**. It explains the entire current BASIC utility environment - startup, volumes, program editing, files, backups, colour, keyboard, memory management, diagnostics and benchmarks - rather than only the original five-command programming workflow.
 
@@ -414,6 +416,8 @@ FIND runs its search through `TYPE.BAS`, preloading the source to a temporary `E
 ```basic
 EDIT 120
 EDIT
+EDIT VCC
+EDIT VCC.BAS
 ```
 
 Use `EDIT 120` to edit an existing line 120 in the BASIC program currently in memory. The number is an example; use the number FIND reports.
@@ -438,14 +442,14 @@ Press **ENTER** to commit the edited line to the program in RAM.
 
 #### Navigation without a line number
 
-Bare `EDIT` enters the native editor's line-browsing mode. The v15 FIX5 baseline supports:
+Bare `EDIT` enters the native editor at the first existing line; empty memory returns to the prompt. The approved EDIT R3 behavior supports:
 
 | Key | Action |
 | --- | --- |
 | SHIFT + Up arrow | Select the previous existing BASIC line. |
 | SHIFT + Down arrow | Select the next existing BASIC line. |
 | ENTER | Commit the current edit. |
-| BREAK | Cancel the current edit. |
+| BREAK | Intended to cancel; reliability remains unverified. |
 
 The editor moves through existing line numbers, not by adding 1 to the current number. For example, it can navigate through lines 100, 120, 200, and 350.
 
@@ -457,7 +461,7 @@ At the beginning and end of the program, navigation stops on the boundary line. 
 
 EDIT updates the program held in memory; it does **not** save the file automatically. Once the changed program runs correctly, use SAVE to keep it.
 
-The `EDIT filename` command shown in the built-in help is a separate filename-loading form. For the search/edit workflow in this manual, use `LOAD "filename"` followed by `EDIT line-number` or bare `EDIT`.
+`EDIT` with no argument opens the first existing line in RAM; if no program is loaded, it reports `No program loaded.` and returns to the prompt. `EDIT filename` (for example, `EDIT VCC` or `EDIT VCC.BAS`) loads the BASIC listing, opens its first existing line, and leaves it in RAM for subsequent editing or SAVE. A missing filename reports failure without replacing the current listing. `EDIT n` edits the requested existing line. SHIFT + Up/Down browses existing line numbers; ENTER commits and exits. BREAK cancellation remains under investigation; do not rely on it to discard edits until verified. Save valuable unsaved work before loading another program.
 
 <a id="7-save---writing-a-basic-program"></a>
 
@@ -620,7 +624,7 @@ CoCo disk files live in directory sectors and a granule allocation table. Ordina
 
 ### Keyboard handling (November 26 baseline)
 
-The November 26, 2026 owner-approved keyboard revision uses XMM/KEYPEEK-derived interrupt-protected eight-column PIA matrix scans, fresh physical key presses, stable release and input-buffer isolation. COLOR NAMES and COLOR CHART advance once per deliberate press/release. FORMAT requires a fresh Y confirmation; CD profile selection uses physical F1/F2 detection. TYPE retains Q-to-quit and clears residual input before returning. HELP COLOR delegates its wait to COLOR via the private NAMES! argument; both full HELP copies remain identical. The BOOT HELP dispatcher, KEYPEEK SHIFT logic, EDIT, mouse routines, layouts and persistent KEYREP settings are unchanged. The owner confirmed testing complete; this synchronization performs byte-level verification, not a new runtime test.
+The November 26, 2026 owner-approved keyboard revision uses XMM/KEYPEEK-derived interrupt-protected eight-column PIA matrix scans, fresh physical key presses, stable release and input-buffer isolation. COLOR NAMES and COLOR CHART advance once per deliberate press/release. FORMAT requires a fresh Y confirmation; CD profile selection uses physical F1/F2 detection. TYPE retains Q-to-quit and clears residual input before returning. HELP COLOR delegates its wait to COLOR via the private NAMES! argument; the November 26 full HELP copies were identical. The BOOT HELP dispatcher, KEYPEEK SHIFT logic, EDIT, mouse routines, layouts and persistent KEYREP settings are unchanged. The owner confirmed testing of that earlier revision; the current release HELP copies require re-extraction.
 
 ### WIDTH - text columns
 
@@ -746,7 +750,9 @@ Mount a writable copy of BENCH, select its drive, save any BASIC program in memo
 | SHOW SYSTEM INFO | S | Runs the native integrity checks and tests 1–8; opens the ten-page diagnostic viewer at page 1. |
 | `<exit>` | Q | Leaves XMM and returns to the EDB prompt. |
 
-Both viewers support mouse PREV/NEXT with wraparound, the centered `<exit>` button to return to the main menu, and keyboard N/P/Q. S jumps to page 5 in the benchmark viewer or page 1 in the system-information viewer. The mouse uses a blinking lowercase x, reveals the underlying character between blink phases, and inverts the hovered button (black on yellow). Position the pointer over a button before clicking; very fast movement and clicking together can select the previous sample. The UI renders native GIME 32-column color attributes: cyan headings, white labels, green PASS, red FAIL and blue buttons. It restores the ordinary EDB display on normal exit. The original progress text is still used during tests; mouse polling and color rendering are not part of the timed loops.
+Both viewers support mouse PREV/NEXT with wraparound, the centered `<exit>` button to return to the main menu, and keyboard N/P/Q. S jumps to page 5 in the benchmark viewer or page 1 in the system-information viewer. The mouse uses a blinking lowercase x, reveals the underlying character between blink phases, and inverts the hovered button (black on yellow). Position the pointer over a button before clicking; very fast movement and clicking together can select the previous sample. The UI renders native GIME 32-column color attributes: cyan headings, white labels, green PASS, red FAIL and blue buttons. It restores the exact inherited display on normal exit. The original progress text is still used during tests; mouse polling and color rendering are not part of the timed loops.
+
+XMM clears before each diagnostic and benchmark stage, including the first, and on button activation. System Info uses a six-TIMER-tick pause (approximately 100 ms at 60 Hz), outside measured benchmark intervals. For transitions, blank both screen buffers before changing video mode, suppress the palette while drawing, then reveal the completed screen. XMM temporarily uses WIDTH 32 but preserves the inherited width, palette (all 16 entries), border and text attributes across program chains and restores them on normal exit. All future EDB graphical applications must restore their inherited video environment, not a fixed default; reuse this template for ASKBENCH. Abnormal exit and full 6809 regression coverage remain outstanding.
 
 ### SHOW SYSTEM INFO
 
@@ -758,7 +764,7 @@ The ten XMMALL templates have only placeholders, not prefilled PASS or CPU resul
 
 The timed suite measures the **currently configured CPU only**; it does not switch CPUs. Run separately on each CPU with comparable clock, ROM and emulator settings to collect both columns. `XMSCORE.DAT` (XMMSCORE1) stores five native metrics and clock text per CPU; `XBSCORE.DAT` (XBSCORE1) stores 18 service/math values per CPU; `XBREF.DAT` supplies fallback service values. The viewer also has built-in CPU reference values at 125.28 MHz and can scale the missing CPU column to the measured clock. The 32-column templates do not mark every reference value individually: a populated column is not proof of a fresh measurement. Missing/unavailable values may appear as `--`. Keep the score records and test configuration with any published comparison. The three timed programs verify successful score writes before normal suite handoff; a failed suite must not be treated as a fresh complete result.
 
-### XBENCH - legacy XMEM/XMATH services
+### XBENCH - XMM/XMATH services
 
 Measures driver reload, object services, read/write throughput, DOT8, SUM8, SAD8, DOT8S, DOTQ7 and BASIC versus XMATH dot products. It checks results and MMU restoration. Direct `XMM BENCH` invokes only this legacy-services stage with its expected entry state, not the entire suite.
 
@@ -791,7 +797,7 @@ First stage of the normal benchmark sequence. Selects XMM6809.BIN or XMM6309.BIN
 30 PRINT A:RUN
 ```
 
-Sockmaster's original 60-tick interpreted BASIC loop runs 15 times without printing or disk I/O inside the timed loop. `SMBENCH.BAS` calculates `INT(S/15+.5)` (rounded mean iterations per 60 ticks, not the total), saves and rereads `SMBSCORE.DAT` with marker `SMBSCORE15`. Older SMBSCORE1 records are not accepted as averages. At 60 TIMER ticks/sec the measurement window is approximately 15 seconds; other tick rates must be accounted for when comparing results. In the full suite the viewer opens at page 1; press S or navigate to page 5. Direct aliases `XMM CLASSIC`, `XMM SOCK` and `XMM SOCKMASTER` launch just this test and open page 5 after successful saving.
+Sockmaster's original 60-tick interpreted BASIC loop runs four times without printing or disk I/O inside the timed loop. `SMBENCH.BAS` calculates a rounded mean per 60 ticks, not the sum, and preserves the `SMBSCORE.DAT` record format (`SMBSCORE15` is a compatibility marker, not the current number of trials). At 60 TIMER ticks/sec each trial lasts one second; the benchmark interface displays only basic test/score information, not sample count or duration. In the full suite the viewer opens at page 1; press S or navigate to page 5. Direct aliases `XMM CLASSIC`, `XMM SOCK` and `XMM SOCKMASTER` launch just this test and open page 5 after successful saving.
 
 The current page 5 layout compares the saved score to the historical 6809 bases 100 (1 MHz) and 200 (2 MHz). It has separate 125.28 MHz point fields for 6809 and 6309. A fresh run with matching CPU/clock profile supplies the applicable field; the 6309 field otherwise retains the project author's historical EDB reference of 13,544. The saved Sockmaster record contains no CPU or MHz tag; it is not two independently persisted CPU scores. Do not attribute a previously saved score to a CPU without the run context. The full historical reference table remains in the documentation, not all on the current screen.
 
@@ -812,9 +818,9 @@ The separate 13,544 reference was reported by the project author on VCC-EDB with
 
 ### BENCH HELP.BAS
 
-BENCH and TOOLS share the full HELP engine; BOOT has the smaller dispatcher. See [BENCH technical reference](BASIC_PROGRAMS_BENCH.md) for program internals and [Sockmaster notes](SOCKMASTER_BENCH.md) for measurement details.
+BENCH and TOOLS contain the full HELP engine; BOOT has the smaller dispatcher. The new release HELP wording and duplicate payloads have not yet been checked against the uploaded disks. See [BENCH technical reference](BASIC_PROGRAMS_BENCH.md) for program internals and [Sockmaster notes](SOCKMASTER_BENCH.md) for measurement details.
 
-**Verification scope:** The two-menu predecessor completed both workflows under VCC-EDB x64 in Motorola 6809 and Hitachi 6309 configurations. Subsequent native-GIME/full-color/clean-template changes were tested in 6809 mode, including all ten dynamically populated system-information pages, viewer navigation and exit. The earlier diagnostic failure-injection test verified FAIL and unconfirmed fields on a disposable disk; it was not repeated on the final release. Fresh full timed-suite and 6309 runs of the final color revision, physical CoCo 3 testing and standard-clock stress testing remain outstanding. The release images and extracted files were checksum-verified in [synchronization commit 25312509](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/commit/25312509dfe36b52f5f7141199dcac3e14c31297); this documentation update performs no new runtime test.
+**Verification scope:** On the approved local candidates, VCC-EDB 6309 at 125.28 MHz successfully completed full XMM benchmark and System Info routes from WIDTH 80 with cyan/red colors, plus menu exits from WIDTH 40 (yellow/blue) and WIDTH 32 (green/black). Before/after visible RGB colors matched. The EDIT R3 local candidate passed bare EDIT, empty memory, named and numbered entry, missing-file preservation and LAST tracking; R2 also passed SAVE/NEW/LOAD/RUN and short tests at WIDTH 32/40/80. BREAK, long lines, disk-read failure, abnormal-exit recovery, and further 6809 regression testing are still outstanding. These are earlier candidate test results, not a new test of the uploaded release bytes.
 
 ## 10. Practical recipes
 
@@ -865,7 +871,7 @@ LOAD "GAME2.BAS"
 RUN
 ```
 
-Use SHIFT + Up/Down in EDIT to browse existing line numbers, ENTER to commit and BREAK to cancel. Do not overwrite your only known-good version.
+Use SHIFT + Up/Down in EDIT to browse existing line numbers and ENTER to commit and exit. BREAK cancellation remains unresolved. Do not overwrite your only known-good version.
 
 ### Check disk health before trying repairs
 
@@ -995,7 +1001,7 @@ Compare the history records to the filename you intended to use. Do not rely on 
 | FIND reports a match, but EDIT opens the wrong contents | LOAD the intended `.BAS` file again after FIND, then EDIT the reported line number. |
 | FIND cannot identify a loaded program | Inspect LAST, then supply an explicit filename to FIND. |
 | FIND does not show recently edited text | The edits are unsaved; SAVE, then search the saved copy. |
-| EDIT reports `line not found` | Check the line number and confirm the v15 FIX5 BOOT baseline is in use. |
+| EDIT reports `line not found` | Check the line number and confirm the current EDIT R3 BOOT release is in use. |
 | Editing works in RAM but the saved copy fails to run | Preserve the original, try a new destination filename, LOAD the saved copy, and inspect LIST before RUN. |
 | SAVE over an existing file fails | The overwrite path is not failure-safe; use a disposable disk and retain backup copies. |
 | Filename-free SAVE or LOAD targets the wrong file | Use LAST for context and supply the filename explicitly. |
@@ -1116,7 +1122,7 @@ Some important routines are machine code, not `.BAS`:
 
 - `BOOT.DRV`, `DOSCORE.DRV`, `EDIT.DRV`, `CDINIT.DRV`, `CDSEQ.DRV`, `RAMBOOT.DRV` - native boot, editing, disk and cache integration.
 - `XKEY.DRV`, `HISTORY.DRV`, the `XT*.DRV` diagnostic modules and `XMM6809.BIN` / `XMM6309.BIN` - keyboard/history and native XMM tests.
-- `XMEMHW.DRV` and `XMATH.DRV` - the legacy service interfaces timed by XBENCH.
+- `XMMHW.DRV` and `XMATH.DRV` - the legacy service interfaces timed by XBENCH.
 
 A complete instruction-level driver reference is outside the scope of a BASIC-program manual. Do not treat undocumented memory-mapped addresses as stable public APIs.
 

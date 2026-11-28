@@ -1,22 +1,24 @@
 # EDB v15 BASIC Program Reference - BENCH Disk
 
-**Coverage:** All eight BASIC programs on the official 45-file BENCH disk. SHA-256 `5cbb1aa04714d420783b34ab421c5bf3a86629a43f0d70f55ae7ced4644758c7`. See [manifest](../extracted/MANIFEST.json) for exact extraction.
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments are the authoritative disks. This documentation reflects the approved EDIT R3 and XMM Display Restoration R2 behavior. The repository disk images and extracted payloads still represent the previous snapshot; do not treat their hashes or source line maps as verified against the new release until re-extraction is complete. See [release synchronization status](RELEASE_SYNC.md).
 
-## Complete BENCH file inventory
+**Coverage:** Eight BASIC programs in the prior 45-file extraction, with updated approved XMM behavior. Latest BENCH release SHA-256 `15293d31bcc4a81e16f5298640fbf75c08d1f4c6ab04bf31e4824b57565b581a`. See [manifest](../extracted/MANIFEST.json) for the prior extraction; exact new release inventory is pending.
+
+## BENCH file inventory (prior counts; approved XMM naming)
 
 | Category | Files | Count |
 | --- | --- | ---: |
 | BASIC | HELP.BAS, XMM.BAS, XMENU.BAS, XMALL.BAS, XMBCPU.BAS, XBENCH.BAS, SMBENCH.BAS, XMSHOW.BAS | 8 |
 | Screen templates | XMMMENU.X32, BENCH1–5.X32, XMMALL1–10.X32 | 16 |
-| Native engines and UI | XMM6809.BIN, XMM6309.BIN, XHOVER.BIN, XKEY.DRV, HRTANDY.DRV, XMEMHW.DRV, XMATH.DRV | 7 |
+| Native engines and UI | XMM6809.BIN, XMM6309.BIN, XHOVER.BIN, XKEY.DRV, HRTANDY.DRV, XMMHW.DRV, XMATH.DRV | 7 |
 | Diagnostic modules | XTHW.DRV, XTALLOC.DRV, XTARENA.DRV, XTAPI.DRV, XTOBJ.DRV, XTGC.DRV, XTMATH.DRV, XTSIGN.DRV, XTPAGE.DRV | 9 |
 | Data/configuration | XMSCORE.DAT, XBSCORE.DAT, XBREF.DAT, SMBSCORE.DAT, volume.inf | 5 |
 
 ## HELP.BAS - Integrated HELP copy
 
-**Keyboard revision:** This is the same corrected HELP payload as TOOLS, including the NAMES! handoff to COLOR. XMM benchmark engines, scores, templates, mouse and keyboard routines are unchanged by this revision.
+**HELP synchronization:** The prior keyboard-corrected HELP copy predates EDIT R3 and BENCH Display Restoration R2. The new release copies must be audited and updated if needed; no claim of identical payloads is made.
 
-**Use:** Full topic-based EDB HELP reference, stored on BENCH as a convenience. The file is **byte-identical** to `extracted/tools/HELP.BAS` in the promoted v15 baseline (Git blob `a8a737d7092e9e64cc91c50238cb9d36aaf09d4f`).
+**Use:** Full topic-based EDB HELP reference, stored on BENCH as a convenience. The prior extracted copy matched TOOLS; the new release copy requires verification.
 
 **Routines and behavior:** Main lines 10-60 parse the command tail; 70-240 search REM topic markers in the tokenized BASIC program and patch the dynamic jump line; 300 displays "No help for this topic"; 400-500 resolve the dispatch target. Each 10000-40100 topic block provides on-screen help.
 
@@ -28,14 +30,14 @@
 
 **Intended entry:** Second stage of RUN BENCHMARK TESTS (B), or the standalone command `XMM BENCH`. Direct invocation without the expected XMM history flags prints `Use XMM BENCH` and exits.
 
-**Use:** Benchmark the legacy `XMEMHW.DRV` and `XMATH.DRV` native service layer. It measures driver reload time, object create/free/statistics throughput, object reads/writes, signed vector and scalar math, and comparative BASIC-versus-XMATH dot products.
+**Use:** Benchmark the legacy `XMMHW.DRV` and `XMATH.DRV` native service layer. It measures driver reload time, object create/free/statistics throughput, object reads/writes, signed vector and scalar math, and comparative BASIC-versus-XMATH dot products.
 
 **Main phases:**
 
 | Lines | Function |
 | --- | --- |
 | 1-115 | Check XMM entry state, screen mode and CPU identity, read `sysinfo.inf` clock estimate. |
-| 120-170 | Adaptive timing of XMEMHW/XMATH driver reload. |
+| 120-170 | Adaptive timing of XMMHW/XMATH driver reload. |
 | 180-350 | Initialize native services, create objects, time status/read/write and verify status. |
 | 360-480 | Prepare test vectors and exercise DOT8, SUM8, SAD8, signed DOT8S, DOTQ7 operations. |
 | 530-695 | Compare BASIC dot-product timing to native XMATH, verify status, release objects, check MMU register restoration. |
@@ -57,7 +59,7 @@
 
 **Persistent files:** `XBSCORE.DAT` stores service benchmark measurements separately for Motorola 6809 and Hitachi 6309. The first record is `XBSCORE1`; invalid existing data is preserved rather than silently overwritten.
 
-**Dependencies:** `XMEMHW.DRV`, `XMATH.DRV`, `XKEY.DRV`, optional `sysinfo.inf` and native XMM routing state. Memory manager code, scratch addresses and MMU mappings are touched deliberately.
+**Dependencies:** `XMMHW.DRV`, `XMATH.DRV`, `XKEY.DRV`, optional `sysinfo.inf` and native XMM routing state. Memory manager code, scratch addresses and MMU mappings are touched deliberately.
 
 **Caution:** Performance is affected by emulator clock, CPU core, allocated memory and service-driver versions. Results should be compared only under controlled conditions. The score file is written on successful completion.
 
@@ -98,15 +100,19 @@ Timing uses an adaptive number of repetitions aimed at roughly 30 timer ticks. I
 
 **Interpretation:** Run the same benchmark on both CPU configurations to populate a meaningful comparison; until both have valid records, the program reports the comparison as pending.
 
+## Approved XMM application template
+
+XMM clears before each diagnostic and benchmark stage, including the first, and on button activation. System Info uses a six-TIMER-tick pause (approximately 100 ms at 60 Hz), outside measured benchmark intervals. For transitions, blank both screen buffers before changing video mode, suppress the palette while drawing, then reveal the completed screen. XMM temporarily uses WIDTH 32 but preserves the inherited width, palette (all 16 entries), border and text attributes across program chains and restores them on normal exit. All future EDB graphical applications must restore their inherited video environment, not a fixed default; reuse this template for ASKBENCH. Abnormal exit and full 6809 regression coverage remain outstanding.
+
 ## SMBENCH.BAS - Sockmaster Classic BASIC benchmark
 
-Sockmaster's original 60-tick interpreted BASIC loop runs 15 times without printing or disk I/O inside the timed loop. `SMBENCH.BAS` calculates `INT(S/15+.5)` (rounded mean iterations per 60 ticks, not the total), saves and rereads `SMBSCORE.DAT` with marker `SMBSCORE15`. Older SMBSCORE1 records are not accepted as averages. At 60 TIMER ticks/sec the measurement window is approximately 15 seconds; other tick rates must be accounted for when comparing results. In the full suite the viewer opens at page 1; press S or navigate to page 5. Direct aliases `XMM CLASSIC`, `XMM SOCK` and `XMM SOCKMASTER` launch just this test and open page 5 after successful saving.
+Sockmaster's original 60-tick interpreted BASIC loop runs four times without printing or disk I/O inside the timed loop. `SMBENCH.BAS` calculates a rounded mean per 60 ticks, not the sum, and preserves the `SMBSCORE.DAT` record format (`SMBSCORE15` is a compatibility marker, not the current number of trials). At 60 TIMER ticks/sec each trial lasts one second; the benchmark interface displays only basic test/score information, not sample count or duration. In the full suite the viewer opens at page 1; press S or navigate to page 5. Direct aliases `XMM CLASSIC`, `XMM SOCK` and `XMM SOCKMASTER` launch just this test and open page 5 after successful saving.
 
 The current page 5 layout compares the saved score to the historical 6809 bases 100 (1 MHz) and 200 (2 MHz). It has separate 125.28 MHz point fields for 6809 and 6309. A fresh run with matching CPU/clock profile supplies the applicable field; the 6309 field otherwise retains the project author's historical EDB reference of 13,544. The saved Sockmaster record contains no CPU or MHz tag; it is not two independently persisted CPU scores. Do not attribute a previously saved score to a CPU without the run context. The full historical reference table remains in the documentation, not all on the current screen.
 
 | Lines | Function |
 | --- | --- |
-| 8–30 | 15 timed samples and rounded mean |
+| 8–30 | Four timed samples and rounded mean |
 | 40–70 | Save and read back score record |
 | 79–90 | Suite success opens page 1; standalone success opens page 5 |
 | 900–901 | Save/verification error and cleanup |
@@ -133,7 +139,7 @@ Mount a writable copy of BENCH, select its drive, save any BASIC program in memo
 | SHOW SYSTEM INFO | S | Runs the native integrity checks and tests 1–8; opens the ten-page diagnostic viewer at page 1. |
 | `<exit>` | Q | Leaves XMM and returns to the EDB prompt. |
 
-Both viewers support mouse PREV/NEXT with wraparound, the centered `<exit>` button to return to the main menu, and keyboard N/P/Q. S jumps to page 5 in the benchmark viewer or page 1 in the system-information viewer. The mouse uses a blinking lowercase x, reveals the underlying character between blink phases, and inverts the hovered button (black on yellow). Position the pointer over a button before clicking; very fast movement and clicking together can select the previous sample. The UI renders native GIME 32-column color attributes: cyan headings, white labels, green PASS, red FAIL and blue buttons. It restores the ordinary EDB display on normal exit. The original progress text is still used during tests; mouse polling and color rendering are not part of the timed loops.
+Both viewers support mouse PREV/NEXT with wraparound, the centered `<exit>` button to return to the main menu, and keyboard N/P/Q. S jumps to page 5 in the benchmark viewer or page 1 in the system-information viewer. The mouse uses a blinking lowercase x, reveals the underlying character between blink phases, and inverts the hovered button (black on yellow). Position the pointer over a button before clicking; very fast movement and clicking together can select the previous sample. The UI renders native GIME 32-column color attributes: cyan headings, white labels, green PASS, red FAIL and blue buttons. It restores the exact inherited display on normal exit. The original progress text is still used during tests; mouse polling and color rendering are not part of the timed loops.
 
 Lines 10–14 initialize the keyboard/mouse/display and load XMMMENU.X32. Lines 20–25 dispatch B/S/Q. Lines 800–802 restore input/display state and return to EDB or chain to XMM. Lines 9000–9060 calibrate the mouse timing using the system clock profile; 9100–9164 sample the mouse, debounce selection and determine hover targets. XHOVER.BIN is the common renderer.
 
@@ -174,6 +180,6 @@ The original native 723-byte X32 files contain a 480-byte screen payload (32 col
 
 ## Scope and preservation
 
-**Verification scope:** The two-menu predecessor completed both workflows under VCC-EDB x64 in Motorola 6809 and Hitachi 6309 configurations. Subsequent native-GIME/full-color/clean-template changes were tested in 6809 mode, including all ten dynamically populated system-information pages, viewer navigation and exit. The earlier diagnostic failure-injection test verified FAIL and unconfirmed fields on a disposable disk; it was not repeated on the final release. Fresh full timed-suite and 6309 runs of the final color revision, physical CoCo 3 testing and standard-clock stress testing remain outstanding. The release images and extracted files were checksum-verified in [synchronization commit 25312509](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/commit/25312509dfe36b52f5f7141199dcac3e14c31297); this documentation update performs no new runtime test.
+**Verification scope:** On the approved local candidates, VCC-EDB 6309 at 125.28 MHz successfully completed full XMM benchmark and System Info routes from WIDTH 80 with cyan/red colors, plus menu exits from WIDTH 40 (yellow/blue) and WIDTH 32 (green/black). Before/after visible RGB colors matched. The EDIT R3 local candidate passed bare EDIT, empty memory, named and numbered entry, missing-file preservation and LAST tracking; R2 also passed SAVE/NEW/LOAD/RUN and short tests at WIDTH 32/40/80. BREAK, long lines, disk-read failure, abnormal-exit recovery, and further 6809 regression testing are still outstanding. These are earlier candidate test results, not a new test of the uploaded release bytes.
 
 The executable files and templates in [extracted/bench](../extracted/bench/) are exact tokenized/binary disk payloads. This is a BASIC and integration reference, not an instruction-by-instruction native driver disassembly.

@@ -1,5 +1,7 @@
 # EDB v15 BASIC Program Reference - BOOT Disk
 
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments are the authoritative disks. This documentation reflects the approved EDIT R3 and XMM Display Restoration R2 behavior. The repository disk images and extracted payloads still represent the previous snapshot; do not treat their hashes or source line maps as verified against the new release until re-extraction is complete. See [release synchronization status](RELEASE_SYNC.md).
+
 **Coverage:** All 26 `.BAS` directory entries in the promoted v15 BOOT disk, including the literal file named `*.BAS`.  
 **Method:** Inspected the tokenized BASIC source in `extracted/boot/` and identified command paths, local GOSUB routines, dependencies and side effects.  
 **Status:** Source-level documentation - not a new hardware/emulator test.  
@@ -174,11 +176,11 @@ The filenames below are the **actual files on the BOOT disk**. A `GOSUB` line nu
 
 **Examples:** `EDIT GAME.BAS`, `EDIT MYPROG.DRV` and `EDIT ?`.
 
-**Use:** This BASIC wrapper resolves a filename on the current drive, defaulting to `.BAS` and then `.DRV` when no extension is supplied. It checks for a CoCo directory entry of BASIC type, installs an EDIT entry hook, and executes `LOAD filename,R`.
+**Use:** `EDIT` with no argument opens the first existing line in RAM; if no program is loaded, it reports `No program loaded.` and returns to the prompt. `EDIT filename` (for example, `EDIT VCC` or `EDIT VCC.BAS`) loads the BASIC listing, opens its first existing line, and leaves it in RAM for subsequent editing or SAVE. A missing filename reports failure without replacing the current listing. `EDIT n` edits the requested existing line. SHIFT + Up/Down browses existing line numbers; ENTER commits and exits. BREAK cancellation remains under investigation; do not rely on it to discard edits until verified. Save valuable unsaved work before loading another program.
 
-**Internal routines:** 100-250 parse quoted/unquoted filename; 700-883 scan CoCo directory sectors, normalize case and validate file type; 500-550 install loader/hook and start the selected file; 900 routes HELP.
+**Implementation:** The prior wrapper parses the filename, checks directory entries for BASIC type, and installs the native edit-entry hook. EDIT R3 corrects the interpreter handoff and transient-command ownership so the loaded listing stays in memory and LAST tracks the selected file. Exact new line maps require re-extraction.
 
-**Important architecture distinction:** Native `EDIT line-number`, bare `EDIT`, and SHIFT + Up/Down navigation are handled by the **machine-code `EDIT.DRV`**, not the filename dispatcher. The user-promoted v15 FIX5 BOOT contains the memory-safe/native EOF navigation repair.
+**Important architecture distinction:** Native `EDIT line-number`, bare `EDIT`, and SHIFT + Up/Down navigation are handled by the **machine-code `EDIT.DRV`**, not the filename dispatcher. EDIT R3 retains the earlier EOF navigation repair and uses controlled redraws with the original ROM typing/keyboard-repeat path.
 
 **Caution:** Loading an editor target changes current BASIC memory. Back up unsaved program edits first.
 
@@ -202,7 +204,7 @@ The filenames below are the **actual files on the BOOT disk**. A `GOSUB` line nu
 
 **Internal routines:** Lines 10-120 scan directory sectors on drives 0-3; 300 handles disk errors; 400-510 print fallback guidance; 590 reports the XEDIT requirement.
 
-**Dependencies:** The full `HELP.BAS` appears on TOOLS and BENCH; those two copies are byte-identical in this baseline. The BOOT dispatcher is a different program with the same filename.
+**Dependencies:** The full `HELP.BAS` appears on TOOLS and BENCH; the prior extracted copies were byte-identical; the new release copies still require verification. The BOOT dispatcher is a different program with the same filename.
 
 ## ID.BAS - Cached system information
 
@@ -361,6 +363,6 @@ The filenames below are the **actual files on the BOOT disk**. A `GOSUB` line nu
 - Many interactive wrappers read `$FC80` for command-tail arguments and implement `? -> HELP.BAS` at lines 60000-60060.
 - Native system files ending in `.DRV` are separate from the BASIC wrappers. This reference documents the BASIC caller and dependencies, not the machine-code internals of every driver.
 - `volume.inf`, `startup.inf`, `user.inf`, `admin.inf`, `autorun.inf`, `keyrep.inf`, and `sysinfo.inf` are persistent files with distinct purposes.
-- Current BOOT includes the user-promoted FIX5 `EDIT.DRV` and `DOSCORE.DRV` SAVE correction. Details belong in the [main manual](USER_MANUAL.md).
+- Approved EDIT R3 adds filename handoff and first-line entry; the earlier FIX5 `DOSCORE.DRV` SAVE correction is retained in the local candidate. Details belong in the [main manual](USER_MANUAL.md).
 
 **Source audit:** All 26 v15 BOOT `.BAS` directory entries; contents are original tokenized CoCo BASIC. Subroutine descriptions identify ranges visible in the saved source, not independent emulator tests.

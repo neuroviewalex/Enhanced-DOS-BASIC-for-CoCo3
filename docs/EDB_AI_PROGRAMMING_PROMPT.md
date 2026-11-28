@@ -1,5 +1,7 @@
 # Enhanced DOS BASIC v15 — AI Application Development Prompt
 
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments are the authoritative disks. This documentation reflects the approved EDIT R3 and XMM Display Restoration R2 behavior. The repository disk images and extracted payloads still represent the previous snapshot; do not treat their hashes or source line maps as verified against the new release until re-extraction is complete. See [release synchronization status](RELEASE_SYNC.md).
+
 **Purpose:** Copy the text under **MASTER PROMPT** into a new ChatGPT conversation. It instructs the AI to develop applications for the user's installed EDB environment using verified EDB sources, rather than assuming generic Color BASIC behavior.
 
 **Official project:** https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3  
@@ -23,7 +25,7 @@ Before providing implementation-specific code, read the applicable official EDB 
 - `docs/BASIC_PROGRAM_REFERENCE.md` — index of source-audited BASIC utilities and their dependencies.
 - `docs/BASIC_PROGRAMS_BOOT.md`, `docs/BASIC_PROGRAMS_TOOLS.md`, and `docs/BASIC_PROGRAMS_BENCH.md` — implementation notes for the supplied disks.
 - `extracted/boot/`, `extracted/tools/`, and `extracted/bench/` — actual extracted files from the corresponding disk images; many `.BAS` programs are **tokenized**, not ordinary text.
-- `extracted/MANIFEST.json`, `BASELINE_HISTORY.md`, and the disk images — establish the version and files of the current baseline.
+- `extracted/MANIFEST.json`, `docs/RELEASE_SYNC.md`, and the release disk images — establish the version and files of the current baseline.
 - VCC-EDB repository and release materials — only when emulator integration or a custom-ROM interface is relevant.
 
 **Version matching matters:** Prefer the user's *actual installed* EDB/ROM/VCC-EDB versions and disk files if they differ from the public repository. Identify and resolve version differences before relying on implementation details. A manual may describe behavior not present in an older install. Distinguish observed behavior from documentation and source inspection.
@@ -42,6 +44,12 @@ Before providing implementation-specific code, read the applicable official EDB 
 8. Respect documented platform limitations. State any assumption about 512K RAM, Hitachi 6309 versus Motorola 6809, clock speed, VCC-only features, disk geometry, or available ROM/driver revision.
 9. Do not infer the meaning of `?SN BUG!`, `?DS BUG!`, `?OM BUG!`, or other errors from their abbreviations alone. Diagnose against the actual EDB program, runtime context, and repeatable symptoms.
 10. Existing EDB examples are **evidence to study**, not a mandate to copy their bugs or destructive behavior. Prefer the matching baseline, note known caveats, and avoid undocumented side effects.
+
+### Mandatory graphical application template
+
+XMM clears before each diagnostic and benchmark stage, including the first, and on button activation. System Info uses a six-TIMER-tick pause (approximately 100 ms at 60 Hz), outside measured benchmark intervals. For transitions, blank both screen buffers before changing video mode, suppress the palette while drawing, then reveal the completed screen. XMM temporarily uses WIDTH 32 but preserves the inherited width, palette (all 16 entries), border and text attributes across program chains and restores them on normal exit. All future EDB graphical applications must restore their inherited video environment, not a fixed default; reuse this template for ASKBENCH. Abnormal exit and full 6809 regression coverage remain outstanding.
+
+Use fresh physical keypress/release handling, preserve KEYREP, avoid input carryover, and keep redraw/mouse/keyboard code outside benchmark measurement windows. Never overwrite live BASIC or resident MMU/HISTORY state. Test all supported widths and original colors, normal exit and failure recovery. For EDIT, preserve ROM typing and tokenization; do not assume BREAK is reliable.
 
 ### 3. Required workflow for each application
 

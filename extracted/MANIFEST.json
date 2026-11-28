@@ -110,5 +110,34 @@
     "BOOT: CD.BAS, COLOR.BAS, FORMAT.BAS; TOOLS: HELP.BAS, TYPE.BAS; BENCH: identical HELP.BAS.",
     "Owner-confirmed testing complete; no new emulator or hardware tests performed by this synchronization job."
   ],
-  "source_commit_note": "Owner-approved images are authoritative. Null avoids a commit hash cycle."
+  "source_commit_note": "Owner-approved images are authoritative. Null avoids a commit hash cycle.",
+  "release_sync": {
+    "status": "pending_exact_binary_extraction",
+    "authority": "Owner-designated GitHub v15 release attachments, 2026-11-27. Existing disks and extraction metadata describe the previous repository snapshot, not these new assets.",
+    "tag": "v15",
+    "assets": [
+      {
+        "name": "EDB_v15_512k_BOOT.dsk",
+        "id": 803097744,
+        "sha256": "2869705a904eabafb1b9de541d0f265a8db4d6ace0851e0aad661e47b16e6175",
+        "size_bytes": 184320,
+        "download_url": "https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BOOT.dsk"
+      },
+      {
+        "name": "EDB_v15_512k_TOOLS.dsk",
+        "id": 803098736,
+        "sha256": "3afcb90370d9aff975be06ff1cdde0ce5aea89e7abb959c7324617cc4f1b196e",
+        "size_bytes": 184320,
+        "download_url": "https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_TOOLS.dsk"
+      },
+      {
+        "name": "EDB_v15_512k_BENCH.dsk",
+        "id": 803097725,
+        "sha256": "15293d31bcc4a81e16f5298640fbf75c08d1f4c6ab04bf31e4824b57565b581a",
+        "size_bytes": 184320,
+        "download_url": "https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk"
+      }
+    ],
+    "verification": "GitHub release metadata only; new asset bytes could not be retrieved in this session. No disk or payload was changed."
+  }
 }
