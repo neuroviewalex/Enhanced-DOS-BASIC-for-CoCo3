@@ -1,12 +1,12 @@
 # EDB v15 release synchronization
 
-**Owner-designated authority (2026-11-28):** BOOT and TOOLS remain the verified v15 release attachments. BENCH Color FIX11 (viewer) is the new authoritative BENCH image in the repository. [Download the current BENCH image](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_bench.dsk). The earlier v15 BENCH attachment and tag have not been replaced. The following table records the previously verified release asset digests, not the new BENCH baseline.
+**Owner-designated authority (2026-11-28):** BOOT and TOOLS remain the verified v15 attachments. BENCH FIX13 is the authoritative [repository image](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_bench.dsk). GitHub metadata confirms the previous FIX11 attachment is published; FIX13 attachment replacement and tag synchronization are pending. The table records the current release attachment digests, not the new BENCH baseline.
 
 | Asset | SHA-256 |
 | --- | --- |
 | [EDB_v15_512k_BOOT.dsk](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BOOT.dsk) | `990b08b28987ada7a137ef1df7696a44286de88325f6eb09e56c4285303dc7bf` |
 | [EDB_v15_512k_TOOLS.dsk](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_TOOLS.dsk) | `4f0c097bb6d8b7119c374495c778ad83db793329119f85885d55c3bfa5d054f5` |
-| [EDB_v15_512k_BENCH.dsk](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk) | `0cf48fc3ce74c4d96bd13730eb57a126240ab34b6c1297c49f856918caeaaa5d` |
+| [EDB_v15_512k_BENCH.dsk](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_bench.dsk) | `747838009a90129a3f9f3d96b2e28def533f7c0a8c63020c162edad36125b385` |
 
 ## Approved behavior
 
@@ -46,7 +46,16 @@ Only SMBENCH.BAS and XMSHOW.BAS changed relative to the immediately preceding BE
 
 **Approved BENCH FIX11 viewer baseline (2026-11-28):** All 16 screen templates use adjacent yellow uppercase buttons on black. Hover flashes the label without inversion; the lowercase white x is steady over buttons and blinks elsewhere. The FIX9 fractional timer targets 90% of FIX6 frequency; FIX10 cursor behavior is retained. FIX11 renders PASS, results, values and scores green, and separators white. FAIL is not a PASS indicator. The live legacy benchmark/test console still uses monochrome 32-column text: applying green PASS and values there is outstanding. Cached SYSINFO.INF CPU identity and score formats are preserved; the successful benchmark continuation fixes are included. Menu/hover/navigation and viewer behavior were exercised in VCC-EDB during candidate testing; the full scoring suite has not been rerun on FIX11. The exact approved 184,320-byte image has 45 active files, six free granules and 22 changed payloads relative to the prior repository BENCH; 23 unchanged payloads, BOOT and TOOLS are preserved.
 
-- Current BENCH SHA-256: `747838009a90129a3f9f3d96b2e28def533f7c0a8c63020c162edad36125b385`
-- Current BENCH Git blob SHA: `58085192077f6bebc38b41b171d7d63a9f2a2f31`
+- FIX11 BENCH SHA-256: `747838009a90129a3f9f3d96b2e28def533f7c0a8c63020c162edad36125b385`
+- FIX11 BENCH Git blob SHA: `58085192077f6bebc38b41b171d7d63a9f2a2f31`
 - [Current repository BENCH download](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_bench.dsk)
-- Release asset replacement and tag synchronization: pending (not available through the current repository connection).
+- FIX11 release attachment subsequently verified from GitHub metadata (asset 804796309).
+
+## Approved BENCH FIX13 baseline
+
+**Approved BENCH FIX13 baseline (2026-11-28):** Normal button labels and delimiters are yellow on black. During hover, only the label flashes white/black; angle-bracket delimiters stay yellow. The white lowercase x stays visible during hover and blinks elsewhere. The FIX9 fractional timing, green PASS and score/value colors, white separators, cached CPU identification and benchmark handoff are preserved. Compared with FIX11, only 18 disk bytes in XHOVER.BIN changed; 44 other files and all 16 templates are identical. Static verification passed; FIX13 live testing and a full scoring regression remain outstanding. Live legacy-console multicolor rendering remains outstanding. The disk has 45 files and six free granules.
+
+- Current BENCH SHA-256: `fcb67dd772c976720138c32746285d139cc95accdf060b322737df577e80de3e`
+- Current BENCH Git blob SHA: `d78bbfe7d787e3ed5a5e08ec3acd7fa3e8d3c8d9`
+- [Current repository BENCH download](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_bench.dsk)
+- FIX13 release attachment and tag synchronization pending.

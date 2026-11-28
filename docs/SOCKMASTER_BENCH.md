@@ -1,8 +1,8 @@
 # EDB v15 — Sockmaster Classic BASIC benchmark
 
-**Release synchronization status (2026-11-28):** The owner approved BENCH Color FIX11 (viewer) as the new authoritative BENCH baseline. The repository root BENCH image and its extracted payloads are synchronized; BOOT and TOOLS are unchanged. The v15 BENCH release attachment and release tag still refer to the previous snapshot; use the current repository image until the attachment/tag are updated. Earlier candidate tests do not constitute a full new regression. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-28):** BENCH FIX13 is the owner-approved authoritative repository baseline; its image and extracted payloads are synchronized. BOOT and TOOLS are unchanged. The v15 BENCH attachment is verified FIX11; use the current repository image until FIX13 attachment and tag synchronization. See [release synchronization status](RELEASE_SYNC.md).
 
-**Status:** Approved four-trial implementation in the BENCH Display Restoration R2 development lineage. The owner-designated FIX11 repository BENCH image is authoritative; exact extraction is verified.
+**Status:** Approved four-trial implementation in the BENCH Display Restoration R2 development lineage. The owner-designated FIX13 repository BENCH image is authoritative; exact extraction is verified.
 
 **Attribution:** Original three-line BASIC loop credited to Sockmaster.
 
@@ -15,11 +15,11 @@ The latest approved behavior uses four trials, independently persisted CPU-tagge
 | Property | Value |
 | --- | --- |
 | Image size | 184,320 bytes |
-| SHA-256 | `747838009a90129a3f9f3d96b2e28def533f7c0a8c63020c162edad36125b385` |
-| Git blob SHA | `58085192077f6bebc38b41b171d7d63a9f2a2f31` |
+| SHA-256 | `fcb67dd772c976720138c32746285d139cc95accdf060b322737df577e80de3e` |
+| Git blob SHA | `d78bbfe7d787e3ed5a5e08ec3acd7fa3e8d3c8d9` |
 | Contents | 45 files; 72 allocated and 6 free granules |
 
-The SHA-256 and Git blob SHA above are the approved FIX11 repository image hashes; the previous v15 release attachment has not yet been replaced. The [manifest](../extracted/MANIFEST.json) records the verified current extracted snapshot.
+The SHA-256 and Git blob SHA above are the approved FIX13 repository image hashes; the previous v15 release attachment has not yet been replaced. The [manifest](../extracted/MANIFEST.json) records the verified current extracted snapshot.
 
 ## Using the benchmark
 
@@ -43,7 +43,7 @@ EDB preserves the timed workload from lines 10 and 20, but performs four trials 
 
 ## Saved result and comparison viewer
 
-Navigate using mouse PREV/NEXT or keyboard N/P. S jumps to page 5, and the centered `<exit>` button or Q returns to the main menu. Both viewers use native GIME colors: yellow labels and flashing hover, green PASS and scores/values, white separators and white lowercase x. The cursor remains visible during hover and blinks elsewhere. A writable BENCH working disk is required; if saving fails the program prints a warning and the score must not be treated as verified persisted data. A new run replaces only the measured CPU's score/clock pair, retaining the other pair; retain copies for comparisons.
+Navigate using mouse PREV/NEXT or keyboard N/P. S jumps to page 5, and the centered `<exit>` button or Q returns to the main menu. Both viewers use native GIME colors: yellow labels and delimiters, white/black flashing hover, green PASS and scores/values, white separators and white lowercase x. The cursor remains visible during hover and blinks elsewhere. A writable BENCH working disk is required; if saving fails the program prints a warning and the score must not be treated as verified persisted data. A new run replaces only the measured CPU's score/clock pair, retaining the other pair; retain copies for comparisons.
 
 ## Comparison references
 
@@ -67,4 +67,4 @@ The reported four-sample average is directly comparable as a **one-second-equiva
 **Dual-CPU verification:** Approved dual-CPU candidate tests: direct 6809 at cached 125.28 MHz (13,194 points), then 6309 at 125.28 MHz (13,237), preserving the 6809 row, and 6309 at 101.12 MHz (10,596), preserving the earlier 6809 result. Full 6309 XMM suite and WIDTH 80 cyan-on-red restoration passed. Full 6809 suite regression and disk-error recovery remain untested. These are candidate test results, not scores seeded in the distributed image.
 
 
-**Approved BENCH FIX11 viewer baseline (2026-11-28):** All 16 screen templates use adjacent yellow uppercase buttons on black. Hover flashes the label without inversion; the lowercase white x is steady over buttons and blinks elsewhere. The FIX9 fractional timer targets 90% of FIX6 frequency; FIX10 cursor behavior is retained. FIX11 renders PASS, results, values and scores green, and separators white. FAIL is not a PASS indicator. The live legacy benchmark/test console still uses monochrome 32-column text: applying green PASS and values there is outstanding. Cached SYSINFO.INF CPU identity and score formats are preserved; the successful benchmark continuation fixes are included. Menu/hover/navigation and viewer behavior were exercised in VCC-EDB during candidate testing; the full scoring suite has not been rerun on FIX11. The exact approved 184,320-byte image has 45 active files, six free granules and 22 changed payloads relative to the prior repository BENCH; 23 unchanged payloads, BOOT and TOOLS are preserved.
+**Approved BENCH FIX13 baseline (2026-11-28):** Normal button labels and delimiters are yellow on black. During hover, only the label flashes white/black; angle-bracket delimiters stay yellow. The white lowercase x stays visible during hover and blinks elsewhere. The FIX9 fractional timing, green PASS and score/value colors, white separators, cached CPU identification and benchmark handoff are preserved. Compared with FIX11, only 18 disk bytes in XHOVER.BIN changed; 44 other files and all 16 templates are identical. Static verification passed; FIX13 live testing and a full scoring regression remain outstanding. Live legacy-console multicolor rendering remains outstanding. The disk has 45 files and six free granules.

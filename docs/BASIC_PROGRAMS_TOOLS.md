@@ -1,6 +1,6 @@
 # EDB v15 BASIC Program Reference - TOOLS Disk
 
-**Release synchronization status (2026-11-28):** The owner approved BENCH Color FIX11 (viewer) as the new authoritative BENCH baseline. The repository root BENCH image and its extracted payloads are synchronized; BOOT and TOOLS are unchanged. The v15 BENCH release attachment and release tag still refer to the previous snapshot; use the current repository image until the attachment/tag are updated. Earlier candidate tests do not constitute a full new regression. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-28):** BENCH FIX13 is the owner-approved authoritative repository baseline; its image and extracted payloads are synchronized. BOOT and TOOLS are unchanged. The v15 BENCH attachment is verified FIX11; use the current repository image until FIX13 attachment and tag synchronization. See [release synchronization status](RELEASE_SYNC.md).
 
 **Coverage:** All 14 `.BAS` files on the promoted v15 TOOLS disk.  
 **Method:** Source audit of the tokenized BASIC in `extracted/tools/`; internal numbered routines are listed by their entry lines.  
