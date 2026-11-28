@@ -1,0 +1,32 @@
+name: Publish approved Sockmaster dual-CPU baseline
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/v15-sockmaster-publish-once.yml']
+permissions:
+  contents: write
+concurrency:
+  group: edb-v15-release-sync
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - name: Verify approved candidate and publish BENCH only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .github/v15-sockmaster-publish-once.py
+      - name: Commit verified sources and align release source archives
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/v15-sockmaster-publish-once.yml .github/v15-sockmaster-publish-once.py
+          git add -- EDB_v15_512k_bench.dsk extracted README.md docs
+          git diff --cached --stat
+          git commit -m "Publish approved Sockmaster dual-CPU BENCH baseline and synchronize docs"
+          git push origin HEAD:refs/heads/main
+          test "$(git ls-remote origin refs/tags/v15 | cut -f1)" = "cf39d44e054da0b02fa5f5e5649525d5456d7108"
+          git push --force-with-lease=refs/tags/v15:cf39d44e054da0b02fa5f5e5649525d5456d7108 origin HEAD:refs/tags/v15
