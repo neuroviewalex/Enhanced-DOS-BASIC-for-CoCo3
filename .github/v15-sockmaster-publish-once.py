@@ -81,7 +81,7 @@ assert set(n for n in files if files[n]!=nf[n])==set(patches)
 assert all((Path("extracted/bench")/n).read_bytes()==v[2] for n,v in nf.items())
 path.write_bytes(d)
 for k,v in other.items():
- assert sha(Path(k.lower()).read_bytes())==v
+ assert sha(Path("EDB_v15_512k_"+k.split("_")[-1].lower()).read_bytes())==v
 assert Path("extracted/bench/HELP.BAS").read_bytes()==Path("extracted/tools/HELP.BAS").read_bytes()
 # Verify the unchanged compact HELP and the old untagged score payload as distributed.
 assert nf["SMBSCORE.DAT"]==files["SMBSCORE.DAT"]
