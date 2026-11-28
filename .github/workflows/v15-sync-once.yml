@@ -1,0 +1,152 @@
+name: One-time verified v15 release synchronization
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/v15-sync-once.yml']
+permissions:
+  contents: write
+concurrency:
+  group: edb-v15-release-sync
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - name: Download exact owner-approved assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/edb-release"
+          gh release download v15 --repo "$GITHUB_REPOSITORY" --pattern 'EDB_v15_512k_*.dsk' --dir "$RUNNER_TEMP/edb-release"
+      - name: Verify, extract, and synchronize documentation
+        env:
+          EDB_RELEASE_DIR: ${{ runner.temp }}/edb-release
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, re
+          from pathlib import Path
+          assets = {
+            "boot": ("2869705a904eabafb1b9de541d0f265a8db4d6ace0851e0aad661e47b16e6175","179f457154a4956f0dc07abf806b87705aed45c2",54,6),
+            "tools":("3afcb90370d9aff975be06ff1cdde0ce5aea89e7abb959c7324617cc4f1b196e","1496f1e70803cfeb02a5d3e256ccab2a99c733d8",17,45),
+            "bench":("15293d31bcc4a81e16f5298640fbf75c08d1f4c6ab04bf31e4824b57565b581a","bb3d55a03ea151b8568fd949bab9fe2deed9a762",45,5)
+          }
+          def blob(b):
+              return hashlib.sha1(("blob "+str(len(b))+"\0").encode()+b).hexdigest()
+          def extract(d):
+              fat=d[17*4608+256:17*4608+334]
+              used=set(); files={}
+              for off in range(17*4608+512,17*4608+2816,32):
+                  e=d[off:off+32]
+                  if e[0] in (0,255): continue
+                  name=e[:8].decode("ascii").rstrip()+"."+e[8:11].decode("ascii").rstrip()
+                  assert name not in files and "/" not in name and "\\" not in name and name not in (".","..")
+                  g=e[13]; chain=[]
+                  while g<78:
+                      assert g not in used
+                      used.add(g); chain.append(g); g=fat[g]
+                  assert 193<=g<=201 and chain
+                  final=int.from_bytes(e[14:16],"big")
+                  assert 0<final<=256
+                  size=(len(chain)-1)*2304+(g-193)*256+final
+                  def loc(n): return (n//2+int(n//2>=17))*4608+(n%2)*2304
+                  b=b"".join(d[loc(n):loc(n)+2304] for n in chain)[:size]
+                  assert len(b)==size
+                  files[name]=b
+              assert used=={i for i,x in enumerate(fat) if x!=255}
+              return files,[i for i,x in enumerate(fat) if x==255]
+          manifest_path=Path("extracted/MANIFEST.json")
+          manifest=json.loads(manifest_path.read_text())
+          disks=[]; inventories={}
+          for key,(sha,git_sha,count,free_count) in assets.items():
+              original=Path(os.environ["EDB_RELEASE_DIR"])/("EDB_v15_512k_"+key.upper()+".dsk")
+              d=original.read_bytes()
+              assert len(d)==184320 and hashlib.sha256(d).hexdigest()==sha and blob(d)==git_sha
+              files,free=extract(d)
+              assert len(files)==count and len(free)==free_count
+              filename="EDB_v15_512k_"+key+".dsk"
+              Path(filename).write_bytes(d)
+              folder=Path("extracted")/key
+              for existing in folder.iterdir():
+                  assert existing.is_file()
+                  if existing.name not in files: existing.unlink()
+              for name,b in files.items():
+                  (folder/name).write_bytes(b)
+              assert {p.name for p in folder.iterdir()}==set(files)
+              assert all((folder/n).read_bytes()==b for n,b in files.items())
+              disks.append(dict(filename=filename,sha256=sha,git_blob_sha=git_sha,size_bytes=len(d),active_files=count,allocated_granules=78-len(free),free_granules=free))
+              inventories[key]=files
+              print(key,sha,count,"files;",len(free),"free granules")
+          assert blob(inventories["boot"]["EDIT.BAS"])=="8afa846f2706cdf26197bc495897ff047063b9c3"
+          assert blob(inventories["tools"]["HELP.BAS"])=="a8a737d7092e9e64cc91c50238cb9d36aaf09d4f"
+          assert blob(inventories["bench"]["HELP.BAS"])=="6c390a3cfac4c0935d35e800bb6905413014efd0"
+          assert blob(inventories["bench"]["SMBENCH.BAS"])=="7734a817a12ae879fb2cf6c19fca1a4e706c57f6"
+          assert "XMMHW.DRV" in inventories["bench"] and "XMEMHW.DRV" not in inventories["bench"]
+          manifest["disks"]=disks
+          manifest["extracted_files"]=sum(len(x) for x in inventories.values())
+          manifest["verification"]=[
+              "Owner designated the uploaded v15 release attachments as the authoritative BOOT, TOOLS and BENCH baselines.",
+              "All three disk bytes verified against GitHub asset SHA-256 and independently computed local Git blob SHA; all FAT chains, directory entries and file bytes validated.",
+              "116 exact payloads extracted: 54 BOOT, 17 TOOLS, 45 BENCH; 6, 45 and 5 free granules respectively.",
+              "The TOOLS and BENCH HELP.BAS copies are not identical. Both omit the bare EDIT entry behavior; TOOLS retains XMEM naming. Exact release payloads preserved.",
+              "No new emulator test or disk code change performed by this synchronization."
+          ]
+          manifest["release_sync"]["status"]="verified_exact_binary_extraction"
+          manifest["release_sync"]["authority"]="Owner-designated GitHub v15 release attachments; repository disk copies and extracted payloads match exactly."
+          manifest["release_sync"]["verification"]="SHA-256 verified from downloaded bytes and local uploads; extraction validated. HELP wording correction requires separately approved disk revision."
+          manifest_path.write_text(json.dumps(manifest,indent=2)+"\n")
+          help_note="The exact TOOLS and BENCH HELP.BAS payloads differ: TOOLS retains legacy XMEM names; BENCH uses XMM naming. Both omit bare EDIT's first-line behavior and retain older XMM menu wording. See the current manual; on-disk HELP correction is a separate disk revision, not part of the exact extraction."
+          for p in [Path("README.md"),*Path("docs").glob("*.md")]:
+              s=p.read_text()
+              if p.name=="RELEASE_SYNC.md":
+                  s=re.sub(r"The three uploaded asset binaries could not be downloaded[^\n]+","All three uploaded asset binaries match the verified release SHA-256 and Git blob hashes. The repository root images and 116 extracted files are exact copies, with FAT and directory integrity verified. "+help_note+" The v15 tag is advanced to the synchronized commit only after the verified files are committed, so GitHub-generated Source code (zip) and (tar.gz) refer to the current source.",s)
+              else:
+                  link="docs/RELEASE_SYNC.md" if p.name=="README.md" else "RELEASE_SYNC.md"
+                  s=re.sub(r"^\*\*Release synchronization status \(2026-11-27\):\*\*[^\n]+","**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; earlier candidate emulator results are not new tests of these uploaded bytes. See [release synchronization status]("+link+").",s,flags=re.M)
+              s=s.replace("Previous verified v15 core inventory (new release counts pending)","Current v15 core inventory")
+              s=s.replace("54 (prior)","54").replace("17 (prior)","17").replace("45 (prior)","45")
+              s=s.replace("Repository copies and extracted sources are awaiting exact binary synchronization.","Repository copies and extracted sources match the release assets exactly.")
+              s=s.replace("Local repository images and extracted payloads have not yet been synchronized against these exact assets.","Repository images and extracted payloads are synchronized against these exact assets.")
+              s=s.replace("116 files from the previous verified snapshot","116 files extracted byte-for-byte from the current release")
+              s=s.replace("The previous extraction is recorded","The current exact extraction is recorded")
+              s=s.replace("this documentation-only update does not create a new executable baseline","this synchronization does not create a new executable baseline")
+              s=s.replace("the current release HELP copies require re-extraction.",help_note)
+              s=s.replace("Eight BASIC programs in the prior 45-file extraction, with updated approved XMM behavior.","Eight BASIC programs in the verified 45-file extraction, with updated approved XMM behavior.")
+              s=s.replace("for the prior extraction; exact new release inventory is pending.","for the exact current extraction.")
+              s=s.replace("BENCH file inventory (prior counts; approved XMM naming)","Complete BENCH file inventory")
+              s=re.sub(r"^\*\*HELP synchronization:\*\*[^\n]+","**HELP audit:** "+help_note,s,flags=re.M)
+              s=s.replace("The prior extracted copy matched TOOLS; the new release copy requires verification.","The exact release copy differs from TOOLS (BENCH blob 6c390a3cfac4c0935d35e800bb6905413014efd0).")
+              s=s.replace("The prior wrapper parses","The current wrapper parses")
+              s=s.replace("Exact new line maps require re-extraction.","Lines 495–550 implement the load hook and handoff; lines 700–887 retain directory checks and graceful failure.")
+              s=s.replace("the prior extracted copies were byte-identical; the new release copies still require verification.","the verified release copies differ.")
+              s=re.sub(r"^\*\*Duplicate:\*\*[^\n]+","**Duplicate:** "+help_note,s,flags=re.M)
+              s=s.replace("Current EDIT help contract (pending disk HELP audit)","Current EDIT help contract (manual correction; on-disk wording is older)")
+              s=s.replace("Prior v15 extraction verified in [MANIFEST.json](../extracted/MANIFEST.json); current owner-designated release assets are newer.","Current v15 release extraction verified in [MANIFEST.json](../extracted/MANIFEST.json).")
+              s=s.replace("supersede the repository snapshot. Exact disk and extracted-source synchronization is pending.","match the current repository images and extracted sources.")
+              s=s.replace("exact extraction remains pending","exact extraction is verified")
+              s=s.replace("| Repository blob | Prior snapshot; new release extraction pending |","| Git blob SHA | `bb3d55a03ea151b8568fd949bab9fe2deed9a762` |")
+              s=s.replace("| Contents | Exact new release inventory pending; local approved R2 candidate had 45 files and 5 free granules |","| Contents | 45 files; 73 allocated and 5 free granules |")
+              s=s.replace("still records the previous extracted snapshot","records the verified current extracted snapshot")
+              s=s.replace("exact source synchronization is pending","repository and extracted source synchronization is verified")
+              s=s.replace("The new release HELP wording and duplicate payloads have not yet been checked against the uploaded disks.",help_note)
+              if p.name=="BASIC_PROGRAMS_BOOT.md":
+                  s=s.replace("**Caution:** Loading an editor target changes current BASIC memory.","**Release VCC.BAS:** The owner-uploaded copy includes the period in the positive VCC result message; the negative result ends with an exclamation point.\n\n**Caution:** Loading an editor target changes current BASIC memory.")
+              p.write_text(s)
+          print("Verified extraction and documentation ready.")
+          PY
+      - name: Publish verified sources, preserving release disk assets
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/v15-sync-once.yml
+          git add -- EDB_v15_512k_boot.dsk EDB_v15_512k_tools.dsk EDB_v15_512k_bench.dsk extracted README.md docs
+          git diff --cached --stat
+          git commit -m "Synchronize exact owner-approved v15 release disks, extracted files and documentation"
+          git push origin HEAD:refs/heads/main
+          test "$(git ls-remote origin refs/tags/v15 | cut -f1)" = "441dfff399227eac87d85f1a457503b9f1e1e0f3"
+          git push --force-with-lease=refs/tags/v15:441dfff399227eac87d85f1a457503b9f1e1e0f3 origin HEAD:refs/tags/v15
+          echo "Synchronized main and v15 tag at $(git rev-parse HEAD)"
