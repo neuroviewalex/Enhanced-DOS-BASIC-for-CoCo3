@@ -87,8 +87,8 @@
     },
     {
       "filename": "EDB_v15_512k_bench.dsk",
-      "sha256": "212e747ff88e376156f0998715dedc8de5cbcd2d6e71caec7e6ee7b510cee11d",
-      "git_blob_sha": "190c7ad3dfa16e14f79fe0bdeb66fc1aed6c968a",
+      "sha256": "0cf48fc3ce74c4d96bd13730eb57a126240ab34b6c1297c49f856918caeaaa5d",
+      "git_blob_sha": "9d25179e5b0ac7a5564c1725ea461f8fb013040c",
       "size_bytes": 184320,
       "active_files": 45,
       "allocated_granules": 72,
@@ -109,12 +109,13 @@
     "116 extracted payloads, 54 BOOT, 17 TOOLS, 45 BENCH; free granules 6, 46, 6 respectively.",
     "BOOT active file payloads unchanged; 114 disk bytes outside active payloads differ from its predecessor. TOOLS and BENCH changed only HELP.BAS. All 114 other file payloads unchanged.",
     "Both full HELP copies identical, 10812 bytes, Git blob afb82a867e4b36168a9c7b7b82634ae0cb29597f.",
-    "Targeted prior 6809/6309 HELP tests passed; not every topic exercised. No new runtime tests performed by synchronization."
+    "Targeted prior 6809/6309 HELP tests passed; not every topic exercised. No new runtime tests performed by synchronization.",
+    "Owner-approved Sockmaster dual-CPU BENCH baseline. Exact candidate SHA-256 and Git blob verified. Only SMBENCH.BAS and XMSHOW.BAS changed; 43 other BENCH payloads, all BOOT and TOOLS bytes and distributed legacy score record preserved. Approved dual-CPU candidate tests: direct 6809 at cached 125.28 MHz (13,194 points), then 6309 at 125.28 MHz (13,237), preserving the 6809 row, and 6309 at 101.12 MHz (10,596), preserving the earlier 6809 result. Full 6309 XMM suite and WIDTH 80 cyan-on-red restoration passed. Full 6809 suite regression and disk-error recovery remain untested. These are candidate test results, not scores seeded in the distributed image."
   ],
   "source_commit_note": "Owner-approved images are authoritative. Null avoids a commit hash cycle.",
   "release_sync": {
     "status": "verified_exact_binary_extraction",
-    "authority": "Owner-approved final BOOT upload and compact HELP TOOLS/BENCH images; exact release assets, root images and extracted payloads verified.",
+    "authority": "Owner-approved final BOOT, compact HELP TOOLS, and Sockmaster dual-CPU BENCH; exact release assets, root images and extracted payloads verified.",
     "tag": "v15",
     "assets": [
       {
@@ -133,12 +134,12 @@
       },
       {
         "name": "EDB_v15_512k_BENCH.dsk",
-        "id": 803227613,
-        "sha256": "212e747ff88e376156f0998715dedc8de5cbcd2d6e71caec7e6ee7b510cee11d",
+        "id": 803272823,
+        "sha256": "0cf48fc3ce74c4d96bd13730eb57a126240ab34b6c1297c49f856918caeaaa5d",
         "size_bytes": 184320,
         "download_url": "https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk"
       }
     ],
-    "verification": "Approved image byte hashes verified before replacement and GitHub release asset digests verified after upload. No unapproved disk changes."
+    "verification": "Exact approved image SHA-256 verified before publication; GitHub release asset digests verified after upload. BOOT and TOOLS attachments preserved. All 116 extracted payloads synchronized."
   }
 }

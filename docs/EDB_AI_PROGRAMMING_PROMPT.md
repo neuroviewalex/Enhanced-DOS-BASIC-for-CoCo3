@@ -100,3 +100,5 @@ When I describe an app, **start by identifying the appropriate EDB examples and 
 
 **Scope:** This is an AI guidance file, not an automatic compiler, emulator, correctness guarantee, or new EDB runtime component. It does not modify EDB itself.
 **Current HELP template:** Keep the full HELP payload within the tested memory budget (10,812 bytes for this revision). Preserve REM dispatch markers, control-flow targets and unrelated messages; combine adjacent constant PRINT statements where safe. Keep HELP copies on TOOLS and BENCH identical, and verify loading and topic dispatch on both processors.
+
+**Benchmark score provenance rule:** For Sockmaster, continue to use cached BOOT SYSINFO.INF as the CPU and clock authority. Do not replace it with live CPU detection. Preserve independent CPU score/clock pairs, do not require a fixed MHz value, and do not assign an untagged historical score to a processor. Keep the four original timed samples separate from disk I/O and display code; preserve inherited video settings and all unrelated behavior. See the current Sockmaster notes for the exact record format.

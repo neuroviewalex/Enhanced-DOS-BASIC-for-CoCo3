@@ -2,7 +2,7 @@
 
 **Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; the approved compact HELP passed targeted 6809/6309 VCC tests. Earlier candidate tests are not a full new system regression. See [release synchronization status](RELEASE_SYNC.md).
 
-**Coverage:** Eight BASIC programs in the verified 45-file extraction, with updated approved XMM behavior. Latest BENCH release SHA-256 `212e747ff88e376156f0998715dedc8de5cbcd2d6e71caec7e6ee7b510cee11d`. See [manifest](../extracted/MANIFEST.json) for the exact current extraction.
+**Coverage:** Eight BASIC programs in the verified 45-file extraction, with updated approved XMM behavior. Latest BENCH release SHA-256 `0cf48fc3ce74c4d96bd13730eb57a126240ab34b6c1297c49f856918caeaaa5d`. See [manifest](../extracted/MANIFEST.json) for the exact current extraction.
 
 ## Complete BENCH file inventory
 
@@ -106,16 +106,20 @@ XMM clears before each diagnostic and benchmark stage, including the first, and 
 
 ## SMBENCH.BAS - Sockmaster Classic BASIC benchmark
 
-Sockmaster's original 60-tick interpreted BASIC loop runs four times without printing or disk I/O inside the timed loop. `SMBENCH.BAS` calculates a rounded mean per 60 ticks, not the sum, and preserves the `SMBSCORE.DAT` record format (`SMBSCORE15` is a compatibility marker, not the current number of trials). At 60 TIMER ticks/sec each trial lasts one second; the benchmark interface displays only basic test/score information, not sample count or duration. In the full suite the viewer opens at page 1; press S or navigate to page 5. Direct aliases `XMM CLASSIC`, `XMM SOCK` and `XMM SOCKMASTER` launch just this test and open page 5 after successful saving.
+Sockmaster's original 60-tick interpreted BASIC loop runs four times without printing or disk I/O inside the timed loop. `SMBENCH.BAS` calculates a rounded mean per 60 ticks, not the sum, and saves independent CPU score/clock pairs in `SMBSCORE.DAT` using the `SMBSCORE2` format after a successful run. At 60 TIMER ticks/sec each trial lasts one second; the benchmark interface displays only basic test/score information, not sample count or duration. In the full suite the viewer opens at page 1; press S or navigate to page 5. Direct aliases `XMM CLASSIC`, `XMM SOCK` and `XMM SOCKMASTER` launch just this test and open page 5 after successful saving.
 
-The current page 5 layout compares the saved score to the historical 6809 bases 100 (1 MHz) and 200 (2 MHz). It has separate 125.28 MHz point fields for 6809 and 6309. A fresh run with matching CPU/clock profile supplies the applicable field; the 6309 field otherwise retains the project author's historical EDB reference of 13,544. The saved Sockmaster record contains no CPU or MHz tag; it is not two independently persisted CPU scores. Do not attribute a previously saved score to a CPU without the run context. The full historical reference table remains in the documentation, not all on the current screen.
+Page 5 displays independent measured 6809 and 6309 scores and their cached clock speeds, with no fixed-clock gate. SMBENCH reads the CPU name and MHz from the BOOT disk's cached SYSINFO.INF (not live CPU detection); after changing processor or clock, refresh the cache through the normal EDB startup path before benchmarking. The latest run updates only that CPU's pair; the other pair survives. Unmeasured CPU rows show --. The multiplier columns compare the most recently measured score to the historical 6809 bases 100 and 200. The historical 13,544-point result remains a documentation reference, not a substitute for a measured row.
+
+SMBSCORE.DAT uses the SMBSCORE2 marker after the first successful new save, followed by last CPU index (0=6809, 1=6309), 6809 score, 6809 MHz, 6309 score, 6309 MHz, each on its own BASIC sequential-file record. A zero score/clock pair indicates unmeasured. The distributed legacy SMBSCORE15 record is preserved byte-for-byte; it has no CPU tag and must not be assigned to either CPU row. The viewer can still use its untagged score for the multiplier columns. The first successful benchmark migrates it without assigning its old value to a processor. SMBENCH reopens the new record and checks the CPU index and both score/clock pairs before continuing. A valid cache and a writable BENCH working disk are required. Back up score records; the overwrite is not transactional.
 
 | Lines | Function |
 | --- | --- |
 | 8–30 | Four timed samples and rounded mean |
-| 40–70 | Save and read back score record |
+| 40–63 | Read cached identity and existing record; update one CPU pair, save and read back both pairs |
 | 79–90 | Suite success opens page 1; standalone success opens page 5 |
-| 900–901 | Save/verification error and cleanup |
+| 890, 900–901 | Invalid-cache or save/verification error and cleanup |
+| 1000–1091 | Read cached CPU/MHz from BOOT SYSINFO.INF |
+| 1100–1191 | Load and validate old/new score record; legacy migration |
 
 See [Sockmaster benchmark documentation](SOCKMASTER_BENCH.md).
 
@@ -164,7 +168,7 @@ The timed suite measures the **currently configured CPU only**; it does not swit
 | 9 | — | Signed / fixed-point |
 | 10 | — | Native engine and post-free difference |
 
-Lines 20–95 load CPU records; 2000–2643 load service/reference data, calculate fallback values and handle initial page selection; 5000–5600-series routines load templates and fill numeric fields; 16500–16595 read the Sockmaster score. Lines 700–801 provide navigation, cleanup and return. Page 5 uses the current template's selected historical comparisons, not all six historical ratios. See the Sockmaster notes for provenance limitations.
+Lines 20–95 load CPU records; 2000–2643 load service/reference data, calculate fallback values and handle initial page selection; 5000–5600-series routines load templates and fill numeric fields; 16500–16595 read and validate legacy or CPU-tagged Sockmaster scores; 5530–5532 draw the per-CPU clock/score fields. Lines 700–801 provide navigation, cleanup and return. Page 5 uses the current template's selected historical comparisons, not all six historical ratios. See the Sockmaster notes for provenance limitations.
 
 ## Display and input architecture
 
@@ -183,3 +187,5 @@ The original native 723-byte X32 files contain a 480-byte screen payload (32 col
 **Verification scope:** On the approved local candidates, VCC-EDB 6309 at 125.28 MHz successfully completed full XMM benchmark and System Info routes from WIDTH 80 with cyan/red colors, plus menu exits from WIDTH 40 (yellow/blue) and WIDTH 32 (green/black). Before/after visible RGB colors matched. The EDIT R3 local candidate passed bare EDIT, empty memory, named and numbered entry, missing-file preservation and LAST tracking; R2 also passed SAVE/NEW/LOAD/RUN and short tests at WIDTH 32/40/80. BREAK, long lines, disk-read failure, abnormal-exit recovery, and further 6809 regression testing are still outstanding. These are earlier candidate test results, not a new test of the uploaded release bytes.
 
 The executable files and templates in [extracted/bench](../extracted/bench/) are exact tokenized/binary disk payloads. This is a BASIC and integration reference, not an instruction-by-instruction native driver disassembly.
+
+**Sockmaster dual-CPU verification:** Approved dual-CPU candidate tests: direct 6809 at cached 125.28 MHz (13,194 points), then 6309 at 125.28 MHz (13,237), preserving the 6809 row, and 6309 at 101.12 MHz (10,596), preserving the earlier 6809 result. Full 6309 XMM suite and WIDTH 80 cyan-on-red restoration passed. Full 6809 suite regression and disk-error recovery remain untested. These are candidate test results, not scores seeded in the distributed image.
