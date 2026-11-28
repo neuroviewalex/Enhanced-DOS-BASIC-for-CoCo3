@@ -1,9 +1,9 @@
 # EDB v15 - Complete BASIC Program and Function Reference
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments are the authoritative disks. This documentation reflects the approved EDIT R3 and XMM Display Restoration R2 behavior. The repository disk images and extracted payloads still represent the previous snapshot; do not treat their hashes or source line maps as verified against the new release until re-extraction is complete. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; earlier candidate emulator results are not new tests of these uploaded bytes. See [release synchronization status](RELEASE_SYNC.md).
 
 **Official v15 inventory: BOOT, TOOLS and the full-color XMM BENCH disk**  
-**Source baseline:** Prior v15 extraction verified in [MANIFEST.json](../extracted/MANIFEST.json); current owner-designated release assets are newer.  
+**Source baseline:** Current v15 release extraction verified in [MANIFEST.json](../extracted/MANIFEST.json).  
 **Documentation coverage:** **49 BASIC entries** (26 BOOT, 15 TOOLS, 8 BENCH), including the literal `*.BAS` file and three HELP entries.  
 **Validation:** Source-level inspection of tokenized CoCo BASIC files from `extracted/`. The current [v15 Release disks](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) have been verified against the repository image SHA-256 checksums. Source auditing does not replace independent emulator or hardware execution tests.
 
@@ -139,4 +139,4 @@ For each authorized future change to an EDB `.BAS` file:
 4. Commit documentation changes with a clear explanation and verify the Git diff.
 5. Never silently modify EDB binaries or declare a new software baseline as part of a manual-only edit.
 
-The authoritative reference lives alongside [`USER_MANUAL.md`](USER_MANUAL.md). The owner-designated [v15 Release images](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) supersede the repository snapshot. Exact disk and extracted-source synchronization is pending.
+The authoritative reference lives alongside [`USER_MANUAL.md`](USER_MANUAL.md). The owner-designated [v15 Release images](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) match the current repository images and extracted sources.

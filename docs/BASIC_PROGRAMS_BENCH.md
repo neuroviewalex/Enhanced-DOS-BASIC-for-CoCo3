@@ -1,10 +1,10 @@
 # EDB v15 BASIC Program Reference - BENCH Disk
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments are the authoritative disks. This documentation reflects the approved EDIT R3 and XMM Display Restoration R2 behavior. The repository disk images and extracted payloads still represent the previous snapshot; do not treat their hashes or source line maps as verified against the new release until re-extraction is complete. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; earlier candidate emulator results are not new tests of these uploaded bytes. See [release synchronization status](RELEASE_SYNC.md).
 
-**Coverage:** Eight BASIC programs in the prior 45-file extraction, with updated approved XMM behavior. Latest BENCH release SHA-256 `15293d31bcc4a81e16f5298640fbf75c08d1f4c6ab04bf31e4824b57565b581a`. See [manifest](../extracted/MANIFEST.json) for the prior extraction; exact new release inventory is pending.
+**Coverage:** Eight BASIC programs in the verified 45-file extraction, with updated approved XMM behavior. Latest BENCH release SHA-256 `15293d31bcc4a81e16f5298640fbf75c08d1f4c6ab04bf31e4824b57565b581a`. See [manifest](../extracted/MANIFEST.json) for the exact current extraction.
 
-## BENCH file inventory (prior counts; approved XMM naming)
+## Complete BENCH file inventory
 
 | Category | Files | Count |
 | --- | --- | ---: |
@@ -16,9 +16,9 @@
 
 ## HELP.BAS - Integrated HELP copy
 
-**HELP synchronization:** The prior keyboard-corrected HELP copy predates EDIT R3 and BENCH Display Restoration R2. The new release copies must be audited and updated if needed; no claim of identical payloads is made.
+**HELP audit:** The exact TOOLS and BENCH HELP.BAS payloads differ: TOOLS retains legacy XMEM names; BENCH uses XMM naming. Both omit bare EDIT's first-line behavior and retain older XMM menu wording. See the current manual; on-disk HELP correction is a separate disk revision, not part of the exact extraction.
 
-**Use:** Full topic-based EDB HELP reference, stored on BENCH as a convenience. The prior extracted copy matched TOOLS; the new release copy requires verification.
+**Use:** Full topic-based EDB HELP reference, stored on BENCH as a convenience. The exact release copy differs from TOOLS (BENCH blob 6c390a3cfac4c0935d35e800bb6905413014efd0).
 
 **Routines and behavior:** Main lines 10-60 parse the command tail; 70-240 search REM topic markers in the tokenized BASIC program and patch the dynamic jump line; 300 displays "No help for this topic"; 400-500 resolve the dispatch target. Each 10000-40100 topic block provides on-screen help.
 

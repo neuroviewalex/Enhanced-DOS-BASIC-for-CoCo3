@@ -1,8 +1,8 @@
 # EDB v15 — Sockmaster Classic BASIC benchmark
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments are the authoritative disks. This documentation reflects the approved EDIT R3 and XMM Display Restoration R2 behavior. The repository disk images and extracted payloads still represent the previous snapshot; do not treat their hashes or source line maps as verified against the new release until re-extraction is complete. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; earlier candidate emulator results are not new tests of these uploaded bytes. See [release synchronization status](RELEASE_SYNC.md).
 
-**Status:** Approved four-trial implementation in the BENCH Display Restoration R2 development lineage. The owner-designated release is authoritative; exact extraction remains pending.
+**Status:** Approved four-trial implementation in the BENCH Display Restoration R2 development lineage. The owner-designated release is authoritative; exact extraction is verified.
 
 **Attribution:** Original three-line BASIC loop credited to Sockmaster.
 
@@ -16,10 +16,10 @@ The latest approved behavior uses four trials, a simplified score display, clean
 | --- | --- |
 | Image size | 184,320 bytes |
 | SHA-256 | `15293d31bcc4a81e16f5298640fbf75c08d1f4c6ab04bf31e4824b57565b581a` |
-| Repository blob | Prior snapshot; new release extraction pending |
-| Contents | Exact new release inventory pending; local approved R2 candidate had 45 files and 5 free granules |
+| Git blob SHA | `bb3d55a03ea151b8568fd949bab9fe2deed9a762` |
+| Contents | 45 files; 73 allocated and 5 free granules |
 
-GitHub reports the release asset digest above. The [manifest](../extracted/MANIFEST.json) still records the previous extracted snapshot.
+GitHub reports the release asset digest above. The [manifest](../extracted/MANIFEST.json) records the verified current extracted snapshot.
 
 ## Using the benchmark
 

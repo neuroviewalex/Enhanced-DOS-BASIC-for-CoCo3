@@ -1,6 +1,6 @@
 # Enhanced DOS BASIC v15 — AI Application Development Prompt
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments are the authoritative disks. This documentation reflects the approved EDIT R3 and XMM Display Restoration R2 behavior. The repository disk images and extracted payloads still represent the previous snapshot; do not treat their hashes or source line maps as verified against the new release until re-extraction is complete. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; earlier candidate emulator results are not new tests of these uploaded bytes. See [release synchronization status](RELEASE_SYNC.md).
 
 **Purpose:** Copy the text under **MASTER PROMPT** into a new ChatGPT conversation. It instructs the AI to develop applications for the user's installed EDB environment using verified EDB sources, rather than assuming generic Color BASIC behavior.
 

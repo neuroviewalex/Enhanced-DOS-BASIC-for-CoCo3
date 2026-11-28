@@ -1,6 +1,6 @@
 # Enhanced DOS BASIC for the Tandy Color Computer 3
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments are the authoritative disks. This documentation reflects the approved EDIT R3 and XMM Display Restoration R2 behavior. The repository disk images and extracted payloads still represent the previous snapshot; do not treat their hashes or source line maps as verified against the new release until re-extraction is complete. See [release synchronization status](docs/RELEASE_SYNC.md).
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; earlier candidate emulator results are not new tests of these uploaded bytes. See [release synchronization status](docs/RELEASE_SYNC.md).
 
 ### The CoCo 3 BASIC environment, expanded into a capable DOS-style workspace
 
@@ -25,7 +25,7 @@ EDB is not simply a launcher or a handful of demonstration programs. Its **BOOT*
 | **Benchmarks** | Automatic native CPU, services/vector/math and Sockmaster benchmarks; five-page full-color mouse viewer |
 | **Documentation** | On-screen HELP, complete user handbook, per-program technical references and verified extracted source |
 
-**Previous verified v15 core inventory (new release counts pending):** 54 BOOT, 17 TOOLS and 45 BENCH files — **116 files**, including **49 tokenized BASIC entries** (26 BOOT, 15 TOOLS, 8 BENCH).
+**Current v15 core inventory:** 54 BOOT, 17 TOOLS and 45 BENCH files — **116 files**, including **49 tokenized BASIC entries** (26 BOOT, 15 TOOLS, 8 BENCH).
 
 ## How EDB works
 
@@ -43,7 +43,7 @@ The CoCo's disk filesystem is still relevant. EDB uses directory entries and all
 
 ### Reliable keyboard input
 
-The November 26, 2026 owner-approved keyboard revision uses XMM/KEYPEEK-derived interrupt-protected eight-column PIA matrix scans, fresh physical key presses, stable release and input-buffer isolation. COLOR NAMES and COLOR CHART advance once per deliberate press/release. FORMAT requires a fresh Y confirmation; CD profile selection uses physical F1/F2 detection. TYPE retains Q-to-quit and clears residual input before returning. HELP COLOR delegates its wait to COLOR via the private NAMES! argument; the November 26 full HELP copies were identical. The BOOT HELP dispatcher, KEYPEEK SHIFT logic, EDIT, mouse routines, layouts and persistent KEYREP settings are unchanged. The owner confirmed testing of that earlier revision; the current release HELP copies require re-extraction.
+The November 26, 2026 owner-approved keyboard revision uses XMM/KEYPEEK-derived interrupt-protected eight-column PIA matrix scans, fresh physical key presses, stable release and input-buffer isolation. COLOR NAMES and COLOR CHART advance once per deliberate press/release. FORMAT requires a fresh Y confirmation; CD profile selection uses physical F1/F2 detection. TYPE retains Q-to-quit and clears residual input before returning. HELP COLOR delegates its wait to COLOR via the private NAMES! argument; the November 26 full HELP copies were identical. The BOOT HELP dispatcher, KEYPEEK SHIFT logic, EDIT, mouse routines, layouts and persistent KEYREP settings are unchanged. The owner confirmed testing of that earlier revision; The exact TOOLS and BENCH HELP.BAS payloads differ: TOOLS retains legacy XMEM names; BENCH uses XMM naming. Both omit bare EDIT's first-line behavior and retain older XMM menu wording. See the current manual; on-disk HELP correction is a separate disk revision, not part of the exact extraction.
 
 ### A more practical command prompt
 
@@ -221,13 +221,13 @@ See the [BENCH technical reference](docs/BASIC_PROGRAMS_BENCH.md), [user manual]
 
 ## Official v15 disk images
 
-**The owner-designated [v15 Release attachments](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) are authoritative.** Each contains 184,320 bytes (40 tracks x 18 sectors x 256 bytes). Repository copies and extracted sources are awaiting exact binary synchronization.
+**The owner-designated [v15 Release attachments](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) are authoritative.** Each contains 184,320 bytes (40 tracks x 18 sectors x 256 bytes). Repository copies and extracted sources match the release assets exactly.
 
 | Disk | Files | Contents | Download |
 | --- | ---: | --- | --- |
-| **BOOT** | 54 (prior) | Core command environment, native editor, profiles, history and disk/cache drivers | [BOOT image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BOOT.dsk) |
-| **TOOLS** | 17 (prior) | HELP, KEYPEEK, FIND/TYPE, disk checks, copy/install and file utilities | [TOOLS image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_TOOLS.dsk) |
-| **BENCH** | 45 (prior) | Full-color XMM menu, eight BASIC programs, 16 X32 templates, native diagnostics and timed benchmarks | [BENCH image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk) |
+| **BOOT** | 54 | Core command environment, native editor, profiles, history and disk/cache drivers | [BOOT image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BOOT.dsk) |
+| **TOOLS** | 17 | HELP, KEYPEEK, FIND/TYPE, disk checks, copy/install and file utilities | [TOOLS image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_TOOLS.dsk) |
+| **BENCH** | 45 | Full-color XMM menu, eight BASIC programs, 16 X32 templates, native diagnostics and timed benchmarks | [BENCH image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk) |
 
 **Authoritative release asset SHA-256 checksums (GitHub metadata):**
 
@@ -242,9 +242,9 @@ EDB_v15_512k_bench.dsk
 15293d31bcc4a81e16f5298640fbf75c08d1f4c6ab04bf31e4824b57565b581a
 ```
 
-**Distribution status:** The release digests above are verified from GitHub metadata. Local repository images and extracted payloads have not yet been synchronized against these exact assets.
+**Distribution status:** The release digests above are verified from GitHub metadata. Repository images and extracted payloads are synchronized against these exact assets.
 
-The [`extracted/`](extracted/) tree contains 116 files from the previous verified snapshot. See [release synchronization status](docs/RELEASE_SYNC.md) before using the extracted code.
+The [`extracted/`](extracted/) tree contains 116 files extracted byte-for-byte from the current release. See [release synchronization status](docs/RELEASE_SYNC.md) before using the extracted code.
 
 ## Getting started with EDB v15
 
@@ -324,7 +324,7 @@ The project protocol is:
 
 Because EDB includes native code, tokenized BASIC and binary disk images, careful verification matters. Appropriate checks include BASIC token/linked-line structure, byte-for-byte source extraction, directory/FAT chain integrity, checksum comparisons, and clear separation of **static analysis** from **VCC-EDB / hardware runtime tests**.
 
-The previous extraction is recorded in [MANIFEST.json](extracted/MANIFEST.json). The latest release assets remain untouched; this documentation-only update does not create a new executable baseline.
+The current exact extraction is recorded in [MANIFEST.json](extracted/MANIFEST.json). The latest release assets remain untouched; this synchronization does not create a new executable baseline.
 
 ## The spirit of EDB
 

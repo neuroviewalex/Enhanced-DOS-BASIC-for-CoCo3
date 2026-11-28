@@ -1,10 +1,10 @@
 # Enhanced DOS BASIC (EDB) v15 - Official User Manual
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments are the authoritative disks. This documentation reflects the approved EDIT R3 and XMM Display Restoration R2 behavior. The repository disk images and extracted payloads still represent the previous snapshot; do not treat their hashes or source line maps as verified against the new release until re-extraction is complete. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; earlier candidate emulator results are not new tests of these uploaded bytes. See [release synchronization status](RELEASE_SYNC.md).
 
 **Platform:** Tandy Color Computer 3 with 512K RAM  
 **Edition:** Complete BASIC-program user handbook - 2026-11-27  
-**Baseline:** The owner-designated v15 BOOT, TOOLS and BENCH release attachments are authoritative; exact source synchronization is pending.
+**Baseline:** The owner-designated v15 BOOT, TOOLS and BENCH release attachments are authoritative; repository and extracted source synchronization is verified.
 
 **BENCH download:** [Official v15 Release image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk) (SHA-256 `15293d31bcc4a81e16f5298640fbf75c08d1f4c6ab04bf31e4824b57565b581a`).
 
@@ -624,7 +624,7 @@ CoCo disk files live in directory sectors and a granule allocation table. Ordina
 
 ### Keyboard handling (November 26 baseline)
 
-The November 26, 2026 owner-approved keyboard revision uses XMM/KEYPEEK-derived interrupt-protected eight-column PIA matrix scans, fresh physical key presses, stable release and input-buffer isolation. COLOR NAMES and COLOR CHART advance once per deliberate press/release. FORMAT requires a fresh Y confirmation; CD profile selection uses physical F1/F2 detection. TYPE retains Q-to-quit and clears residual input before returning. HELP COLOR delegates its wait to COLOR via the private NAMES! argument; the November 26 full HELP copies were identical. The BOOT HELP dispatcher, KEYPEEK SHIFT logic, EDIT, mouse routines, layouts and persistent KEYREP settings are unchanged. The owner confirmed testing of that earlier revision; the current release HELP copies require re-extraction.
+The November 26, 2026 owner-approved keyboard revision uses XMM/KEYPEEK-derived interrupt-protected eight-column PIA matrix scans, fresh physical key presses, stable release and input-buffer isolation. COLOR NAMES and COLOR CHART advance once per deliberate press/release. FORMAT requires a fresh Y confirmation; CD profile selection uses physical F1/F2 detection. TYPE retains Q-to-quit and clears residual input before returning. HELP COLOR delegates its wait to COLOR via the private NAMES! argument; the November 26 full HELP copies were identical. The BOOT HELP dispatcher, KEYPEEK SHIFT logic, EDIT, mouse routines, layouts and persistent KEYREP settings are unchanged. The owner confirmed testing of that earlier revision; The exact TOOLS and BENCH HELP.BAS payloads differ: TOOLS retains legacy XMEM names; BENCH uses XMM naming. Both omit bare EDIT's first-line behavior and retain older XMM menu wording. See the current manual; on-disk HELP correction is a separate disk revision, not part of the exact extraction.
 
 ### WIDTH - text columns
 
@@ -818,7 +818,7 @@ The separate 13,544 reference was reported by the project author on VCC-EDB with
 
 ### BENCH HELP.BAS
 
-BENCH and TOOLS contain the full HELP engine; BOOT has the smaller dispatcher. The new release HELP wording and duplicate payloads have not yet been checked against the uploaded disks. See [BENCH technical reference](BASIC_PROGRAMS_BENCH.md) for program internals and [Sockmaster notes](SOCKMASTER_BENCH.md) for measurement details.
+BENCH and TOOLS contain the full HELP engine; BOOT has the smaller dispatcher. The exact TOOLS and BENCH HELP.BAS payloads differ: TOOLS retains legacy XMEM names; BENCH uses XMM naming. Both omit bare EDIT's first-line behavior and retain older XMM menu wording. See the current manual; on-disk HELP correction is a separate disk revision, not part of the exact extraction. See [BENCH technical reference](BASIC_PROGRAMS_BENCH.md) for program internals and [Sockmaster notes](SOCKMASTER_BENCH.md) for measurement details.
 
 **Verification scope:** On the approved local candidates, VCC-EDB 6309 at 125.28 MHz successfully completed full XMM benchmark and System Info routes from WIDTH 80 with cyan/red colors, plus menu exits from WIDTH 40 (yellow/blue) and WIDTH 32 (green/black). Before/after visible RGB colors matched. The EDIT R3 local candidate passed bare EDIT, empty memory, named and numbered entry, missing-file preservation and LAST tracking; R2 also passed SAVE/NEW/LOAD/RUN and short tests at WIDTH 32/40/80. BREAK, long lines, disk-read failure, abnormal-exit recovery, and further 6809 regression testing are still outstanding. These are earlier candidate test results, not a new test of the uploaded release bytes.
 

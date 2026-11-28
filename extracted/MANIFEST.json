@@ -15,8 +15,8 @@
   "disks": [
     {
       "filename": "EDB_v15_512k_boot.dsk",
-      "sha256": "ddb13725d8e87ec1e35dd3cc2d1fc71b8a6e01726fa2d59f7b624292e0b9a444",
-      "git_blob_sha": "79e367db36a4a63f24736d6181452c2e3c043c43",
+      "sha256": "2869705a904eabafb1b9de541d0f265a8db4d6ace0851e0aad661e47b16e6175",
+      "git_blob_sha": "179f457154a4956f0dc07abf806b87705aed45c2",
       "size_bytes": 184320,
       "active_files": 54,
       "allocated_granules": 72,
@@ -31,8 +31,8 @@
     },
     {
       "filename": "EDB_v15_512k_tools.dsk",
-      "sha256": "440f26177b03cb93e8afa692e4c58fabed1bbb33213bdfe494d4985f54adf121",
-      "git_blob_sha": "3595180354bed8fda9896405724fa9c9bc9aff06",
+      "sha256": "3afcb90370d9aff975be06ff1cdde0ce5aea89e7abb959c7324617cc4f1b196e",
+      "git_blob_sha": "1496f1e70803cfeb02a5d3e256ccab2a99c733d8",
       "size_bytes": 184320,
       "active_files": 17,
       "allocated_granules": 33,
@@ -86,14 +86,12 @@
     },
     {
       "filename": "EDB_v15_512k_bench.dsk",
-      "sha256": "5cbb1aa04714d420783b34ab421c5bf3a86629a43f0d70f55ae7ced4644758c7",
-      "git_blob_sha": "3825728ca02805ed00d195ebe35f58977cd9f51a",
+      "sha256": "15293d31bcc4a81e16f5298640fbf75c08d1f4c6ab04bf31e4824b57565b581a",
+      "git_blob_sha": "bb3d55a03ea151b8568fd949bab9fe2deed9a762",
       "size_bytes": 184320,
       "active_files": 45,
-      "allocated_granules": 71,
+      "allocated_granules": 73,
       "free_granules": [
-        70,
-        71,
         73,
         74,
         75,
@@ -104,16 +102,16 @@
   ],
   "extracted_files": 116,
   "verification": [
-    "Owner explicitly approved the three keyboard-corrected EDB v15 disks as baselines and confirmed testing complete on 2026-11-26.",
-    "All approved disk images reproduced exactly and verified against their recorded SHA-256 checksums; FAT chains validated.",
-    "Six changed file entries (five unique BASIC programs); 110 unaffected payloads byte-identical. No new/deleted files or additional allocated granules.",
-    "BOOT: CD.BAS, COLOR.BAS, FORMAT.BAS; TOOLS: HELP.BAS, TYPE.BAS; BENCH: identical HELP.BAS.",
-    "Owner-confirmed testing complete; no new emulator or hardware tests performed by this synchronization job."
+    "Owner designated the uploaded v15 release attachments as the authoritative BOOT, TOOLS and BENCH baselines.",
+    "All three disk bytes verified against GitHub asset SHA-256 and independently computed local Git blob SHA; all FAT chains, directory entries and file bytes validated.",
+    "116 exact payloads extracted: 54 BOOT, 17 TOOLS, 45 BENCH; 6, 45 and 5 free granules respectively.",
+    "The TOOLS and BENCH HELP.BAS copies are not identical. Both omit the bare EDIT entry behavior; TOOLS retains XMEM naming. Exact release payloads preserved.",
+    "No new emulator test or disk code change performed by this synchronization."
   ],
   "source_commit_note": "Owner-approved images are authoritative. Null avoids a commit hash cycle.",
   "release_sync": {
-    "status": "pending_exact_binary_extraction",
-    "authority": "Owner-designated GitHub v15 release attachments, 2026-11-27. Existing disks and extraction metadata describe the previous repository snapshot, not these new assets.",
+    "status": "verified_exact_binary_extraction",
+    "authority": "Owner-designated GitHub v15 release attachments; repository disk copies and extracted payloads match exactly.",
     "tag": "v15",
     "assets": [
       {
@@ -138,6 +136,6 @@
         "download_url": "https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk"
       }
     ],
-    "verification": "GitHub release metadata only; new asset bytes could not be retrieved in this session. No disk or payload was changed."
+    "verification": "SHA-256 verified from downloaded bytes and local uploads; extraction validated. HELP wording correction requires separately approved disk revision."
   }
 }

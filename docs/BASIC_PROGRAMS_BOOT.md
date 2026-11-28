@@ -1,6 +1,6 @@
 # EDB v15 BASIC Program Reference - BOOT Disk
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments are the authoritative disks. This documentation reflects the approved EDIT R3 and XMM Display Restoration R2 behavior. The repository disk images and extracted payloads still represent the previous snapshot; do not treat their hashes or source line maps as verified against the new release until re-extraction is complete. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; earlier candidate emulator results are not new tests of these uploaded bytes. See [release synchronization status](RELEASE_SYNC.md).
 
 **Coverage:** All 26 `.BAS` directory entries in the promoted v15 BOOT disk, including the literal file named `*.BAS`.  
 **Method:** Inspected the tokenized BASIC source in `extracted/boot/` and identified command paths, local GOSUB routines, dependencies and side effects.  
@@ -178,9 +178,11 @@ The filenames below are the **actual files on the BOOT disk**. A `GOSUB` line nu
 
 **Use:** `EDIT` with no argument opens the first existing line in RAM; if no program is loaded, it reports `No program loaded.` and returns to the prompt. `EDIT filename` (for example, `EDIT VCC` or `EDIT VCC.BAS`) loads the BASIC listing, opens its first existing line, and leaves it in RAM for subsequent editing or SAVE. A missing filename reports failure without replacing the current listing. `EDIT n` edits the requested existing line. SHIFT + Up/Down browses existing line numbers; ENTER commits and exits. BREAK cancellation remains under investigation; do not rely on it to discard edits until verified. Save valuable unsaved work before loading another program.
 
-**Implementation:** The prior wrapper parses the filename, checks directory entries for BASIC type, and installs the native edit-entry hook. EDIT R3 corrects the interpreter handoff and transient-command ownership so the loaded listing stays in memory and LAST tracks the selected file. Exact new line maps require re-extraction.
+**Implementation:** The current wrapper parses the filename, checks directory entries for BASIC type, and installs the native edit-entry hook. EDIT R3 corrects the interpreter handoff and transient-command ownership so the loaded listing stays in memory and LAST tracks the selected file. Lines 495–550 implement the load hook and handoff; lines 700–887 retain directory checks and graceful failure.
 
 **Important architecture distinction:** Native `EDIT line-number`, bare `EDIT`, and SHIFT + Up/Down navigation are handled by the **machine-code `EDIT.DRV`**, not the filename dispatcher. EDIT R3 retains the earlier EOF navigation repair and uses controlled redraws with the original ROM typing/keyboard-repeat path.
+
+**Release VCC.BAS:** The owner-uploaded copy includes the period in the positive VCC result message; the negative result ends with an exclamation point.
 
 **Caution:** Loading an editor target changes current BASIC memory. Back up unsaved program edits first.
 
@@ -204,7 +206,7 @@ The filenames below are the **actual files on the BOOT disk**. A `GOSUB` line nu
 
 **Internal routines:** Lines 10-120 scan directory sectors on drives 0-3; 300 handles disk errors; 400-510 print fallback guidance; 590 reports the XEDIT requirement.
 
-**Dependencies:** The full `HELP.BAS` appears on TOOLS and BENCH; the prior extracted copies were byte-identical; the new release copies still require verification. The BOOT dispatcher is a different program with the same filename.
+**Dependencies:** The full `HELP.BAS` appears on TOOLS and BENCH; the verified release copies differ. The BOOT dispatcher is a different program with the same filename.
 
 ## ID.BAS - Cached system information
 
