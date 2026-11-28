@@ -1,6 +1,6 @@
 # Enhanced DOS BASIC v15 — AI Application Development Prompt
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; earlier candidate emulator results are not new tests of these uploaded bytes. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; the approved compact HELP passed targeted 6809/6309 VCC tests. Earlier candidate tests are not a full new system regression. See [release synchronization status](RELEASE_SYNC.md).
 
 **Purpose:** Copy the text under **MASTER PROMPT** into a new ChatGPT conversation. It instructs the AI to develop applications for the user's installed EDB environment using verified EDB sources, rather than assuming generic Color BASIC behavior.
 
@@ -99,3 +99,4 @@ When I describe an app, **start by identifying the appropriate EDB examples and 
 5. Run the result in VCC-EDB and report the exact error and BASIC line if it fails. Successful execution must be confirmed through actual testing.
 
 **Scope:** This is an AI guidance file, not an automatic compiler, emulator, correctness guarantee, or new EDB runtime component. It does not modify EDB itself.
+**Current HELP template:** Keep the full HELP payload within the tested memory budget (10,812 bytes for this revision). Preserve REM dispatch markers, control-flow targets and unrelated messages; combine adjacent constant PRINT statements where safe. Keep HELP copies on TOOLS and BENCH identical, and verify loading and topic dispatch on both processors.

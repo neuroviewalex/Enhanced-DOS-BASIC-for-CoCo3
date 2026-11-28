@@ -4,9 +4,9 @@
 
 | Asset | SHA-256 |
 | --- | --- |
-| [EDB_v15_512k_BOOT.dsk](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BOOT.dsk) | `2869705a904eabafb1b9de541d0f265a8db4d6ace0851e0aad661e47b16e6175` |
-| [EDB_v15_512k_TOOLS.dsk](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_TOOLS.dsk) | `3afcb90370d9aff975be06ff1cdde0ce5aea89e7abb959c7324617cc4f1b196e` |
-| [EDB_v15_512k_BENCH.dsk](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk) | `15293d31bcc4a81e16f5298640fbf75c08d1f4c6ab04bf31e4824b57565b581a` |
+| [EDB_v15_512k_BOOT.dsk](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BOOT.dsk) | `990b08b28987ada7a137ef1df7696a44286de88325f6eb09e56c4285303dc7bf` |
+| [EDB_v15_512k_TOOLS.dsk](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_TOOLS.dsk) | `4f0c097bb6d8b7119c374495c778ad83db793329119f85885d55c3bfa5d054f5` |
+| [EDB_v15_512k_BENCH.dsk](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk) | `212e747ff88e376156f0998715dedc8de5cbcd2d6e71caec7e6ee7b510cee11d` |
 
 ## Approved behavior
 
@@ -24,4 +24,10 @@ Sockmaster's original 60-tick interpreted BASIC loop runs four times without pri
 
 **Verification scope:** On the approved local candidates, VCC-EDB 6309 at 125.28 MHz successfully completed full XMM benchmark and System Info routes from WIDTH 80 with cyan/red colors, plus menu exits from WIDTH 40 (yellow/blue) and WIDTH 32 (green/black). Before/after visible RGB colors matched. The EDIT R3 local candidate passed bare EDIT, empty memory, named and numbered entry, missing-file preservation and LAST tracking; R2 also passed SAVE/NEW/LOAD/RUN and short tests at WIDTH 32/40/80. BREAK, long lines, disk-read failure, abnormal-exit recovery, and further 6809 regression testing are still outstanding. These are earlier candidate test results, not a new test of the uploaded release bytes.
 
-All three uploaded asset binaries match the verified release SHA-256 and Git blob hashes. The repository root images and 116 extracted files are exact copies, with FAT and directory integrity verified. The exact TOOLS and BENCH HELP.BAS payloads differ: TOOLS retains legacy XMEM names; BENCH uses XMM naming. Both omit bare EDIT's first-line behavior and retain older XMM menu wording. See the current manual; on-disk HELP correction is a separate disk revision, not part of the exact extraction. The v15 tag is advanced to the synchronized commit only after the verified files are committed, so GitHub-generated Source code (zip) and (tar.gz) refer to the current source.
+All three uploaded asset binaries match the verified release SHA-256 and Git blob hashes. The repository root images and 116 extracted files are exact copies, with FAT and directory integrity verified. The owner-approved compact HELP.BAS on TOOLS and BENCH is byte-for-byte identical (10,812 bytes). It corrects EDIT, XMM, XBENCH and FIND wording, removes obsolete XMEM terminology, and recovers one granule per disk. The BOOT dispatcher is distinct. Targeted VCC-EDB tests passed on the 6809 and 6309, including WIDTH 32/40/80 on the 6309; not every HELP topic was exercised. The v15 tag is advanced to the synchronized commit only after the verified files are committed, so GitHub-generated Source code (zip) and (tar.gz) refer to the current source.
+
+## Approved compact HELP and final BOOT upload
+
+The owner-approved compact HELP.BAS on TOOLS and BENCH is byte-for-byte identical (10,812 bytes). It corrects EDIT, XMM, XBENCH and FIND wording, removes obsolete XMEM terminology, and recovers one granule per disk. The BOOT dispatcher is distinct. Targeted VCC-EDB tests passed on the 6809 and 6309, including WIDTH 32/40/80 on the 6309; not every HELP topic was exercised.
+
+The final BOOT upload has 54 active files and 6 free granules, with 114 byte differences outside its active file payloads compared with the prior BOOT. TOOLS has 17 active files and 46 free granules; BENCH has 45 active files and 6 free granules. Only the two full HELP payloads changed; all 114 other extracted payloads are identical. No new executable code was generated during synchronization. The exact approved images are the distribution authority.

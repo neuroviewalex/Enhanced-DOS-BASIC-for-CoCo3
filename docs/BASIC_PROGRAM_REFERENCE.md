@@ -1,6 +1,6 @@
 # EDB v15 - Complete BASIC Program and Function Reference
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; earlier candidate emulator results are not new tests of these uploaded bytes. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; the approved compact HELP passed targeted 6809/6309 VCC tests. Earlier candidate tests are not a full new system regression. See [release synchronization status](RELEASE_SYNC.md).
 
 **Official v15 inventory: BOOT, TOOLS and the full-color XMM BENCH disk**  
 **Source baseline:** Current v15 release extraction verified in [MANIFEST.json](../extracted/MANIFEST.json).  

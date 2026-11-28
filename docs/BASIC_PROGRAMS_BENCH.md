@@ -1,8 +1,8 @@
 # EDB v15 BASIC Program Reference - BENCH Disk
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; earlier candidate emulator results are not new tests of these uploaded bytes. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; the approved compact HELP passed targeted 6809/6309 VCC tests. Earlier candidate tests are not a full new system regression. See [release synchronization status](RELEASE_SYNC.md).
 
-**Coverage:** Eight BASIC programs in the verified 45-file extraction, with updated approved XMM behavior. Latest BENCH release SHA-256 `15293d31bcc4a81e16f5298640fbf75c08d1f4c6ab04bf31e4824b57565b581a`. See [manifest](../extracted/MANIFEST.json) for the exact current extraction.
+**Coverage:** Eight BASIC programs in the verified 45-file extraction, with updated approved XMM behavior. Latest BENCH release SHA-256 `212e747ff88e376156f0998715dedc8de5cbcd2d6e71caec7e6ee7b510cee11d`. See [manifest](../extracted/MANIFEST.json) for the exact current extraction.
 
 ## Complete BENCH file inventory
 
@@ -16,15 +16,15 @@
 
 ## HELP.BAS - Integrated HELP copy
 
-**HELP audit:** The exact TOOLS and BENCH HELP.BAS payloads differ: TOOLS retains legacy XMEM names; BENCH uses XMM naming. Both omit bare EDIT's first-line behavior and retain older XMM menu wording. See the current manual; on-disk HELP correction is a separate disk revision, not part of the exact extraction.
+**HELP audit:** The owner-approved compact HELP.BAS on TOOLS and BENCH is byte-for-byte identical (10,812 bytes). It corrects EDIT, XMM, XBENCH and FIND wording, removes obsolete XMEM terminology, and recovers one granule per disk. The BOOT dispatcher is distinct. Targeted VCC-EDB tests passed on the 6809 and 6309, including WIDTH 32/40/80 on the 6309; not every HELP topic was exercised.
 
-**Use:** Full topic-based EDB HELP reference, stored on BENCH as a convenience. The exact release copy differs from TOOLS (BENCH blob 6c390a3cfac4c0935d35e800bb6905413014efd0).
+**Use:** Full topic-based EDB HELP reference, stored on BENCH as a convenience. The full HELP payload is identical on TOOLS and BENCH (Git blob afb82a867e4b36168a9c7b7b82634ae0cb29597f).
 
 **Routines and behavior:** Main lines 10-60 parse the command tail; 70-240 search REM topic markers in the tokenized BASIC program and patch the dynamic jump line; 300 displays "No help for this topic"; 400-500 resolve the dispatch target. Each 10000-40100 topic block provides on-screen help.
 
-**Reference:** See the [TOOLS HELP.BAS documentation](BASIC_PROGRAMS_TOOLS.md#helpbas---integrated-topic-reference) for the topic catalogue, known FIND wording discrepancy, and dispatcher implementation.
+**Reference:** See the [TOOLS HELP.BAS documentation](BASIC_PROGRAMS_TOOLS.md#helpbas---integrated-topic-reference) for the topic catalogue, corrected FIND wording, and dispatcher implementation.
 
-**Note:** The separate BOOT `HELP.BAS` is only a dispatcher; it is not identical to this 480-line HELP engine.
+**Note:** The separate BOOT `HELP.BAS` is only a dispatcher; it is not identical to this compact 10,812-byte HELP engine.
 
 ## XBENCH.BAS - Legacy XMEM/XMATH service benchmark
 
@@ -127,7 +127,7 @@ The ten XMMALL templates have only placeholders, not prefilled PASS or CPU resul
 
 The menu itself is XMENU.BAS. XMM.BAS retains the command-tail parser at 60000–60150, the prerequisites/engine selection at 61000–61680, and native cleanup at 62000-series routines. The native allocation/write/read/free test is at 7000–7091, with the 6309 fill/read check at 7200–7295. Lines 200–201 open XMENU; 430–440 initialize the runtime status block and launch the diagnostic chain/viewer; 450–461 dispatch the benchmark chain and handle an incomplete suite. The state markers at $78F8–$78FA coordinate the handoff; they are internal, not a public API.
 
-Named commands retained: XMM HW, ALLOC, ARENA, API, OBJ, GC, MATH/MUL, SIGNED, PAGE, ALL, BENCH, STATUS, CLASSIC/SOCK/SOCKMASTER and ?. Prefix each argument with XMM. XMM ALL runs system info; XMM BENCH is services-only; normal B selection runs the full sequence. The HELP file may describe older XMM menu keys; its keyboard correction is confined to the COLOR handoff.
+Named commands retained: XMM HW, ALLOC, ARENA, API, OBJ, GC, MATH/MUL, SIGNED, PAGE, ALL, BENCH, STATUS, CLASSIC/SOCK/SOCKMASTER and ?. Prefix each argument with XMM. XMM ALL runs system info; XMM BENCH is services-only; normal B selection runs the full sequence. The compact HELP topics describe the current B/S/Q menu, viewer navigation, inherited display restoration, and XMM service names.
 
 ## XMENU.BAS - Mouse-driven main menu
 

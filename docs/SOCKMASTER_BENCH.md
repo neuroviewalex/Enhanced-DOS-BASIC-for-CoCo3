@@ -1,6 +1,6 @@
 # EDB v15 — Sockmaster Classic BASIC benchmark
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; earlier candidate emulator results are not new tests of these uploaded bytes. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; the approved compact HELP passed targeted 6809/6309 VCC tests. Earlier candidate tests are not a full new system regression. See [release synchronization status](RELEASE_SYNC.md).
 
 **Status:** Approved four-trial implementation in the BENCH Display Restoration R2 development lineage. The owner-designated release is authoritative; exact extraction is verified.
 
@@ -15,9 +15,9 @@ The latest approved behavior uses four trials, a simplified score display, clean
 | Property | Value |
 | --- | --- |
 | Image size | 184,320 bytes |
-| SHA-256 | `15293d31bcc4a81e16f5298640fbf75c08d1f4c6ab04bf31e4824b57565b581a` |
-| Git blob SHA | `bb3d55a03ea151b8568fd949bab9fe2deed9a762` |
-| Contents | 45 files; 73 allocated and 5 free granules |
+| SHA-256 | `212e747ff88e376156f0998715dedc8de5cbcd2d6e71caec7e6ee7b510cee11d` |
+| Git blob SHA | `190c7ad3dfa16e14f79fe0bdeb66fc1aed6c968a` |
+| Contents | 45 files; 72 allocated and 6 free granules |
 
 GitHub reports the release asset digest above. The [manifest](../extracted/MANIFEST.json) records the verified current extracted snapshot.
 

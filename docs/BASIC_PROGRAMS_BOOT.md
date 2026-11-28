@@ -1,6 +1,6 @@
 # EDB v15 BASIC Program Reference - BOOT Disk
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; earlier candidate emulator results are not new tests of these uploaded bytes. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; the approved compact HELP passed targeted 6809/6309 VCC tests. Earlier candidate tests are not a full new system regression. See [release synchronization status](RELEASE_SYNC.md).
 
 **Coverage:** All 26 `.BAS` directory entries in the promoted v15 BOOT disk, including the literal file named `*.BAS`.  
 **Method:** Inspected the tokenized BASIC source in `extracted/boot/` and identified command paths, local GOSUB routines, dependencies and side effects.  
@@ -206,7 +206,7 @@ The filenames below are the **actual files on the BOOT disk**. A `GOSUB` line nu
 
 **Internal routines:** Lines 10-120 scan directory sectors on drives 0-3; 300 handles disk errors; 400-510 print fallback guidance; 590 reports the XEDIT requirement.
 
-**Dependencies:** The full `HELP.BAS` appears on TOOLS and BENCH; the verified release copies differ. The BOOT dispatcher is a different program with the same filename.
+**Dependencies:** The full `HELP.BAS` appears on TOOLS and BENCH; the verified release copies are identical. The BOOT dispatcher is a different program with the same filename.
 
 ## ID.BAS - Cached system information
 

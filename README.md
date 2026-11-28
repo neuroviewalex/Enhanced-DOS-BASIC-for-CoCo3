@@ -1,6 +1,6 @@
 # Enhanced DOS BASIC for the Tandy Color Computer 3
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; earlier candidate emulator results are not new tests of these uploaded bytes. See [release synchronization status](docs/RELEASE_SYNC.md).
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; the approved compact HELP passed targeted 6809/6309 VCC tests. Earlier candidate tests are not a full new system regression. See [release synchronization status](docs/RELEASE_SYNC.md).
 
 ### The CoCo 3 BASIC environment, expanded into a capable DOS-style workspace
 
@@ -43,7 +43,7 @@ The CoCo's disk filesystem is still relevant. EDB uses directory entries and all
 
 ### Reliable keyboard input
 
-The November 26, 2026 owner-approved keyboard revision uses XMM/KEYPEEK-derived interrupt-protected eight-column PIA matrix scans, fresh physical key presses, stable release and input-buffer isolation. COLOR NAMES and COLOR CHART advance once per deliberate press/release. FORMAT requires a fresh Y confirmation; CD profile selection uses physical F1/F2 detection. TYPE retains Q-to-quit and clears residual input before returning. HELP COLOR delegates its wait to COLOR via the private NAMES! argument; the November 26 full HELP copies were identical. The BOOT HELP dispatcher, KEYPEEK SHIFT logic, EDIT, mouse routines, layouts and persistent KEYREP settings are unchanged. The owner confirmed testing of that earlier revision; The exact TOOLS and BENCH HELP.BAS payloads differ: TOOLS retains legacy XMEM names; BENCH uses XMM naming. Both omit bare EDIT's first-line behavior and retain older XMM menu wording. See the current manual; on-disk HELP correction is a separate disk revision, not part of the exact extraction.
+The November 26, 2026 owner-approved keyboard revision uses XMM/KEYPEEK-derived interrupt-protected eight-column PIA matrix scans, fresh physical key presses, stable release and input-buffer isolation. COLOR NAMES and COLOR CHART advance once per deliberate press/release. FORMAT requires a fresh Y confirmation; CD profile selection uses physical F1/F2 detection. TYPE retains Q-to-quit and clears residual input before returning. HELP COLOR delegates its wait to COLOR via the private NAMES! argument; the November 26 full HELP copies were identical. The BOOT HELP dispatcher, KEYPEEK SHIFT logic, EDIT, mouse routines, layouts and persistent KEYREP settings are unchanged. The owner confirmed testing of that earlier keyboard revision. The owner-approved compact HELP.BAS on TOOLS and BENCH is byte-for-byte identical (10,812 bytes). It corrects EDIT, XMM, XBENCH and FIND wording, removes obsolete XMEM terminology, and recovers one granule per disk. The BOOT dispatcher is distinct. Targeted VCC-EDB tests passed on the 6809 and 6309, including WIDTH 32/40/80 on the 6309; not every HELP topic was exercised.
 
 ### A more practical command prompt
 
@@ -221,6 +221,8 @@ See the [BENCH technical reference](docs/BASIC_PROGRAMS_BENCH.md), [user manual]
 
 ## Official v15 disk images
 
+**Approved final disk allocation:** BOOT: 6 free granules; TOOLS: 46; BENCH: 6. The final BOOT upload preserves all 54 active file payloads. The two full HELP copies are the approved compact version.
+
 **The owner-designated [v15 Release attachments](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) are authoritative.** Each contains 184,320 bytes (40 tracks x 18 sectors x 256 bytes). Repository copies and extracted sources match the release assets exactly.
 
 | Disk | Files | Contents | Download |
@@ -233,13 +235,13 @@ See the [BENCH technical reference](docs/BASIC_PROGRAMS_BENCH.md), [user manual]
 
 ```text
 EDB_v15_512k_boot.dsk
-2869705a904eabafb1b9de541d0f265a8db4d6ace0851e0aad661e47b16e6175
+990b08b28987ada7a137ef1df7696a44286de88325f6eb09e56c4285303dc7bf
 
 EDB_v15_512k_tools.dsk
-3afcb90370d9aff975be06ff1cdde0ce5aea89e7abb959c7324617cc4f1b196e
+4f0c097bb6d8b7119c374495c778ad83db793329119f85885d55c3bfa5d054f5
 
 EDB_v15_512k_bench.dsk
-15293d31bcc4a81e16f5298640fbf75c08d1f4c6ab04bf31e4824b57565b581a
+212e747ff88e376156f0998715dedc8de5cbcd2d6e71caec7e6ee7b510cee11d
 ```
 
 **Distribution status:** The release digests above are verified from GitHub metadata. Repository images and extracted payloads are synchronized against these exact assets.

@@ -1,6 +1,6 @@
 # EDB v15 BASIC Program Reference - TOOLS Disk
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; earlier candidate emulator results are not new tests of these uploaded bytes. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; the approved compact HELP passed targeted 6809/6309 VCC tests. Earlier candidate tests are not a full new system regression. See [release synchronization status](RELEASE_SYNC.md).
 
 **Coverage:** All 14 `.BAS` files on the promoted v15 TOOLS disk.  
 **Method:** Source audit of the tokenized BASIC in `extracted/tools/`; internal numbered routines are listed by their entry lines.  
@@ -146,13 +146,13 @@ TOOLS includes a number of potentially destructive disk utilities. **CHKDSK with
 
 **Internal mechanics:** 10-60 command-tail parsing, 70-210 scan BASIC's linked-line text for REM topic names, 100/400-410 locate the editable dynamic dispatch area, 220-240 patch a five-digit target, 450-500 dispatch, 300 unknown topic. Topics are grouped in source line blocks 10000-40100. An active XEDIT signature leads to an advisory, not help dispatch.
 
-**Current EDIT help contract (manual correction; on-disk wording is older):** `EDIT` with no argument opens the first existing line in RAM; if no program is loaded, it reports `No program loaded.` and returns to the prompt. `EDIT filename` (for example, `EDIT VCC` or `EDIT VCC.BAS`) loads the BASIC listing, opens its first existing line, and leaves it in RAM for subsequent editing or SAVE. A missing filename reports failure without replacing the current listing. `EDIT n` edits the requested existing line. SHIFT + Up/Down browses existing line numbers; ENTER commits and exits. BREAK cancellation remains under investigation; do not rely on it to discard edits until verified. Save valuable unsaved work before loading another program.
+**Current EDIT help contract:** `EDIT` with no argument opens the first existing line in RAM; if no program is loaded, it reports `No program loaded.` and returns to the prompt. `EDIT filename` (for example, `EDIT VCC` or `EDIT VCC.BAS`) loads the BASIC listing, opens its first existing line, and leaves it in RAM for subsequent editing or SAVE. A missing filename reports failure without replacing the current listing. `EDIT n` edits the requested existing line. SHIFT + Up/Down browses existing line numbers; ENTER commits and exits. BREAK cancellation remains under investigation; do not rely on it to discard edits until verified. Save valuable unsaved work before loading another program.
 
 **Topics include:** Boot and Tools command indexes; `*`, `DOSBOOT`, `USER`, `ADMIN`, `STARTUP`, `AUTORUN`, `CD`, `COLOR`, `UPGRADE`, `XMM`, `ASK`, `COPY`, `DRIVE`, `KILL`, `RENAME`, `CURSOR`, `VCC`, `CPUID`, `DEL`, `DIR`, `DISKCOPY`, `EDIT`, `FORMAT`, `ID`, `LABEL`, `LAST`, `LOAD`, `PATH`, `REBOOT`, `REN`, `KEYREP`, `SAVE`, `VER`, `VOL`, `WIDTH`, `JUMP`, `INSTALL`, `INFO`, `SYSMAP`, `COMPARE`, `FIND`, `CHKDSK`, `FLIP`, `TYPE`, `T40`, `MEM`, `XBENCH`, `XEDIT` and related companion-disk tools.
 
-**Duplicate:** The exact TOOLS and BENCH HELP.BAS payloads differ: TOOLS retains legacy XMEM names; BENCH uses XMM naming. Both omit bare EDIT's first-line behavior and retain older XMM menu wording. See the current manual; on-disk HELP correction is a separate disk revision, not part of the exact extraction.
+**Duplicate:** The owner-approved compact HELP.BAS on TOOLS and BENCH is byte-for-byte identical (10,812 bytes). It corrects EDIT, XMM, XBENCH and FIND wording, removes obsolete XMEM terminology, and recovers one granule per disk. The BOOT dispatcher is distinct. Targeted VCC-EDB tests passed on the 6809 and 6309, including WIDTH 32/40/80 on the 6309; not every HELP topic was exercised.
 
-**Known discrepancy:** The current HELP description of `FIND` without a filename implies an in-memory BASIC search, while the `FIND.BAS` + `TYPE.BAS` implementation searches the Last load disk file. The manual documents the code and flags the difference.
+**FIND help correction:** FIND without a filename searches the saved Last load file, not the live listing in BASIC RAM. The compact HELP now states this explicitly.
 
 ## INSTALL.BAS - Guarded file install and backup
 

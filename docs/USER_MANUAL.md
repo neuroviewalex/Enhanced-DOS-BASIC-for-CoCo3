@@ -1,12 +1,12 @@
 # Enhanced DOS BASIC (EDB) v15 - Official User Manual
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; earlier candidate emulator results are not new tests of these uploaded bytes. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; the approved compact HELP passed targeted 6809/6309 VCC tests. Earlier candidate tests are not a full new system regression. See [release synchronization status](RELEASE_SYNC.md).
 
 **Platform:** Tandy Color Computer 3 with 512K RAM  
 **Edition:** Complete BASIC-program user handbook - 2026-11-27  
 **Baseline:** The owner-designated v15 BOOT, TOOLS and BENCH release attachments are authoritative; repository and extracted source synchronization is verified.
 
-**BENCH download:** [Official v15 Release image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk) (SHA-256 `15293d31bcc4a81e16f5298640fbf75c08d1f4c6ab04bf31e4824b57565b581a`).
+**BENCH download:** [Official v15 Release image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk) (SHA-256 `212e747ff88e376156f0998715dedc8de5cbcd2d6e71caec7e6ee7b510cee11d`).
 
 This is the **main, living EDB v15 handbook**. It explains the entire current BASIC utility environment - startup, volumes, program editing, files, backups, colour, keyboard, memory management, diagnostics and benchmarks - rather than only the original five-command programming workflow.
 
@@ -176,9 +176,9 @@ HELP XMM
 HELP EDIT
 ```
 
-The BOOT `HELP.BAS` searches mounted disks for a full HELP and XMM installation. The full 480-line HELP engine appears on TOOLS and BENCH. Use `HELP BOOT1`, `HELP BOOT2`, `HELP TOOLS1` and `HELP TOOLS2` for built-in indexes. If it cannot find a full HELP installation, BOOT displays mounting instructions.
+The BOOT `HELP.BAS` searches mounted disks for a full HELP and XMM installation. The compact 10,812-byte HELP engine appears on TOOLS and BENCH. Use `HELP BOOT1`, `HELP BOOT2`, `HELP TOOLS1` and `HELP TOOLS2` for built-in indexes. If it cannot find a full HELP installation, BOOT displays mounting instructions.
 
-The manual records code-verified behavior where HELP wording and implementation differ; see FIND in Chapter 5.
+The compact HELP now documents bare EDIT, filename loading, XMM and FIND consistently with the manual; see Chapter 5.
 
 
 ## 4. Drives, volumes and directory navigation
@@ -390,7 +390,7 @@ FIND "SCORE"
 
 In the current v15 implementation, FIND obtains the **Last load** filename and uses it only when it ends in `.BAS`. It then searches **the corresponding saved disk file**, not the contents of BASIC RAM.
 
-This is a key difference from the brief text in the existing `HELP FIND` screen, which describes the omitted-filename search as a loaded-program search. The underlying `FIND.BAS` and `TYPE.BAS` code is authoritative: the search is file-based.
+The corrected `HELP FIND` screen and underlying `FIND.BAS` / `TYPE.BAS` implementation agree: the search is file-based.
 
 #### Why a saved copy matters
 
@@ -624,7 +624,7 @@ CoCo disk files live in directory sectors and a granule allocation table. Ordina
 
 ### Keyboard handling (November 26 baseline)
 
-The November 26, 2026 owner-approved keyboard revision uses XMM/KEYPEEK-derived interrupt-protected eight-column PIA matrix scans, fresh physical key presses, stable release and input-buffer isolation. COLOR NAMES and COLOR CHART advance once per deliberate press/release. FORMAT requires a fresh Y confirmation; CD profile selection uses physical F1/F2 detection. TYPE retains Q-to-quit and clears residual input before returning. HELP COLOR delegates its wait to COLOR via the private NAMES! argument; the November 26 full HELP copies were identical. The BOOT HELP dispatcher, KEYPEEK SHIFT logic, EDIT, mouse routines, layouts and persistent KEYREP settings are unchanged. The owner confirmed testing of that earlier revision; The exact TOOLS and BENCH HELP.BAS payloads differ: TOOLS retains legacy XMEM names; BENCH uses XMM naming. Both omit bare EDIT's first-line behavior and retain older XMM menu wording. See the current manual; on-disk HELP correction is a separate disk revision, not part of the exact extraction.
+The November 26, 2026 owner-approved keyboard revision uses XMM/KEYPEEK-derived interrupt-protected eight-column PIA matrix scans, fresh physical key presses, stable release and input-buffer isolation. COLOR NAMES and COLOR CHART advance once per deliberate press/release. FORMAT requires a fresh Y confirmation; CD profile selection uses physical F1/F2 detection. TYPE retains Q-to-quit and clears residual input before returning. HELP COLOR delegates its wait to COLOR via the private NAMES! argument; the November 26 full HELP copies were identical. The BOOT HELP dispatcher, KEYPEEK SHIFT logic, EDIT, mouse routines, layouts and persistent KEYREP settings are unchanged. The owner confirmed testing of that earlier keyboard revision. The owner-approved compact HELP.BAS on TOOLS and BENCH is byte-for-byte identical (10,812 bytes). It corrects EDIT, XMM, XBENCH and FIND wording, removes obsolete XMEM terminology, and recovers one granule per disk. The BOOT dispatcher is distinct. Targeted VCC-EDB tests passed on the 6809 and 6309, including WIDTH 32/40/80 on the 6309; not every HELP topic was exercised.
 
 ### WIDTH - text columns
 
@@ -814,11 +814,11 @@ The separate 13,544 reference was reported by the project author on VCC-EDB with
 
 ### Advanced diagnostic commands
 
-`XMM ALL` runs the system-information workflow. The source retains named individual commands `XMM HW`, `ALLOC`, `ARENA`, `API`, `OBJ`, `GC`, `MATH` / `MUL`, `SIGNED`, `PAGE` and `STATUS` (each prefixed with XMM). These are separate diagnostic paths, not extra menu buttons. `XMM ?` dispatches to HELP; the on-disk HELP can retain older XMM menu wording, so use this manual for the current interface.
+`XMM ALL` runs the system-information workflow. The source retains named individual commands `XMM HW`, `ALLOC`, `ARENA`, `API`, `OBJ`, `GC`, `MATH` / `MUL`, `SIGNED`, `PAGE` and `STATUS` (each prefixed with XMM). These are separate diagnostic paths, not extra menu buttons. `XMM ?` dispatches to HELP; the compact on-disk HELP describes the current interface.
 
 ### BENCH HELP.BAS
 
-BENCH and TOOLS contain the full HELP engine; BOOT has the smaller dispatcher. The exact TOOLS and BENCH HELP.BAS payloads differ: TOOLS retains legacy XMEM names; BENCH uses XMM naming. Both omit bare EDIT's first-line behavior and retain older XMM menu wording. See the current manual; on-disk HELP correction is a separate disk revision, not part of the exact extraction. See [BENCH technical reference](BASIC_PROGRAMS_BENCH.md) for program internals and [Sockmaster notes](SOCKMASTER_BENCH.md) for measurement details.
+BENCH and TOOLS contain the full HELP engine; BOOT has the smaller dispatcher. The owner-approved compact HELP.BAS on TOOLS and BENCH is byte-for-byte identical (10,812 bytes). It corrects EDIT, XMM, XBENCH and FIND wording, removes obsolete XMEM terminology, and recovers one granule per disk. The BOOT dispatcher is distinct. Targeted VCC-EDB tests passed on the 6809 and 6309, including WIDTH 32/40/80 on the 6309; not every HELP topic was exercised. See [BENCH technical reference](BASIC_PROGRAMS_BENCH.md) for program internals and [Sockmaster notes](SOCKMASTER_BENCH.md) for measurement details.
 
 **Verification scope:** On the approved local candidates, VCC-EDB 6309 at 125.28 MHz successfully completed full XMM benchmark and System Info routes from WIDTH 80 with cyan/red colors, plus menu exits from WIDTH 40 (yellow/blue) and WIDTH 32 (green/black). Before/after visible RGB colors matched. The EDIT R3 local candidate passed bare EDIT, empty memory, named and numbered entry, missing-file preservation and LAST tracking; R2 also passed SAVE/NEW/LOAD/RUN and short tests at WIDTH 32/40/80. BREAK, long lines, disk-read failure, abnormal-exit recovery, and further 6809 regression testing are still outstanding. These are earlier candidate test results, not a new test of the uploaded release bytes.
 
