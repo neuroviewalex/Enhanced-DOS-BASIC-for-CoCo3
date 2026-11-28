@@ -1,11 +1,11 @@
 # EDB v15 - Complete BASIC Program and Function Reference
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; the approved compact HELP passed targeted 6809/6309 VCC tests. Earlier candidate tests are not a full new system regression. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-28):** The owner approved BENCH Color FIX11 (viewer) as the new authoritative BENCH baseline. The repository root BENCH image and its extracted payloads are synchronized; BOOT and TOOLS are unchanged. The v15 BENCH release attachment and release tag still refer to the previous snapshot; use the current repository image until the attachment/tag are updated. Earlier candidate tests do not constitute a full new regression. See [release synchronization status](RELEASE_SYNC.md).
 
 **Official v15 inventory: BOOT, TOOLS and the full-color XMM BENCH disk**  
 **Source baseline:** Current v15 release extraction verified in [MANIFEST.json](../extracted/MANIFEST.json).  
 **Documentation coverage:** **49 BASIC entries** (26 BOOT, 15 TOOLS, 8 BENCH), including the literal `*.BAS` file and three HELP entries.  
-**Validation:** Source-level inspection of tokenized CoCo BASIC files from `extracted/`. The current [v15 Release disks](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) have been verified against the repository image SHA-256 checksums. Source auditing does not replace independent emulator or hardware execution tests.
+**Validation:** Source-level inspection of tokenized CoCo BASIC files from `extracted/`. The current approved repository disk images have been verified against their SHA-256 checksums; the older v15 BENCH attachment is pending replacement. Source auditing does not replace independent emulator or hardware execution tests.
 
 ## Start here
 
@@ -139,4 +139,7 @@ For each authorized future change to an EDB `.BAS` file:
 4. Commit documentation changes with a clear explanation and verify the Git diff.
 5. Never silently modify EDB binaries or declare a new software baseline as part of a manual-only edit.
 
-The authoritative reference lives alongside [`USER_MANUAL.md`](USER_MANUAL.md). The owner-designated [v15 Release images](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) match the current repository images and extracted sources.
+The authoritative reference lives alongside [`USER_MANUAL.md`](USER_MANUAL.md). The owner-designated repository images and extracted sources match the approved baselines. BOOT and TOOLS also match the v15 release attachments; BENCH FIX11 supersedes the older release attachment.
+
+
+**Approved BENCH FIX11 viewer baseline (2026-11-28):** All 16 screen templates use adjacent yellow uppercase buttons on black. Hover flashes the label without inversion; the lowercase white x is steady over buttons and blinks elsewhere. The FIX9 fractional timer targets 90% of FIX6 frequency; FIX10 cursor behavior is retained. FIX11 renders PASS, results, values and scores green, and separators white. FAIL is not a PASS indicator. The live legacy benchmark/test console still uses monochrome 32-column text: applying green PASS and values there is outstanding. Cached SYSINFO.INF CPU identity and score formats are preserved; the successful benchmark continuation fixes are included. Menu/hover/navigation and viewer behavior were exercised in VCC-EDB during candidate testing; the full scoring suite has not been rerun on FIX11. The exact approved 184,320-byte image has 45 active files, six free granules and 22 changed payloads relative to the prior repository BENCH; 23 unchanged payloads, BOOT and TOOLS are preserved.

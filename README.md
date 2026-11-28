@@ -1,6 +1,6 @@
 # Enhanced DOS BASIC for the Tandy Color Computer 3
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; the approved compact HELP passed targeted 6809/6309 VCC tests. Earlier candidate tests are not a full new system regression. See [release synchronization status](docs/RELEASE_SYNC.md).
+**Release synchronization status (2026-11-28):** The owner approved BENCH Color FIX11 (viewer) as the new authoritative BENCH baseline. The repository root BENCH image and its extracted payloads are synchronized; BOOT and TOOLS are unchanged. The v15 BENCH release attachment and release tag still refer to the previous snapshot; use the current repository image until the attachment/tag are updated. Earlier candidate tests do not constitute a full new regression. See [release synchronization status](docs/RELEASE_SYNC.md).
 
 ### The CoCo 3 BASIC environment, expanded into a capable DOS-style workspace
 
@@ -203,7 +203,7 @@ Mount a writable copy of BENCH, select its drive, save any BASIC program in memo
 | SHOW SYSTEM INFO | S | Runs the native integrity checks and tests 1–8; opens the ten-page diagnostic viewer at page 1. |
 | `<exit>` | Q | Leaves XMM and returns to the EDB prompt. |
 
-Both viewers support mouse PREV/NEXT with wraparound, the centered `<exit>` button to return to the main menu, and keyboard N/P/Q. S jumps to page 5 in the benchmark viewer or page 1 in the system-information viewer. The mouse uses a blinking lowercase x, reveals the underlying character between blink phases, and inverts the hovered button (black on yellow). Position the pointer over a button before clicking; very fast movement and clicking together can select the previous sample. The UI renders native GIME 32-column color attributes: cyan headings, white labels, green PASS, red FAIL and blue buttons. It restores the exact inherited display on normal exit. The original progress text is still used during tests; mouse polling and color rendering are not part of the timed loops.
+Both viewers support mouse PREV/NEXT with wraparound, the centered `<exit>` button to return to the main menu, and keyboard N/P/Q. S jumps to page 5 in the benchmark viewer or page 1 in the system-information viewer. The white lowercase x cursor blinks outside buttons and remains continuously visible over a button while its yellow label flashes on/off; moving away restores steady yellow text and cursor blinking. The FIX9 fractional timer (90% of FIX6 frequency) and FIX10 cursor behavior are preserved. Position the pointer over a button before clicking; very fast movement and clicking together can select the previous sample. The UI renders native GIME 32-column attributes: yellow standard text and buttons, green PASS, measured values and scores, white separators and cursor, black background. No inverse hover. It restores the exact inherited display on normal exit. The original progress text is still used during tests; mouse polling and color rendering are not part of the timed loops.
 
 SHOW SYSTEM INFO checks hardware/MMU isolation, allocation, arenas, the callable API, object management, garbage collection, vector/math, signed/fixed-point arithmetic and native CPU-specific memory operations. The native-engine check runs before the numbered test chain; the signed tests are included in the math chain. Pager test 9 is excluded from this workflow; `XMM PAGE` and `XTPAGE.DRV` remain available separately. The diagnostic path verifies the expected history hooks, a compatible 512K profile and conflicting live allocations before sensitive operations. Save work first; do not run with incompatible memory managers active.
 
@@ -225,15 +225,15 @@ See the [BENCH technical reference](docs/BASIC_PROGRAMS_BENCH.md), [user manual]
 
 **Approved final disk allocation:** BOOT: 6 free granules; TOOLS: 46; BENCH: 6. The final BOOT upload preserves all 54 active file payloads. The two full HELP copies are the approved compact version.
 
-**The owner-designated [v15 Release attachments](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) are authoritative.** Each contains 184,320 bytes (40 tracks x 18 sectors x 256 bytes). Repository copies and extracted sources match the release assets exactly.
+**The owner-designated BOOT and TOOLS v15 attachments and the current BENCH FIX11 repository image are authoritative.** Each contains 184,320 bytes (40 tracks x 18 sectors x 256 bytes). Repository copies and extracted sources match the approved images. The v15 BENCH attachment and tag are pending synchronization.
 
 | Disk | Files | Contents | Download |
 | --- | ---: | --- | --- |
 | **BOOT** | 54 | Core command environment, native editor, profiles, history and disk/cache drivers | [BOOT image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BOOT.dsk) |
 | **TOOLS** | 17 | HELP, KEYPEEK, FIND/TYPE, disk checks, copy/install and file utilities | [TOOLS image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_TOOLS.dsk) |
-| **BENCH** | 45 | Full-color XMM menu, eight BASIC programs, 16 X32 templates, native diagnostics and timed benchmarks | [BENCH image](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk) |
+| **BENCH** | 45 | Full-color XMM menu, eight BASIC programs, 16 X32 templates, native diagnostics and timed benchmarks | [BENCH image](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_bench.dsk) |
 
-**Authoritative release asset SHA-256 checksums (GitHub metadata):**
+**Authoritative disk SHA-256 checksums (BOOT/TOOLS release assets; BENCH FIX11 repository image):**
 
 ```text
 EDB_v15_512k_boot.dsk
@@ -243,12 +243,12 @@ EDB_v15_512k_tools.dsk
 4f0c097bb6d8b7119c374495c778ad83db793329119f85885d55c3bfa5d054f5
 
 EDB_v15_512k_bench.dsk
-0cf48fc3ce74c4d96bd13730eb57a126240ab34b6c1297c49f856918caeaaa5d
+747838009a90129a3f9f3d96b2e28def533f7c0a8c63020c162edad36125b385
 ```
 
-**Distribution status:** The release digests above are verified from GitHub metadata. Repository images and extracted payloads are synchronized against these exact assets.
+**Distribution status:** BOOT and TOOLS release digests were verified previously. BENCH FIX11 repository image and extraction match the approved local image; the v15 BENCH attachment and tag remain at the preceding snapshot.
 
-The [`extracted/`](extracted/) tree contains 116 files extracted byte-for-byte from the current release. See [release synchronization status](docs/RELEASE_SYNC.md) before using the extracted code.
+The [`extracted/`](extracted/) tree contains 116 files extracted byte-for-byte from the current approved disk images. See [release synchronization status](docs/RELEASE_SYNC.md) before using the extracted code.
 
 ## Getting started with EDB v15
 
@@ -328,7 +328,7 @@ The project protocol is:
 
 Because EDB includes native code, tokenized BASIC and binary disk images, careful verification matters. Appropriate checks include BASIC token/linked-line structure, byte-for-byte source extraction, directory/FAT chain integrity, checksum comparisons, and clear separation of **static analysis** from **VCC-EDB / hardware runtime tests**.
 
-The current exact extraction is recorded in [MANIFEST.json](extracted/MANIFEST.json). The latest release assets remain untouched; this synchronization does not create a new executable baseline.
+The current exact extraction is recorded in [MANIFEST.json](extracted/MANIFEST.json). The latest release assets remain untouched by this repository synchronization; BENCH FIX11 is the newly approved executable baseline.
 
 ## The spirit of EDB
 
@@ -337,3 +337,6 @@ The Color Computer 3 remains a distinctive and enjoyable programming system. EDB
 **It's still BASIC. It's still the CoCo 3. It's a far more capable place to work.**
 
 **Sockmaster dual-CPU verification:** Approved dual-CPU candidate tests: direct 6809 at cached 125.28 MHz (13,194 points), then 6309 at 125.28 MHz (13,237), preserving the 6809 row, and 6309 at 101.12 MHz (10,596), preserving the earlier 6809 result. Full 6309 XMM suite and WIDTH 80 cyan-on-red restoration passed. Full 6809 suite regression and disk-error recovery remain untested. These are candidate test results, not scores seeded in the distributed image.
+
+
+**Approved BENCH FIX11 viewer baseline (2026-11-28):** All 16 screen templates use adjacent yellow uppercase buttons on black. Hover flashes the label without inversion; the lowercase white x is steady over buttons and blinks elsewhere. The FIX9 fractional timer targets 90% of FIX6 frequency; FIX10 cursor behavior is retained. FIX11 renders PASS, results, values and scores green, and separators white. FAIL is not a PASS indicator. The live legacy benchmark/test console still uses monochrome 32-column text: applying green PASS and values there is outstanding. Cached SYSINFO.INF CPU identity and score formats are preserved; the successful benchmark continuation fixes are included. Menu/hover/navigation and viewer behavior were exercised in VCC-EDB during candidate testing; the full scoring suite has not been rerun on FIX11. The exact approved 184,320-byte image has 45 active files, six free granules and 22 changed payloads relative to the prior repository BENCH; 23 unchanged payloads, BOOT and TOOLS are preserved.

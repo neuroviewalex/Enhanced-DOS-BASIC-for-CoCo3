@@ -87,8 +87,8 @@
     },
     {
       "filename": "EDB_v15_512k_bench.dsk",
-      "sha256": "0cf48fc3ce74c4d96bd13730eb57a126240ab34b6c1297c49f856918caeaaa5d",
-      "git_blob_sha": "9d25179e5b0ac7a5564c1725ea461f8fb013040c",
+      "sha256": "747838009a90129a3f9f3d96b2e28def533f7c0a8c63020c162edad36125b385",
+      "git_blob_sha": "58085192077f6bebc38b41b171d7d63a9f2a2f31",
       "size_bytes": 184320,
       "active_files": 45,
       "allocated_granules": 72,
@@ -110,12 +110,13 @@
     "BOOT active file payloads unchanged; 114 disk bytes outside active payloads differ from its predecessor. TOOLS and BENCH changed only HELP.BAS. All 114 other file payloads unchanged.",
     "Both full HELP copies identical, 10812 bytes, Git blob afb82a867e4b36168a9c7b7b82634ae0cb29597f.",
     "Targeted prior 6809/6309 HELP tests passed; not every topic exercised. No new runtime tests performed by synchronization.",
-    "Owner-approved Sockmaster dual-CPU BENCH baseline. Exact candidate SHA-256 and Git blob verified. Only SMBENCH.BAS and XMSHOW.BAS changed; 43 other BENCH payloads, all BOOT and TOOLS bytes and distributed legacy score record preserved. Approved dual-CPU candidate tests: direct 6809 at cached 125.28 MHz (13,194 points), then 6309 at 125.28 MHz (13,237), preserving the 6809 row, and 6309 at 101.12 MHz (10,596), preserving the earlier 6809 result. Full 6309 XMM suite and WIDTH 80 cyan-on-red restoration passed. Full 6809 suite regression and disk-error recovery remain untested. These are candidate test results, not scores seeded in the distributed image."
+    "Owner-approved Sockmaster dual-CPU BENCH baseline. Exact candidate SHA-256 and Git blob verified. Only SMBENCH.BAS and XMSHOW.BAS changed; 43 other BENCH payloads, all BOOT and TOOLS bytes and distributed legacy score record preserved. Approved dual-CPU candidate tests: direct 6809 at cached 125.28 MHz (13,194 points), then 6309 at 125.28 MHz (13,237), preserving the 6809 row, and 6309 at 101.12 MHz (10,596), preserving the earlier 6809 result. Full 6309 XMM suite and WIDTH 80 cyan-on-red restoration passed. Full 6809 suite regression and disk-error recovery remain untested. These are candidate test results, not scores seeded in the distributed image.",
+    "**Approved BENCH FIX11 viewer baseline (2026-11-28):** All 16 screen templates use adjacent yellow uppercase buttons on black. Hover flashes the label without inversion; the lowercase white x is steady over buttons and blinks elsewhere. The FIX9 fractional timer targets 90% of FIX6 frequency; FIX10 cursor behavior is retained. FIX11 renders PASS, results, values and scores green, and separators white. FAIL is not a PASS indicator. The live legacy benchmark/test console still uses monochrome 32-column text: applying green PASS and values there is outstanding. Cached SYSINFO.INF CPU identity and score formats are preserved; the successful benchmark continuation fixes are included. Menu/hover/navigation and viewer behavior were exercised in VCC-EDB during candidate testing; the full scoring suite has not been rerun on FIX11. The exact approved 184,320-byte image has 45 active files, six free granules and 22 changed payloads relative to the prior repository BENCH; 23 unchanged payloads, BOOT and TOOLS are preserved. Exact disk Git blob and all changed extracted payload Git blobs match locally computed hashes."
   ],
   "source_commit_note": "Owner-approved images are authoritative. Null avoids a commit hash cycle.",
   "release_sync": {
-    "status": "verified_exact_binary_extraction",
-    "authority": "Owner-approved final BOOT, compact HELP TOOLS, and Sockmaster dual-CPU BENCH; exact release assets, root images and extracted payloads verified.",
+    "status": "repository_synchronized_bench_release_asset_pending",
+    "authority": "Owner-approved final BOOT, compact HELP TOOLS, and BENCH Color FIX11 viewer baseline. Repository root and extraction verified; BENCH v15 attachment/tag remain at prior snapshot.",
     "tag": "v15",
     "assets": [
       {
@@ -140,6 +141,13 @@
         "download_url": "https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk"
       }
     ],
-    "verification": "Exact approved image SHA-256 verified before publication; GitHub release asset digests verified after upload. BOOT and TOOLS attachments preserved. All 116 extracted payloads synchronized."
+    "verification": "BOOT and TOOLS prior release asset verification remains valid. BENCH release asset metadata below is historical and must not be treated as FIX11. Current BENCH root image and extracted payloads synchronized to exact approved disk. Update release asset and tag separately.",
+    "pending_bench_asset": {
+      "name": "EDB_v15_512k_BENCH.dsk",
+      "sha256": "747838009a90129a3f9f3d96b2e28def533f7c0a8c63020c162edad36125b385",
+      "git_blob_sha": "58085192077f6bebc38b41b171d7d63a9f2a2f31",
+      "size_bytes": 184320,
+      "repository_download_url": "https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_bench.dsk"
+    }
   }
 }

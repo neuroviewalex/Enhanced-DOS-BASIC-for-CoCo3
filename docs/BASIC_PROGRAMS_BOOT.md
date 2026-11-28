@@ -1,6 +1,6 @@
 # EDB v15 BASIC Program Reference - BOOT Disk
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; the approved compact HELP passed targeted 6809/6309 VCC tests. Earlier candidate tests are not a full new system regression. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-28):** The owner approved BENCH Color FIX11 (viewer) as the new authoritative BENCH baseline. The repository root BENCH image and its extracted payloads are synchronized; BOOT and TOOLS are unchanged. The v15 BENCH release attachment and release tag still refer to the previous snapshot; use the current repository image until the attachment/tag are updated. Earlier candidate tests do not constitute a full new regression. See [release synchronization status](RELEASE_SYNC.md).
 
 **Coverage:** All 26 `.BAS` directory entries in the promoted v15 BOOT disk, including the literal file named `*.BAS`.  
 **Method:** Inspected the tokenized BASIC source in `extracted/boot/` and identified command paths, local GOSUB routines, dependencies and side effects.  

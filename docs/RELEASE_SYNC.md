@@ -1,6 +1,6 @@
 # EDB v15 release synchronization
 
-**Owner-designated authority:** The uploaded BOOT, TOOLS and BENCH attachments at [Release v15](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/tag/v15) supersede earlier local candidates and repository copies. All three are 184,320 bytes. GitHub-reported asset digests:
+**Owner-designated authority (2026-11-28):** BOOT and TOOLS remain the verified v15 release attachments. BENCH Color FIX11 (viewer) is the new authoritative BENCH image in the repository. [Download the current BENCH image](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_bench.dsk). The earlier v15 BENCH attachment and tag have not been replaced. The following table records the previously verified release asset digests, not the new BENCH baseline.
 
 | Asset | SHA-256 |
 | --- | --- |
@@ -24,7 +24,7 @@ Sockmaster's original 60-tick interpreted BASIC loop runs four times without pri
 
 **Verification scope:** On the approved local candidates, VCC-EDB 6309 at 125.28 MHz successfully completed full XMM benchmark and System Info routes from WIDTH 80 with cyan/red colors, plus menu exits from WIDTH 40 (yellow/blue) and WIDTH 32 (green/black). Before/after visible RGB colors matched. The EDIT R3 local candidate passed bare EDIT, empty memory, named and numbered entry, missing-file preservation and LAST tracking; R2 also passed SAVE/NEW/LOAD/RUN and short tests at WIDTH 32/40/80. BREAK, long lines, disk-read failure, abnormal-exit recovery, and further 6809 regression testing are still outstanding. These are earlier candidate test results, not a new test of the uploaded release bytes.
 
-All three uploaded asset binaries match the verified release SHA-256 and Git blob hashes. The repository root images and 116 extracted files are exact copies, with FAT and directory integrity verified. The owner-approved compact HELP.BAS on TOOLS and BENCH is byte-for-byte identical (10,812 bytes). It corrects EDIT, XMM, XBENCH and FIND wording, removes obsolete XMEM terminology, and recovers one granule per disk. The BOOT dispatcher is distinct. Targeted VCC-EDB tests passed on the 6809 and 6309, including WIDTH 32/40/80 on the 6309; not every HELP topic was exercised. The v15 tag is advanced to the synchronized commit only after the verified files are committed, so GitHub-generated Source code (zip) and (tar.gz) refer to the current source.
+At the preceding synchronization, all three uploaded binaries matched their release hashes and repository/extraction. After the FIX11 promotion, only BOOT and TOOLS retain that exact release-attachment equivalence. BENCH's updated root image and extraction are verified separately. The v15 attachment and tag require a separate update; do not treat the GitHub-generated source archives or old BENCH attachment as the FIX11 baseline.
 
 ## Approved compact HELP and final BOOT upload
 
@@ -41,3 +41,12 @@ SMBSCORE.DAT uses the SMBSCORE2 marker after the first successful new save, foll
 Approved dual-CPU candidate tests: direct 6809 at cached 125.28 MHz (13,194 points), then 6309 at 125.28 MHz (13,237), preserving the 6809 row, and 6309 at 101.12 MHz (10,596), preserving the earlier 6809 result. Full 6309 XMM suite and WIDTH 80 cyan-on-red restoration passed. Full 6809 suite regression and disk-error recovery remain untested. These are candidate test results, not scores seeded in the distributed image.
 
 Only SMBENCH.BAS and XMSHOW.BAS changed relative to the immediately preceding BENCH baseline. Six free granules, original timing loop, the legacy distributed score file, all 43 other BENCH payloads, BOOT and TOOLS remain unchanged. No new runtime tests were performed by publication.
+
+## Approved BENCH Color FIX11 (viewer) baseline
+
+**Approved BENCH FIX11 viewer baseline (2026-11-28):** All 16 screen templates use adjacent yellow uppercase buttons on black. Hover flashes the label without inversion; the lowercase white x is steady over buttons and blinks elsewhere. The FIX9 fractional timer targets 90% of FIX6 frequency; FIX10 cursor behavior is retained. FIX11 renders PASS, results, values and scores green, and separators white. FAIL is not a PASS indicator. The live legacy benchmark/test console still uses monochrome 32-column text: applying green PASS and values there is outstanding. Cached SYSINFO.INF CPU identity and score formats are preserved; the successful benchmark continuation fixes are included. Menu/hover/navigation and viewer behavior were exercised in VCC-EDB during candidate testing; the full scoring suite has not been rerun on FIX11. The exact approved 184,320-byte image has 45 active files, six free granules and 22 changed payloads relative to the prior repository BENCH; 23 unchanged payloads, BOOT and TOOLS are preserved.
+
+- Current BENCH SHA-256: `747838009a90129a3f9f3d96b2e28def533f7c0a8c63020c162edad36125b385`
+- Current BENCH Git blob SHA: `58085192077f6bebc38b41b171d7d63a9f2a2f31`
+- [Current repository BENCH download](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_bench.dsk)
+- Release asset replacement and tag synchronization: pending (not available through the current repository connection).

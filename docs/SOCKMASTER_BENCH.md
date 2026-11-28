@@ -1,8 +1,8 @@
 # EDB v15 — Sockmaster Classic BASIC benchmark
 
-**Release synchronization status (2026-11-27):** The owner-designated v15 release attachments, repository disk images and extracted payloads now match exactly. The source inventory is verified; the approved compact HELP passed targeted 6809/6309 VCC tests. Earlier candidate tests are not a full new system regression. See [release synchronization status](RELEASE_SYNC.md).
+**Release synchronization status (2026-11-28):** The owner approved BENCH Color FIX11 (viewer) as the new authoritative BENCH baseline. The repository root BENCH image and its extracted payloads are synchronized; BOOT and TOOLS are unchanged. The v15 BENCH release attachment and release tag still refer to the previous snapshot; use the current repository image until the attachment/tag are updated. Earlier candidate tests do not constitute a full new regression. See [release synchronization status](RELEASE_SYNC.md).
 
-**Status:** Approved four-trial implementation in the BENCH Display Restoration R2 development lineage. The owner-designated release is authoritative; exact extraction is verified.
+**Status:** Approved four-trial implementation in the BENCH Display Restoration R2 development lineage. The owner-designated FIX11 repository BENCH image is authoritative; exact extraction is verified.
 
 **Attribution:** Original three-line BASIC loop credited to Sockmaster.
 
@@ -10,16 +10,16 @@
 
 The latest approved behavior uses four trials, independently persisted CPU-tagged scores with dynamic cached clocks, clean transitions and inherited display restoration.
 
-[Download the official BENCH disk](https://github.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/releases/download/v15/EDB_v15_512k_BENCH.dsk)
+[Download the official BENCH disk](https://raw.githubusercontent.com/neuroviewalex/Enhanced-DOS-BASIC-for-CoCo3/main/EDB_v15_512k_bench.dsk)
 
 | Property | Value |
 | --- | --- |
 | Image size | 184,320 bytes |
-| SHA-256 | `0cf48fc3ce74c4d96bd13730eb57a126240ab34b6c1297c49f856918caeaaa5d` |
-| Git blob SHA | `9d25179e5b0ac7a5564c1725ea461f8fb013040c` |
+| SHA-256 | `747838009a90129a3f9f3d96b2e28def533f7c0a8c63020c162edad36125b385` |
+| Git blob SHA | `58085192077f6bebc38b41b171d7d63a9f2a2f31` |
 | Contents | 45 files; 72 allocated and 6 free granules |
 
-GitHub reports the release asset digest above. The [manifest](../extracted/MANIFEST.json) records the verified current extracted snapshot.
+The SHA-256 and Git blob SHA above are the approved FIX11 repository image hashes; the previous v15 release attachment has not yet been replaced. The [manifest](../extracted/MANIFEST.json) records the verified current extracted snapshot.
 
 ## Using the benchmark
 
@@ -43,7 +43,7 @@ EDB preserves the timed workload from lines 10 and 20, but performs four trials 
 
 ## Saved result and comparison viewer
 
-Navigate using mouse PREV/NEXT or keyboard N/P. S jumps to page 5, and the centered `<exit>` button or Q returns to the main menu. Both viewers use native GIME colors, inverse hover and a blinking lowercase x. A writable BENCH working disk is required; if saving fails the program prints a warning and the score must not be treated as verified persisted data. A new run replaces only the measured CPU's score/clock pair, retaining the other pair; retain copies for comparisons.
+Navigate using mouse PREV/NEXT or keyboard N/P. S jumps to page 5, and the centered `<exit>` button or Q returns to the main menu. Both viewers use native GIME colors: yellow labels and flashing hover, green PASS and scores/values, white separators and white lowercase x. The cursor remains visible during hover and blinks elsewhere. A writable BENCH working disk is required; if saving fails the program prints a warning and the score must not be treated as verified persisted data. A new run replaces only the measured CPU's score/clock pair, retaining the other pair; retain copies for comparisons.
 
 ## Comparison references
 
@@ -65,3 +65,6 @@ The reported four-sample average is directly comparable as a **one-second-equiva
 **Verification scope:** On the approved local candidates, VCC-EDB 6309 at 125.28 MHz successfully completed full XMM benchmark and System Info routes from WIDTH 80 with cyan/red colors, plus menu exits from WIDTH 40 (yellow/blue) and WIDTH 32 (green/black). Before/after visible RGB colors matched. The EDIT R3 local candidate passed bare EDIT, empty memory, named and numbered entry, missing-file preservation and LAST tracking; R2 also passed SAVE/NEW/LOAD/RUN and short tests at WIDTH 32/40/80. BREAK, long lines, disk-read failure, abnormal-exit recovery, and further 6809 regression testing are still outstanding. These are earlier candidate test results, not a new test of the uploaded release bytes.
 
 **Dual-CPU verification:** Approved dual-CPU candidate tests: direct 6809 at cached 125.28 MHz (13,194 points), then 6309 at 125.28 MHz (13,237), preserving the 6809 row, and 6309 at 101.12 MHz (10,596), preserving the earlier 6809 result. Full 6309 XMM suite and WIDTH 80 cyan-on-red restoration passed. Full 6809 suite regression and disk-error recovery remain untested. These are candidate test results, not scores seeded in the distributed image.
+
+
+**Approved BENCH FIX11 viewer baseline (2026-11-28):** All 16 screen templates use adjacent yellow uppercase buttons on black. Hover flashes the label without inversion; the lowercase white x is steady over buttons and blinks elsewhere. The FIX9 fractional timer targets 90% of FIX6 frequency; FIX10 cursor behavior is retained. FIX11 renders PASS, results, values and scores green, and separators white. FAIL is not a PASS indicator. The live legacy benchmark/test console still uses monochrome 32-column text: applying green PASS and values there is outstanding. Cached SYSINFO.INF CPU identity and score formats are preserved; the successful benchmark continuation fixes are included. Menu/hover/navigation and viewer behavior were exercised in VCC-EDB during candidate testing; the full scoring suite has not been rerun on FIX11. The exact approved 184,320-byte image has 45 active files, six free granules and 22 changed payloads relative to the prior repository BENCH; 23 unchanged payloads, BOOT and TOOLS are preserved.
